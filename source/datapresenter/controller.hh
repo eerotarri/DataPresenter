@@ -12,7 +12,7 @@ public:
     Controller(Model* model, QObject* parent = nullptr);
 
 public slots:
-
+    void compareButtonClicked(const QString& xText, const QString& yText);
 
 private:
     Model* model_;

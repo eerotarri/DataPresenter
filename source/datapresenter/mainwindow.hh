@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QCalendar>
+#include <QLineSeries>
 
 
 QT_BEGIN_NAMESPACE
@@ -32,11 +33,15 @@ public:
 
     void setController(Controller* controller);
 
+    void updateChart(QLineSeries* series, const QString& title);
+
 private slots:
     void on_quitButton_clicked();
+    void on_compareButton_clicked();
 
 private:
     void setup();
+    void addConnects();
 
     Ui::MainWindow *ui;
     Controller* controller_;

@@ -4,6 +4,7 @@
 
 #include <QLineSeries>
 #include <QGridLayout>
+#include <QLabel>
 
 
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
@@ -40,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view_->resize(graphic_frame_->size());
 
     setup();
+    addConnects();
 }
 
 MainWindow::~MainWindow()
@@ -54,9 +56,24 @@ void MainWindow::setController(Controller *controller)
 
 }
 
+void MainWindow::updateChart(QLineSeries *series, const QString &title)
+{
+    chart_->removeAllSeries();
+    chart_->addSeries(series);
+    chart_->setTitle(title);
+    chart_->createDefaultAxes();
+    chart_->legend()->setVisible(false);
+}
+
 void MainWindow::on_quitButton_clicked()
 {
     close();
+}
+
+void MainWindow::on_compareButton_clicked()
+{
+    // Täl hetkel ku painaa compare napist saa dataa näkyviin
+    controller_->compareButtonClicked("x", "y");
 }
 
 void MainWindow::setup()
@@ -67,11 +84,40 @@ void MainWindow::setup()
     mainWidget_->setLayout(mainLayout);
     setCentralWidget(mainWidget_);
 
-    mainLayout->addWidget(graphic_frame_,1,2,2,2);
+    mainLayout->addWidget(chart_view_, 4, 1, 10, 20);
 
-    mainLayout->addWidget(quitButton_, 1, 1, 2, 5);
-    mainLayout->addWidget(compareButton_, 2, 2);
-    mainLayout->addWidget(statisticsButton_, 3, 3);
-    mainLayout->addWidget(averageButton_, 4, 4);
+    mainLayout->addWidget(quitButton_, 30, 18, 1, 2);
+    mainLayout->addWidget(compareButton_, 30, 2, 1, 2);
+    mainLayout->addWidget(statisticsButton_, 30, 5, 1, 2);
+    mainLayout->addWidget(averageButton_, 30, 8, 1, 2);
+
+    gas_combo_box_->addItem("CO2");
+    gas_combo_box_->addItem("SO2");
+    gas_combo_box_->addItem("NOx");
+    mainLayout->addWidget(gas_combo_box_, 3, 2, 1, 5);
+    database_combo_box_->addItem("SMEAR");
+    database_combo_box_->addItem("COMPARE");
+    database_combo_box_->addItem("STAFI");
+    mainLayout->addWidget(database_combo_box_, 3, 15, 1, 5);
+
+    QLabel* hyytiala_label = new QLabel("Hyytiälä");
+    QLabel* kumpula_label = new QLabel("Kumpula");
+    QLabel* varrio_label = new QLabel("Värriö");
+
+    mainLayout->addWidget(hyytiala_check_box_, 24, 2, 1, 1);
+    mainLayout->addWidget(kumpula_check_box_, 24, 5, 1, 1);
+    mainLayout->addWidget(varrio_check_box_, 24, 8, 1, 1);
+    mainLayout->addWidget(hyytiala_label, 24, 3, 1, 1);
+    mainLayout->addWidget(kumpula_label, 24, 6, 1, 1);
+    mainLayout->addWidget(varrio_label, 24, 9, 1, 1);
+
+    //mainLayout->addWidget(start_day_calendar_, 24, 15, 5, 5);
+
+}
+
+void MainWindow::addConnects()
+{
+    QObject::connect(quitButton_, SIGNAL(clicked()), this, SLOT(on_quitButton_clicked()));
+    QObject::connect(compareButton_, SIGNAL(clicked()), this, SLOT(on_compareButton_clicked()));
 }
 
