@@ -1,12 +1,15 @@
 #ifndef MODEL_HH
 #define MODEL_HH
 
+#include <QObject>
 #include "mainwindow.hh"
 
-class Model
+class Model : public QObject
 {
+    Q_OBJECT
+
 public:
-    Model(MainWindow* view);
+    Model(MainWindow* view, QObject* parent = nullptr);
 
 private:
     MainWindow* view_;

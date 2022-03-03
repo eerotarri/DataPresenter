@@ -1,6 +1,7 @@
 #include "controller.hh"
 
-Controller::Controller(Model* model):
-    model_{model}
+Controller::Controller(Model* model, QObject* parent)
+    : QObject{parent}
+    , model_{model}
 {
 }
