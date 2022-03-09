@@ -2,6 +2,7 @@
 #define CONCRETESTATFI_HH
 
 #include <vector>
+#include <string>
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -26,6 +27,13 @@ private slots:
 private:
     QNetworkAccessManager manager_;
 
+    /*!
+     * \fn QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<int> years)
+     * \brief Generates QByteArray formatted query for posting
+     *
+     *
+    */
+    QByteArray generateQuery(std::string data, std::vector<int> years);
     std::vector<double> arrayToVector(QJsonArray array);
 };
 

@@ -13,6 +13,7 @@ void ConcreteStatfi::post(QString location, QByteArray data)
     QNetworkReply* reply = manager_.post(request, data);
     connect(reply, &QNetworkReply::readyRead, this, &ConcreteStatfi::readyRead);
 
+
 }
 
 void ConcreteStatfi::readyRead()
@@ -43,6 +44,41 @@ void ConcreteStatfi::readyRead()
     std::vector<double> values = arrayToVector(jsonArray);
 
     return;
+}
+
+QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<int> years)
+{
+    QByteArray query("{\n"
+    "    \"query\": [\n"
+    "        {\n"
+    "            \"code\": \"Tiedot\",\n"
+    "            \"selection\": {\n"
+    "                \"filter\": \"item\",\n"
+    "                \"values\": [\n"
+    "                    \"");
+    query.append(data);
+    query.append("\"\n"
+    "                ]\n"
+    "            }\n"
+    "        },\n"
+    "        {\n"
+    "            \"code\": \"Vuosi\",\n"
+    "            \"selection\": {\n"
+    "                \"filter\": \"item\",\n"
+    "                \"values\": [\n");
+
+    for (int year : years) {
+        std::string y = std::to_string(year);
+        query.append("                    \"" + y + "\",\n");
+    }
+    query.append("                ]\n"
+    "            }\n"
+    "        }\n"
+    "    ]\n"
+    "}\n");
+
+
+    return query;
 }
 
 std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
