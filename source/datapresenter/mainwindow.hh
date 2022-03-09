@@ -7,8 +7,9 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QPushButton>
-#include <QCalendar>
 #include <QLineSeries>
+#include "timerangedialog.hh"
+#include "valuetabledialog.hh"
 
 
 QT_BEGIN_NAMESPACE
@@ -38,6 +39,8 @@ public:
 private slots:
     void on_quitButton_clicked();
     void on_compareButton_clicked();
+    void on_setTimeRangeButton_clicked();
+    void on_valueTableButton_clicked();
 
 private:
     void setup();
@@ -55,11 +58,12 @@ private:
     QCheckBox* hyytiala_check_box_;
     QCheckBox* kumpula_check_box_;
     QCheckBox* varrio_check_box_;
-    QCalendar* start_day_calendar_;
-    QCalendar* end_day_calendar_;
-    QPushButton* averageButton_;
+    QPushButton* valueTableButton_;
     QPushButton* statisticsButton_;
     QPushButton* compareButton_;
     QPushButton* quitButton_;
+    QPushButton* setTimeRangeButton_;
+    TimeRangeDialog* time_range_dialog_;
+    ValueTableDialog* value_table_dialog_;
 };
 #endif // MAINWINDOW_HH

@@ -13,15 +13,21 @@ SOURCES += \
     controller.cpp \
     main.cpp \
     mainwindow.cpp \
-    model.cpp
+    model.cpp \
+    timerangedialog.cpp \
+    valuetabledialog.cpp
 
 HEADERS += \
     controller.hh \
     mainwindow.hh \
-    model.hh
+    model.hh \
+    timerangedialog.hh \
+    valuetabledialog.hh
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    timerangedialog.ui \
+    valuetabledialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

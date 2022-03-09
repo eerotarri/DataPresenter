@@ -1,6 +1,7 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 #include "controller.hh"
+#include "timerangedialog.hh"
 
 #include <QLineSeries>
 #include <QGridLayout>
@@ -26,12 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
     , hyytiala_check_box_(new QCheckBox)
     , kumpula_check_box_(new QCheckBox)
     , varrio_check_box_(new QCheckBox)
-    , start_day_calendar_(new QCalendar)
-    , end_day_calendar_(new QCalendar)
-    , averageButton_(new QPushButton("average"))
+    , valueTableButton_(new QPushButton("average"))
     , statisticsButton_(new QPushButton("statistics"))
     , compareButton_(new QPushButton("compare"))
     , quitButton_(new QPushButton("quit"))
+    , setTimeRangeButton_(new QPushButton("set time range"))
+    , time_range_dialog_(new TimeRangeDialog(this))
+    , value_table_dialog_(new ValueTableDialog(this))
 {
     ui->setupUi(this);
 
@@ -76,6 +78,16 @@ void MainWindow::on_compareButton_clicked()
     controller_->compareButtonClicked("x", "y");
 }
 
+void MainWindow::on_setTimeRangeButton_clicked()
+{
+    time_range_dialog_->show();
+}
+
+void MainWindow::on_valueTableButton_clicked()
+{
+    value_table_dialog_->show();
+}
+
 void MainWindow::setup()
 {
     this->setWindowTitle("Sovelluksen NIMI tähän");
@@ -89,7 +101,7 @@ void MainWindow::setup()
     mainLayout->addWidget(quitButton_, 30, 18, 1, 2);
     mainLayout->addWidget(compareButton_, 30, 2, 1, 2);
     mainLayout->addWidget(statisticsButton_, 30, 5, 1, 2);
-    mainLayout->addWidget(averageButton_, 30, 8, 1, 2);
+    mainLayout->addWidget(valueTableButton_, 30, 8, 1, 2);
 
     gas_combo_box_->addItem("CO2");
     gas_combo_box_->addItem("SO2");
@@ -97,7 +109,7 @@ void MainWindow::setup()
     mainLayout->addWidget(gas_combo_box_, 3, 2, 1, 5);
     database_combo_box_->addItem("SMEAR");
     database_combo_box_->addItem("COMPARE");
-    database_combo_box_->addItem("STAFI");
+    database_combo_box_->addItem("STATFI");
     mainLayout->addWidget(database_combo_box_, 3, 15, 1, 5);
 
     QLabel* hyytiala_label = new QLabel("Hyytiälä");
@@ -111,7 +123,7 @@ void MainWindow::setup()
     mainLayout->addWidget(kumpula_label, 24, 6, 1, 1);
     mainLayout->addWidget(varrio_label, 24, 9, 1, 1);
 
-    //mainLayout->addWidget(start_day_calendar_, 24, 15, 5, 5);
+    mainLayout->addWidget(setTimeRangeButton_, 24, 15, 5, 5);
 
 }
 
@@ -119,5 +131,7 @@ void MainWindow::addConnects()
 {
     QObject::connect(quitButton_, SIGNAL(clicked()), this, SLOT(on_quitButton_clicked()));
     QObject::connect(compareButton_, SIGNAL(clicked()), this, SLOT(on_compareButton_clicked()));
+    QObject::connect(setTimeRangeButton_, SIGNAL(clicked()), this, SLOT(on_setTimeRangeButton_clicked()));
+    QObject::connect(valueTableButton_, SIGNAL(clicked()), this, SLOT(on_valueTableButton_clicked()));
 }
 
