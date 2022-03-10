@@ -12,7 +12,8 @@ public:
     Controller(Model* model, QObject* parent = nullptr);
 
 public slots:
-    void compareButtonClicked(const QString& xText, const QString& yText);
+    void compareButtonClicked();
+    void dadabaseComboBoxCurrentTextChanged(const QString& current_database);
 
 private:
     Model* model_;

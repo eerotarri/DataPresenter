@@ -12,6 +12,8 @@ public:
     Model(MainWindow* view, QObject* parent = nullptr);
 
     void setChartSelection(const QString& dataSelection, const QString& timeselection);
+    void changeDatabase(const QString& current_database);
+
 
 private:
     MainWindow* view_;

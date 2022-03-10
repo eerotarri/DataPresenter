@@ -22,3 +22,16 @@ void Model::setChartSelection(const QString &dataSelection, const QString &times
     }
     view_->updateChart(series, "OTSIKKO tähän");
 }
+
+void Model::changeDatabase(const QString &current_database)
+{
+    if( current_database == "SMEAR" ){
+        view_->showSmear();
+    }
+    else if( current_database == "STATFI" ){
+        view_->showStatfi();
+    }
+    else if( current_database == "COMPARE" ){
+        view_->showCompare();
+    }
+}

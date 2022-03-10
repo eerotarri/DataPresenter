@@ -10,6 +10,7 @@
 #include <QLineSeries>
 #include "timerangedialog.hh"
 #include "valuetabledialog.hh"
+#include "yearselectdialog.hh"
 
 
 QT_BEGIN_NAMESPACE
@@ -36,11 +37,16 @@ public:
 
     void updateChart(QLineSeries* series, const QString& title);
 
+    void showStatfi();
+    void showSmear();
+    void showCompare();
+
 private slots:
     void on_quitButton_clicked();
     void on_compareButton_clicked();
     void on_setTimeRangeButton_clicked();
     void on_valueTableButton_clicked();
+    void on_database_combo_box_currentTextChanged();
 
 private:
     void setup();
@@ -65,5 +71,10 @@ private:
     QPushButton* setTimeRangeButton_;
     TimeRangeDialog* time_range_dialog_;
     ValueTableDialog* value_table_dialog_;
+    YearSelectDialog* year_select_dialog_;
+    QCheckBox* in_tonnes_check_box_;
+    QCheckBox* indexed_check_box_;
+    QCheckBox* intensity_check_box_;
+    QCheckBox* intensity_indexed_check_box_;
 };
 #endif // MAINWINDOW_HH

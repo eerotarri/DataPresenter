@@ -6,7 +6,12 @@ Controller::Controller(Model* model, QObject* parent)
 {
 }
 
-void Controller::compareButtonClicked(const QString &xText, const QString &yText)
+void Controller::compareButtonClicked()
 {
-    model_->setChartSelection(xText, yText);
+    //model_->setChartSelection(xText, yText);
+}
+
+void Controller::dadabaseComboBoxCurrentTextChanged(const QString &current_database)
+{
+    model_->changeDatabase(current_database);
 }
