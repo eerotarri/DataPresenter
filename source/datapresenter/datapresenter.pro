@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     concretestatfi.cpp \
     controller.cpp \
+    idatafetcher.cpp \
     main.cpp \
     mainwindow.cpp \
     model.cpp
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     concretestatfi.hh \
     controller.hh \
+    idatafetcher.hh \
     mainwindow.hh \
     model.hh
 
