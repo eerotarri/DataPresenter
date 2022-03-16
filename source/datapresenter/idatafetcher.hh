@@ -7,9 +7,7 @@
 class IDataFetcher
 {
 public:
-    IDataFetcher();
-
-    std::vector<std::vector<double>> fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {});
+    virtual std::vector<std::vector<double>> fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {}) = 0;
 };
 
 #endif // IDATAFETCHER_HH
