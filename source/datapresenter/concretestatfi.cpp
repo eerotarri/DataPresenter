@@ -4,16 +4,23 @@
 
 ConcreteStatfi::ConcreteStatfi(QObject *parent) : QObject(parent)
 {
+    manager_ = new QNetworkAccessManager();
 }
 
-void ConcreteStatfi::post(QString location, QByteArray data)
+std::vector<std::vector<double> > ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location)
 {
-    QNetworkRequest request = QNetworkRequest(QUrl(location));
+    Q_UNUSED(location);
+
+    QByteArray query = generateQuery(gas, timeRange);
+    post(query);
+}
+
+void ConcreteStatfi::post(QByteArray data)
+{
+    QNetworkRequest request = QNetworkRequest(QUrl(url_));
     request.setHeader(QNetworkRequest::ContentTypeHeader, 0);
-    QNetworkReply* reply = manager_.post(request, data);
+    QNetworkReply* reply = manager_->post(request, data);
     connect(reply, &QNetworkReply::readyRead, this, &ConcreteStatfi::readyRead);
-
-
 }
 
 void ConcreteStatfi::readyRead()
@@ -41,42 +48,28 @@ void ConcreteStatfi::readyRead()
     }
 
     QJsonArray jsonArray = jsonObject["values"].toArray();
-    std::vector<double> values = arrayToVector(jsonArray);
+    values_ = arrayToVector(jsonArray);
 
     return;
 }
 
-QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<int> years)
+QByteArray ConcreteStatfi::generateQuery(std::vector<std::string> data, std::vector<std::string> years)
 {
-    QByteArray query("{\n"
-    "    \"query\": [\n"
-    "        {\n"
-    "            \"code\": \"Tiedot\",\n"
-    "            \"selection\": {\n"
-    "                \"filter\": \"item\",\n"
-    "                \"values\": [\n"
-    "                    \"");
-    query.append(data);
-    query.append("\"\n"
-    "                ]\n"
-    "            }\n"
-    "        },\n"
-    "        {\n"
-    "            \"code\": \"Vuosi\",\n"
-    "            \"selection\": {\n"
-    "                \"filter\": \"item\",\n"
-    "                \"values\": [\n");
+    QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
-    for (int year : years) {
-        std::string y = std::to_string(year);
-        query.append("                    \"" + y + "\",\n");
+    // Dynamically adds datasets to query
+    for (size_t i = 0; i < data.size(); ++i) {
+        query.append("\"" + data.at(i) + "\",");
     }
-    query.append("                ]\n"
-    "            }\n"
-    "        }\n"
-    "    ]\n"
-    "}\n");
 
+    query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
+
+    // Dynamically adds timerange to query
+    for (size_t i = 0; i < data.size(); ++i) {
+        query.append("\"" + years.at(i) + "\",");
+    }
+
+    query.append("]}}]}");
 
     return query;
 }
@@ -91,3 +84,5 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
 
     return dataVector;
 }
+
+
