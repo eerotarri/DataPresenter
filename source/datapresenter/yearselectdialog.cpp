@@ -16,9 +16,9 @@ YearSelectDialog::~YearSelectDialog()
 void YearSelectDialog::on_selectButton_clicked()
 {
     // toPlainText() antaa tekstin textEditistä
-    if( is_valid_inputs() ){
+    //if( is_valid_inputs() ){
         // lähettää arvot eteenpäin
-    }
+  //  }
 }
 
 bool YearSelectDialog::is_valid_inputs(int &start_year, int &end_year)
