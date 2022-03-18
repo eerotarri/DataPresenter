@@ -1,4 +1,6 @@
 #include "model.hh"
+#include <iostream>
+
 
 namespace Data
 {
@@ -9,8 +11,31 @@ namespace Data
 Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
+    , checkedStations_(new std::set<std::string>)
+    , checkedGases_(new std::set<std::string>)
 {
 }
+
+void Model::setupView()
+{
+    // hakee kaasut databasesta smearille
+    std::vector<std::string> smearGases = {"CO2", "SO2", "NOx"};
+    QString smear = "smear";
+    view_->createGasGroupBox(smear, smearGases);
+
+    // hakee kaasut databasesta statfille
+    QString statfi = "statfi";
+    std::vector<std::string> statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
+    view_->createGasGroupBox(statfi, statfiGases);
+
+    // hakee asemat
+    std::vector<std::string> stations = {"Hyytiälä", "Kumpula", "Värriö"};
+    view_->createStationGroupBox(smear, stations);
+    view_->createStationGroupBox(statfi, stations);
+
+    view_->setup();
+}
+
 
 void Model::setChartSelection(const QString &dataSelection, const QString &timeselection)
 {
@@ -35,3 +60,32 @@ void Model::changeDatabase(const QString &current_database)
         view_->showCompare();
     }
 }
+
+void Model::updateCheckedStations(const std::string &name, int state)
+{
+    if ( state == Qt::Checked ) {
+        checkedStations_->insert(name);
+    }
+    else {
+        checkedStations_->erase(name);
+    }
+}
+
+void Model::updateCheckedGases(const std::string &name, int state)
+{
+    if ( state == Qt::Checked ) {
+        checkedGases_->insert(name);
+    }
+    else {
+        checkedGases_->erase(name);
+    }
+}
+
+void Model::updateChartView()
+{
+    // Tarkistaa vektorit ja niiden perusteella hakee dataa
+    // Kuvaajia_lkm == kaasujen määrä
+    setChartSelection("", "");
+}
+
+

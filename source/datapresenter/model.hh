@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "mainwindow.hh"
+#include <set>
 
 class Model : public QObject
 {
@@ -10,13 +11,21 @@ class Model : public QObject
 
 public:
     Model(MainWindow* view, QObject* parent = nullptr);
+    void setupView();
+
 
     void setChartSelection(const QString& dataSelection, const QString& timeselection);
     void changeDatabase(const QString& current_database);
+    void updateCheckedStations(const std::string &name, int state);
+    void updateCheckedGases(const std::string &name, int state);
+    void updateChartView();
 
 
 private:
     MainWindow* view_;
+
+    std::set<std::string> *checkedStations_;
+    std::set<std::string> *checkedGases_;
 };
 
 #endif // MODEL_HH

@@ -8,6 +8,10 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLineSeries>
+#include <QLayout>
+#include <QGroupBox>
+#include <QGraphicsEffect>
+
 #include "timerangedialog.hh"
 #include "valuetabledialog.hh"
 #include "yearselectdialog.hh"
@@ -23,6 +27,9 @@ QT_END_NAMESPACE
     using QChartView = QtCharts::QChartView;
 #endif
 
+const QString SMEAR = "smear";
+const QString STATFI = "statfi";
+
 class Controller;
 
 class MainWindow : public QMainWindow
@@ -34,7 +41,9 @@ public:
     ~MainWindow();
 
     void setController(Controller* controller);
-
+    void createGasGroupBox(QString &database, std::vector<std::string> &gases);
+    void createStationGroupBox(QString &database, std::vector<std::string> &stations);
+    void setup();
     void updateChart(QLineSeries* series, const QString& title);
 
     void showStatfi();
@@ -42,28 +51,52 @@ public:
     void showCompare();
 
 private slots:
+    void on_startButton_clicked();
     void on_quitButton_clicked();
     void on_compareButton_clicked();
     void on_setTimeRangeButton_clicked();
     void on_valueTableButton_clicked();
-    void on_database_combo_box_currentTextChanged();
+    void on_databaseComboBox_currentTextChanged();
+    void on_showDataButton_clicked();
+
+    // uutta
+    void stationCheckboxStateChanged(int state);
+    void gasCheckboxStateChanged(int state);
 
 private:
-    void setup();
-    void addConnects();
+    void createSidebar();
 
     Ui::MainWindow *ui;
     Controller* controller_;
-    QWidget* containerWidget_;
+
+    QPushButton *startButton_;
+
     QWidget* mainWidget_;
+    QHBoxLayout *mainLayout_;
+
+    QWidget *sidebarWidget_;
+    QGridLayout *sidebarLayout_;
+
+    QWidget *smearSidebarWidget_;
+    QWidget *statfiSidebarWidget_;
+
     QFrame* graphic_frame_;
     QChart* chart_;
     QChartView* chart_view_;
-    QComboBox* gas_combo_box_;
-    QComboBox* database_combo_box_;
-    QCheckBox* hyytiala_check_box_;
-    QCheckBox* kumpula_check_box_;
-    QCheckBox* varrio_check_box_;
+
+    QComboBox* databaseComboBox_;
+
+    QGroupBox *smearGasGroupBox_;
+    QGroupBox *smearStationGroupBox_;
+
+    QGroupBox *statfiGasGroupBox_;
+    QGroupBox *statfiStationGroupBox_;
+
+    QGroupBox *gasGroupBox_;
+    QGroupBox *stationGroupBox_;
+
+    QPushButton *showDataButton_;
+
     QPushButton* valueTableButton_;
     QPushButton* statisticsButton_;
     QPushButton* compareButton_;
@@ -72,9 +105,8 @@ private:
     TimeRangeDialog* time_range_dialog_;
     ValueTableDialog* value_table_dialog_;
     YearSelectDialog* year_select_dialog_;
-    QCheckBox* in_tonnes_check_box_;
-    QCheckBox* indexed_check_box_;
-    QCheckBox* intensity_check_box_;
-    QCheckBox* intensity_indexed_check_box_;
+
+    QGraphicsBlurEffect *blurEffect_;
+
 };
 #endif // MAINWINDOW_HH

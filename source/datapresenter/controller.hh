@@ -11,9 +11,14 @@ class Controller : public QObject
 public:
     Controller(Model* model, QObject* parent = nullptr);
 
+
 public slots:
+    void startButtonClicked();
     void compareButtonClicked();
     void dadabaseComboBoxCurrentTextChanged(const QString& current_database);
+    void stationCheckBoxStateChanged(const std::string& name, int state);
+    void gasCheckBoxStateChanged(const std::string& name, int state);
+    void showDatabuttonClicked();
 
 private:
     Model* model_;

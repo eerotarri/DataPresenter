@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
+    <width>636</width>
     <height>319</height>
    </rect>
   </property>
@@ -48,9 +48,9 @@
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="selectButton">
        <property name="text">
-        <string>Show data</string>
+        <string>Select dates</string>
        </property>
       </widget>
      </item>

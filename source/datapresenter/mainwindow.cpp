@@ -19,16 +19,31 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , controller_{nullptr}
-    , containerWidget_(new QWidget(this))
+
+    , startButton_(new QPushButton("Start"))
+
     , mainWidget_(new QWidget)
+    , mainLayout_(new QHBoxLayout)
+
+    , sidebarWidget_(new QWidget)
+    , sidebarLayout_(new QGridLayout)
+
     , graphic_frame_(new QFrame)
     , chart_(new QChart)
     , chart_view_(new QChartView)
-    , gas_combo_box_(new QComboBox)
-    , database_combo_box_(new QComboBox)
-    , hyytiala_check_box_(new QCheckBox)
-    , kumpula_check_box_(new QCheckBox)
-    , varrio_check_box_(new QCheckBox)
+
+    , databaseComboBox_(new QComboBox)
+
+    , smearGasGroupBox_(new QGroupBox)
+    , smearStationGroupBox_(new QGroupBox)
+
+    , statfiGasGroupBox_(new QGroupBox)
+    , statfiStationGroupBox_(new QGroupBox)
+
+    , gasGroupBox_()
+    , stationGroupBox_()
+
+    , showDataButton_(new QPushButton("Show data"))
     , valueTableButton_(new QPushButton("average"))
     , statisticsButton_(new QPushButton("statistics"))
     , compareButton_(new QPushButton("compare"))
@@ -37,20 +52,38 @@ MainWindow::MainWindow(QWidget *parent)
     , time_range_dialog_(new TimeRangeDialog(this))
     , value_table_dialog_(new ValueTableDialog(this))
     , year_select_dialog_(new YearSelectDialog(this))
-    , in_tonnes_check_box_(new QCheckBox)
-    , indexed_check_box_(new QCheckBox)
-    , intensity_check_box_(new QCheckBox)
-    , intensity_indexed_check_box_(new QCheckBox)
+
+    , blurEffect_(new QGraphicsBlurEffect)
+
 {
     ui->setupUi(this);
+
+    connect(startButton_, SIGNAL(clicked()), this, SLOT(on_startButton_clicked()));
+    connect(quitButton_, SIGNAL(clicked()), this, SLOT(on_quitButton_clicked()));
+    connect(compareButton_, SIGNAL(clicked()), this, SLOT(on_compareButton_clicked()));
+    connect(setTimeRangeButton_, SIGNAL(clicked()), this, SLOT(on_setTimeRangeButton_clicked()));
+    connect(valueTableButton_, SIGNAL(clicked()), this, SLOT(on_valueTableButton_clicked()));
+    connect(databaseComboBox_, SIGNAL(currentTextChanged(QString)), this, SLOT(on_databaseComboBox_currentTextChanged()));
+    connect(showDataButton_, SIGNAL(clicked()), this, SLOT(on_showDataButton_clicked()));
+
+    QWidget *startWidget = new QWidget;
+    QHBoxLayout *startLayout = new QHBoxLayout;
+
+    this->setWindowTitle("Sovelluksen NIMI tähän");
 
     chart_view_->setChart(chart_);
     chart_view_->setRenderHint(QPainter::Antialiasing);
     chart_view_->setParent(graphic_frame_);  // add chart view to UI
     chart_view_->resize(graphic_frame_->size());
+    chart_->setGraphicsEffect(blurEffect_);
 
-    setup();
-    addConnects();
+    startWidget->setLayout(startLayout);
+    startLayout->addWidget(startButton_);
+    startButton_->setMaximumWidth(150);
+    startButton_->setMaximumHeight(50);
+
+    setCentralWidget(startWidget);
+
 }
 
 MainWindow::~MainWindow()
@@ -65,6 +98,91 @@ void MainWindow::setController(Controller *controller)
 
 }
 
+void MainWindow::createGasGroupBox(QString &database, std::vector<std::string> &gases)
+{
+    QGroupBox *gasGroupBox;
+
+    if( database == STATFI )
+    {
+        gasGroupBox = statfiGasGroupBox_;
+    }
+    else if ( database == SMEAR )
+    {
+        gasGroupBox = smearGasGroupBox_;
+    }
+    else
+    {
+        // compare ???
+    }
+
+    QVBoxLayout *groupBoxLayout = new QVBoxLayout;
+    gasGroupBox->setLayout(groupBoxLayout);
+    gasGroupBox->setTitle("Gases");
+
+    for( std::string gas : gases )
+    {
+        QString gasName = QString::fromUtf8(gas.c_str());
+
+        QCheckBox *gasCheckBox = new QCheckBox;
+        gasCheckBox->setText(gasName);
+
+        connect(gasCheckBox, SIGNAL(stateChanged(int)), this, SLOT(gasCheckBoxStateChanged(gasName)));
+
+        groupBoxLayout->addWidget(gasCheckBox);
+    }
+}
+
+void MainWindow::createStationGroupBox(QString &database, std::vector<std::string> &stations)
+{
+    QGroupBox *stationGroupBox;
+
+    if( database == STATFI )
+    {
+        stationGroupBox = statfiStationGroupBox_;
+    }
+    else if ( database == SMEAR )
+    {
+        stationGroupBox = smearStationGroupBox_;
+    }
+    else
+    {
+        // compare ???
+    }
+
+    QVBoxLayout *groupBoxLayout = new QVBoxLayout;
+    stationGroupBox->setLayout(groupBoxLayout);
+    stationGroupBox->setTitle("Stations");
+
+    for( std::string station : stations )
+    {
+        QString gasName = QString::fromUtf8(station.c_str());
+
+        QCheckBox *stationCheckBox = new QCheckBox;
+        stationCheckBox->setText(gasName);
+
+        connect(stationCheckBox, SIGNAL(stateChanged(int)), this, SLOT(stationCheckboxStateChanged(int)));
+
+        groupBoxLayout->addWidget(stationCheckBox);
+    }
+}
+
+void MainWindow::setup()
+{
+    std::cout << "setup view" << std::endl;
+
+    //QHBoxLayout* mainLayout = new QHBoxLayout;
+
+    setCentralWidget(mainWidget_);
+    mainWidget_->setLayout(mainLayout_);
+
+    createSidebar();
+
+
+    mainLayout_->addWidget(sidebarWidget_);
+    mainLayout_->addWidget(chart_view_);
+
+}
+
 void MainWindow::updateChart(QLineSeries *series, const QString &title)
 {
     chart_->removeAllSeries();
@@ -76,42 +194,36 @@ void MainWindow::updateChart(QLineSeries *series, const QString &title)
 
 void MainWindow::showStatfi()
 {
-    gas_combo_box_->setCurrentText("CO2");
-    gas_combo_box_->setEnabled(false);
+    std::cout << "statfi" << std::endl;
 
-    // unlock CO2 checkboxes
-    in_tonnes_check_box_->setEnabled(true);
-    indexed_check_box_->setEnabled(true);
-    intensity_check_box_->setEnabled(true);
-    intensity_indexed_check_box_->setEnabled(true);
+    smearGasGroupBox_->setVisible(false);
+    smearStationGroupBox_->setVisible(false);
+
+    statfiGasGroupBox_->setVisible(true);
+    statfiStationGroupBox_->setVisible(true);
+
 }
 
 void MainWindow::showSmear()
 {
-    gas_combo_box_->setEnabled(true);
+    std::cout << "smear" << std::endl;
 
-    // clear CO2 checkboxes
-    in_tonnes_check_box_->setChecked(false);
-    indexed_check_box_->setChecked(false);
-    intensity_check_box_->setChecked(false);
-    intensity_indexed_check_box_->setChecked(false);
+    statfiGasGroupBox_->setVisible(false);
+    statfiStationGroupBox_->setVisible(false);
 
-    // lock CO2 checkboxes
-    in_tonnes_check_box_->setEnabled(false);
-    indexed_check_box_->setEnabled(false);
-    intensity_check_box_->setEnabled(false);
-    intensity_indexed_check_box_->setEnabled(false);
+    smearGasGroupBox_->setVisible(true);
+    smearStationGroupBox_->setVisible(true);
+
 }
 
 void MainWindow::showCompare()
 {
-    gas_combo_box_->setCurrentText("CO2");
-    gas_combo_box_->setEnabled(false);
 
-    in_tonnes_check_box_->setEnabled(true);
-    indexed_check_box_->setEnabled(true);
-    intensity_check_box_->setEnabled(true);
-    intensity_indexed_check_box_->setEnabled(true);
+}
+
+void MainWindow::on_startButton_clicked()
+{
+    controller_->startButtonClicked();
 }
 
 void MainWindow::on_quitButton_clicked()
@@ -121,9 +233,7 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_compareButton_clicked()
 {
-    // Täl hetkel ku painaa compare napist saa dataa näkyviin
-    //controller_->compareButtonClicked("x", "y");
-
+    // Täl hetkel ku painaa compare napist saa yearselect ikkuna näkyviin
     year_select_dialog_->show();
 }
 
@@ -137,80 +247,57 @@ void MainWindow::on_valueTableButton_clicked()
     value_table_dialog_->show();
 }
 
-void MainWindow::on_database_combo_box_currentTextChanged()
+void MainWindow::on_databaseComboBox_currentTextChanged()
 {
-    std::cout << "database changed" << std::endl;
-    controller_->dadabaseComboBoxCurrentTextChanged(database_combo_box_->currentText());
+    blurEffect_->setBlurRadius(3);
+    controller_->dadabaseComboBoxCurrentTextChanged(databaseComboBox_->currentText());
 }
 
-void MainWindow::setup()
+void MainWindow::on_showDataButton_clicked()
 {
-    std::cout << "setup" << std::endl;
-
-    this->setWindowTitle("Sovelluksen NIMI tähän");
-    QGridLayout* mainLayout = new QGridLayout;
-
-    mainWidget_->setLayout(mainLayout);
-    setCentralWidget(mainWidget_);
-
-    mainLayout->addWidget(chart_view_, 5, 1, 10, 20);
-
-    mainLayout->addWidget(quitButton_, 30, 18, 1, 2);
-    mainLayout->addWidget(compareButton_, 30, 2, 1, 2);
-    mainLayout->addWidget(statisticsButton_, 30, 5, 1, 2);
-    mainLayout->addWidget(valueTableButton_, 30, 8, 1, 2);
-
-    gas_combo_box_->addItem("CO2");
-    gas_combo_box_->addItem("SO2");
-    gas_combo_box_->addItem("NOx");
-
-    mainLayout->addWidget(gas_combo_box_, 3, 2, 1, 2);
-
-    database_combo_box_->addItem("SMEAR");
-    database_combo_box_->addItem("COMPARE");
-    database_combo_box_->addItem("STATFI");
-
-    mainLayout->addWidget(database_combo_box_, 3, 15, 1, 5);
-
-    mainLayout->addWidget(hyytiala_check_box_, 24, 2, 1, 1);
-    mainLayout->addWidget(kumpula_check_box_, 24, 5, 1, 1);
-    mainLayout->addWidget(varrio_check_box_, 24, 8, 1, 1);
-
-    QLabel* hyytiala_label = new QLabel("Hyytiälä");
-    QLabel* kumpula_label = new QLabel("Kumpula");
-    QLabel* varrio_label = new QLabel("Värriö");
-
-    mainLayout->addWidget(hyytiala_label, 24, 3, 1, 1);
-    mainLayout->addWidget(kumpula_label, 24, 6, 1, 1);
-    mainLayout->addWidget(varrio_label, 24, 9, 1, 1);
-
-    mainLayout->addWidget(setTimeRangeButton_, 24, 15, 5, 5);
-
-    // ???? Onko nää tarpeellisia ????
-    mainLayout->addWidget(in_tonnes_check_box_, 4, 2, 1, 1);
-    mainLayout->addWidget(indexed_check_box_, 4, 5, 1, 1);
-    mainLayout->addWidget(intensity_check_box_, 4, 8, 1, 1);
-    mainLayout->addWidget(intensity_indexed_check_box_, 4, 11, 1, 1);
-
-    QLabel* in_tonnes_label = new QLabel("in tonnes");
-    QLabel* indexed_label = new QLabel("indexed");
-    QLabel* intensity_label = new QLabel("intensity");
-    QLabel* intensity_indexed_label = new QLabel("intensity indexed");
-
-    mainLayout->addWidget(in_tonnes_label, 4, 3, 1, 1);
-    mainLayout->addWidget(indexed_label, 4, 6, 1, 1);
-    mainLayout->addWidget(intensity_label, 4, 9, 1, 1);
-    mainLayout->addWidget(intensity_indexed_label, 4, 12, 1, 1);
-
-    showSmear();
+    blurEffect_->setBlurRadius(0);
+    controller_->showDatabuttonClicked();
 }
 
-void MainWindow::addConnects()
+void MainWindow::stationCheckboxStateChanged(int state)
 {
-    QObject::connect(quitButton_, SIGNAL(clicked()), this, SLOT(on_quitButton_clicked()));
-    QObject::connect(compareButton_, SIGNAL(clicked()), this, SLOT(on_compareButton_clicked()));
-    QObject::connect(setTimeRangeButton_, SIGNAL(clicked()), this, SLOT(on_setTimeRangeButton_clicked()));
-    QObject::connect(valueTableButton_, SIGNAL(clicked()), this, SLOT(on_valueTableButton_clicked()));
-    QObject::connect(database_combo_box_, SIGNAL(currentTextChanged(QString)), this, SLOT(on_database_combo_box_currentTextChanged()));
+    QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
+    controller_->stationCheckBoxStateChanged(checkbox->text().toStdString(), state);
 }
 
+void MainWindow::gasCheckboxStateChanged(int state)
+{
+    QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
+    controller_->gasCheckBoxStateChanged(checkbox->text().toStdString(), state);
+}
+
+void MainWindow::createSidebar()
+{
+    sidebarWidget_->setLayout(sidebarLayout_);
+    sidebarWidget_->setMaximumWidth(300);
+
+    databaseComboBox_->addItem("SMEAR");
+    databaseComboBox_->addItem("STATFI");
+    databaseComboBox_->addItem("COMPARE");
+
+    sidebarLayout_->addWidget(databaseComboBox_, 1, 1);
+
+    sidebarLayout_->addWidget(smearGasGroupBox_, 2, 1);
+    sidebarLayout_->addWidget(smearStationGroupBox_, 3, 1);
+
+    sidebarLayout_->addWidget(statfiGasGroupBox_, 2, 1);
+    sidebarLayout_->addWidget(statfiStationGroupBox_, 3, 1);
+
+    // compareButton pitäisi olla yearselectbutton
+    // yearselect pitäisi näkyä vain statfissa
+    // timerange pitäisi näkyä vain smearissa
+    // comparedialogia ei ole toteutettu
+    sidebarLayout_->addWidget(compareButton_, 5, 1);
+    sidebarLayout_->addWidget(setTimeRangeButton_, 4, 1);
+
+    sidebarLayout_->addWidget(showDataButton_, 6, 1);
+
+    // näidenkin paikka muuttuu vielä
+    sidebarLayout_->addWidget(valueTableButton_, 7, 1);
+    sidebarLayout_->addWidget(quitButton_, 8, 1);
+}
