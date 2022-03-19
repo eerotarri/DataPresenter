@@ -13,6 +13,8 @@ std::vector<std::vector<double> > ConcreteStatfi::fetchData(std::vector<std::str
 
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
+
+    return {};
 }
 
 void ConcreteStatfi::post(QByteArray data)
@@ -21,10 +23,12 @@ void ConcreteStatfi::post(QByteArray data)
     request.setHeader(QNetworkRequest::ContentTypeHeader, 0);
     QNetworkReply* reply = manager_->post(request, data);
     connect(reply, &QNetworkReply::readyRead, this, &ConcreteStatfi::readyRead);
+
 }
 
 void ConcreteStatfi::readyRead()
 {
+
     // Haetaan raaka vastaus
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
@@ -34,6 +38,8 @@ void ConcreteStatfi::readyRead()
     }
 
     QJsonDocument jsonResponse(QJsonDocument::fromJson(reply->readAll()));
+
+
 
     if (jsonResponse.isNull() || !jsonResponse.isObject()) {
         qDebug() << "STATFI: Fetched data did not exist or it was not convertible to object.";
@@ -47,8 +53,9 @@ void ConcreteStatfi::readyRead()
         return;
     }
 
-    QJsonArray jsonArray = jsonObject["values"].toArray();
-    values_ = arrayToVector(jsonArray);
+    auto values = arrayToVector(jsonObject["value"].toArray());
+
+    qDebug() << values;
 
     return;
 }
@@ -70,7 +77,6 @@ QByteArray ConcreteStatfi::generateQuery(std::vector<std::string> data, std::vec
     }
 
     query.append("]}}]}");
-
     return query;
 }
 
