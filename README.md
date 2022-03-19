@@ -11,6 +11,7 @@ MAIN branch does not have any functionality yet.
 MVC-branch:
 
 STATFI-branch:
+Running the code opens the empty UI window and prints data fetched from STATFI as a debug message. The test parameters are defined in main.cpp.
 
 SMEAR-branch:
 Running the code opens the empty UI window and prints data fetched from SMEAR as a debug message. The test parameters are defined in main.cpp.
