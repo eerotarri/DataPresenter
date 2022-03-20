@@ -111,13 +111,16 @@ void ConcreteSmear::processReply()
     // TO DO
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
+    QString replyText = reply->readAll();
+    qDebug() << replyText;
+
     if(reply->error() != QNetworkReply::NoError)
     {
         qDebug() << "didn't get value" ;
         return;
     }
 
-    QJsonDocument jsonResponse(QJsonDocument::fromJson(reply->readAll()));
+    QJsonDocument jsonResponse(QJsonDocument::fromJson(replyText.toUtf8()));
 
     if(jsonResponse.isNull() || !jsonResponse.isObject())
     {
