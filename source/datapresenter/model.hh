@@ -13,15 +13,16 @@ public:
     Model(MainWindow* view, QObject* parent = nullptr);
     void setupView();
 
-
-    void setChartSelection(const QString& dataSelection, const QString& timeselection);
-    void changeDatabase(const QString& current_database);
-    void updateCheckedStations(const std::string &name, int state);
-    void updateCheckedGases(const std::string &name, int state);
+    void changeDatabase(const QString current_database);
+    void updateCheckedStations(const std::string name, int state);
+    void updateCheckedGases(const std::string name, int state);
     void updateChartView();
+    void createChart(const QString gasSelection, const QString stationSelection, const QString timeSelection);
 
 
 private:
+    QLineSeries* setChartSelection(const QString dataSelection, const QString timeselection);
+
     MainWindow* view_;
 
     std::set<std::string> *checkedStations_;

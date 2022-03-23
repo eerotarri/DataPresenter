@@ -29,8 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
     , sidebarLayout_(new QGridLayout)
 
     , graphic_frame_(new QFrame)
-    , chart_(new QChart)
+    //, chart_(new QChart)
     , chart_view_(new QChartView)
+
+    , chartLayout_(new QGridLayout)
 
     , databaseComboBox_(new QComboBox)
 
@@ -40,12 +42,14 @@ MainWindow::MainWindow(QWidget *parent)
     , statfiGasGroupBox_(new QGroupBox)
     , statfiStationGroupBox_(new QGroupBox)
 
+    , compareGasGroupBox_(new QGroupBox)
+    , compareStationGroupBox_(new QGroupBox)
+
     , gasGroupBox_()
     , stationGroupBox_()
 
     , showDataButton_(new QPushButton("Show data"))
     , valueTableButton_(new QPushButton("average"))
-    , statisticsButton_(new QPushButton("statistics"))
     , compareButton_(new QPushButton("compare"))
     , quitButton_(new QPushButton("quit"))
     , setTimeRangeButton_(new QPushButton("set time range"))
@@ -71,11 +75,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setWindowTitle("Sovelluksen NIMI tähän");
 
-    chart_view_->setChart(chart_);
-    chart_view_->setRenderHint(QPainter::Antialiasing);
+    //chart_view_->setChart(chart_);
+    /*chart_view_->setRenderHint(QPainter::Antialiasing);
     chart_view_->setParent(graphic_frame_);  // add chart view to UI
     chart_view_->resize(graphic_frame_->size());
-    chart_->setGraphicsEffect(blurEffect_);
+    chart_->setGraphicsEffect(blurEffect_);*/
 
     startWidget->setLayout(startLayout);
     startLayout->addWidget(startButton_);
@@ -83,7 +87,6 @@ MainWindow::MainWindow(QWidget *parent)
     startButton_->setMaximumHeight(50);
 
     setCentralWidget(startWidget);
-
 }
 
 MainWindow::~MainWindow()
@@ -112,7 +115,7 @@ void MainWindow::createGasGroupBox(QString &database, std::vector<std::string> &
     }
     else
     {
-        // compare ???
+        gasGroupBox = compareGasGroupBox_;
     }
 
     QVBoxLayout *groupBoxLayout = new QVBoxLayout;
@@ -146,7 +149,7 @@ void MainWindow::createStationGroupBox(QString &database, std::vector<std::strin
     }
     else
     {
-        // compare ???
+        stationGroupBox = compareStationGroupBox_;
     }
 
     QVBoxLayout *groupBoxLayout = new QVBoxLayout;
@@ -168,57 +171,74 @@ void MainWindow::createStationGroupBox(QString &database, std::vector<std::strin
 
 void MainWindow::setup()
 {
-    std::cout << "setup view" << std::endl;
-
-    //QHBoxLayout* mainLayout = new QHBoxLayout;
+    QGridLayout* rightLayout = new QGridLayout;
+    QWidget* rightWidget = new QWidget;
+    rightWidget->setLayout(rightLayout);
 
     setCentralWidget(mainWidget_);
     mainWidget_->setLayout(mainLayout_);
 
     createSidebar();
 
-
     mainLayout_->addWidget(sidebarWidget_);
-    mainLayout_->addWidget(chart_view_);
+    mainLayout_->addLayout(chartLayout_);
+    mainLayout_->addWidget(rightWidget);
 
+    rightLayout->addWidget(valueTableButton_, 1, 1);
+    rightLayout->addWidget(quitButton_, 2, 1);
+
+    chartLayout_->setColumnMinimumWidth(1, 500);
 }
 
-void MainWindow::updateChart(QLineSeries *series, const QString &title)
+void MainWindow::updateChart(QChart *chart)
 {
-    chart_->removeAllSeries();
+    QChartView *chart_view = new QChartView;
+
+    chartLayout_->addWidget(chart_view);
+    chart_view->setChart(chart);
+
+    //chart_view_->setChart(chart);
+    /*chart_->removeAllSeries();
     chart_->addSeries(series);
-    chart_->setTitle(title);
-    chart_->createDefaultAxes();
-    chart_->legend()->setVisible(false);
+    chart_->setTitle(title);*/
+    chart->createDefaultAxes();
+    chart->legend()->setVisible(false);
 }
 
 void MainWindow::showStatfi()
 {
-    std::cout << "statfi" << std::endl;
+    compareGasGroupBox_->setVisible(false);
+    compareStationGroupBox_->setVisible(false);
 
     smearGasGroupBox_->setVisible(false);
     smearStationGroupBox_->setVisible(false);
 
     statfiGasGroupBox_->setVisible(true);
     statfiStationGroupBox_->setVisible(true);
-
 }
 
 void MainWindow::showSmear()
 {
-    std::cout << "smear" << std::endl;
+    compareGasGroupBox_->setVisible(false);
+    compareStationGroupBox_->setVisible(false);
 
     statfiGasGroupBox_->setVisible(false);
     statfiStationGroupBox_->setVisible(false);
 
     smearGasGroupBox_->setVisible(true);
     smearStationGroupBox_->setVisible(true);
-
 }
 
 void MainWindow::showCompare()
 {
+    statfiGasGroupBox_->setVisible(false);
+    statfiStationGroupBox_->setVisible(false);
 
+    smearGasGroupBox_->setVisible(false);
+    smearStationGroupBox_->setVisible(false);
+
+    compareGasGroupBox_->setVisible(true);
+    compareStationGroupBox_->setVisible(true);
 }
 
 void MainWindow::on_startButton_clicked()
@@ -288,6 +308,9 @@ void MainWindow::createSidebar()
     sidebarLayout_->addWidget(statfiGasGroupBox_, 2, 1);
     sidebarLayout_->addWidget(statfiStationGroupBox_, 3, 1);
 
+    sidebarLayout_->addWidget(compareGasGroupBox_, 2, 1);
+    sidebarLayout_->addWidget(compareStationGroupBox_, 3, 1);
+
     // compareButton pitäisi olla yearselectbutton
     // yearselect pitäisi näkyä vain statfissa
     // timerange pitäisi näkyä vain smearissa
@@ -296,8 +319,4 @@ void MainWindow::createSidebar()
     sidebarLayout_->addWidget(setTimeRangeButton_, 4, 1);
 
     sidebarLayout_->addWidget(showDataButton_, 6, 1);
-
-    // näidenkin paikka muuttuu vielä
-    sidebarLayout_->addWidget(valueTableButton_, 7, 1);
-    sidebarLayout_->addWidget(quitButton_, 8, 1);
 }

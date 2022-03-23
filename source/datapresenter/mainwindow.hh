@@ -44,7 +44,7 @@ public:
     void createGasGroupBox(QString &database, std::vector<std::string> &gases);
     void createStationGroupBox(QString &database, std::vector<std::string> &stations);
     void setup();
-    void updateChart(QLineSeries* series, const QString& title);
+    void updateChart(QChart *chart);
 
     void showStatfi();
     void showSmear();
@@ -81,8 +81,10 @@ private:
     QWidget *statfiSidebarWidget_;
 
     QFrame* graphic_frame_;
-    QChart* chart_;
+    //QChart* chart_;
     QChartView* chart_view_;
+
+    QGridLayout *chartLayout_;
 
     QComboBox* databaseComboBox_;
 
@@ -92,13 +94,15 @@ private:
     QGroupBox *statfiGasGroupBox_;
     QGroupBox *statfiStationGroupBox_;
 
+    QGroupBox *compareGasGroupBox_;
+    QGroupBox *compareStationGroupBox_;
+
     QGroupBox *gasGroupBox_;
     QGroupBox *stationGroupBox_;
 
     QPushButton *showDataButton_;
 
     QPushButton* valueTableButton_;
-    QPushButton* statisticsButton_;
     QPushButton* compareButton_;
     QPushButton* quitButton_;
     QPushButton* setTimeRangeButton_;
