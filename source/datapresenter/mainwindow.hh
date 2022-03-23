@@ -72,7 +72,7 @@ private:
     QPushButton *startButton_;
 
     QWidget* mainWidget_;
-    QHBoxLayout *mainLayout_;
+    QGridLayout *mainLayout_;
 
     QWidget *sidebarWidget_;
     QGridLayout *sidebarLayout_;
@@ -85,6 +85,9 @@ private:
     QChartView* chart_view_;
 
     QGridLayout *chartLayout_;
+
+    QScrollArea *scrollArea_;
+    QWidget *chartAreaWidget_;
 
     QComboBox* databaseComboBox_;
 

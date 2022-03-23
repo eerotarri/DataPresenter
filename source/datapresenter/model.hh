@@ -25,8 +25,8 @@ private:
 
     MainWindow* view_;
 
-    std::set<std::string> *checkedStations_;
-    std::set<std::string> *checkedGases_;
+    std::set<std::string> checkedStations_;
+    std::set<std::string> checkedGases_;
 };
 
 #endif // MODEL_HH

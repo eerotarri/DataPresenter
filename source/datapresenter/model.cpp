@@ -6,15 +6,13 @@ namespace Data
 {
     static const std::vector<int> x = {1, 2, 3, 4, 5};
     static const std::vector<int> y = {1, 2, 1, 2, 1};
-    static const std::vector<int> x1 = {1, 2, 3, 4, 5};
-    static const std::vector<int> y1 = {2, 3, 2, 3, 2};
 }
 
 Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
-    , checkedStations_(new std::set<std::string>)
-    , checkedGases_(new std::set<std::string>)
+    /*, checkedStations_
+    , checkedGases_*/
 {
 }
 
@@ -60,20 +58,20 @@ void Model::changeDatabase(const QString current_database)
 void Model::updateCheckedStations(const std::string name, int state)
 {
     if ( state == Qt::Checked ) {
-        checkedStations_->insert(name);
+        checkedStations_.insert(name);
     }
     else {
-        checkedStations_->erase(name);
+        checkedStations_.erase(name);
     }
 }
 
 void Model::updateCheckedGases(const std::string name, int state)
 {
     if ( state == Qt::Checked ) {
-        checkedGases_->insert(name);
+        checkedGases_.insert(name);
     }
     else {
-        checkedGases_->erase(name);
+        checkedGases_.erase(name);
     }
 }
 
@@ -81,7 +79,6 @@ void Model::updateChartView()
 {
     // Tarkistaa vektorit ja niiden perusteella hakee dataa
     // Kuvaajia_lkm == kaasujen määrä
-    //setChartSelection("", "");
 
     createChart("", "", "");
 }
@@ -91,7 +88,10 @@ void Model::createChart(const QString gasSelection, const QString stationSelecti
     QLineSeries *series = setChartSelection(gasSelection, timeSelection);
 
     QChart *chart = new QChart();
+
+    // samaan chartiin lisätään samat kaasut
     chart->addSeries(series);
+    chart->setTitle("OTSIKKO");
 
     view_->updateChart(chart);
 }

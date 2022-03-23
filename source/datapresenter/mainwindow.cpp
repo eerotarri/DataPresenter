@@ -8,6 +8,7 @@
 #include <QLineSeries>
 #include <QGridLayout>
 #include <QLabel>
+#include <QScrollBar>
 
 
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     , startButton_(new QPushButton("Start"))
 
     , mainWidget_(new QWidget)
-    , mainLayout_(new QHBoxLayout)
+    , mainLayout_(new QGridLayout)
 
     , sidebarWidget_(new QWidget)
     , sidebarLayout_(new QGridLayout)
@@ -33,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent)
     , chart_view_(new QChartView)
 
     , chartLayout_(new QGridLayout)
+
+    , scrollArea_(new QScrollArea)
+    , chartAreaWidget_(new QWidget)
 
     , databaseComboBox_(new QComboBox)
 
@@ -180,14 +184,18 @@ void MainWindow::setup()
 
     createSidebar();
 
-    mainLayout_->addWidget(sidebarWidget_);
-    mainLayout_->addLayout(chartLayout_);
-    mainLayout_->addWidget(rightWidget);
+    mainLayout_->addWidget(sidebarWidget_, 1, 1);
+    mainLayout_->addWidget(scrollArea_, 1, 2);
+    mainLayout_->addWidget(rightWidget, 1, 3);
 
     rightLayout->addWidget(valueTableButton_, 1, 1);
     rightLayout->addWidget(quitButton_, 2, 1);
 
-    chartLayout_->setColumnMinimumWidth(1, 500);
+    mainLayout_->setColumnMinimumWidth(2, 500);
+
+    chartAreaWidget_->setLayout(chartLayout_);
+
+    //chartLayout_->setRowMinimumHeight(1, 1000);
 }
 
 void MainWindow::updateChart(QChart *chart)
@@ -195,7 +203,14 @@ void MainWindow::updateChart(QChart *chart)
     QChartView *chart_view = new QChartView;
 
     chartLayout_->addWidget(chart_view);
+
     chart_view->setChart(chart);
+
+    // Kuvan minimikorkeus
+    chart_view->setMinimumHeight(500);
+
+    scrollArea_->setWidget(chartAreaWidget_);
+    scrollArea_->setWidgetResizable(true);
 
     //chart_view_->setChart(chart);
     /*chart_->removeAllSeries();

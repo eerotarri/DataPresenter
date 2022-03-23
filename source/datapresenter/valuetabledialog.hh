@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QLayout>
+#include <QTableWidget>
 
 namespace Ui {
 class ValueTableDialog;
