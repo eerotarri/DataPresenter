@@ -3,6 +3,8 @@
 
 #include "idatafetcher.hh"
 
+#include "model.hh"
+
 #include <vector>
 #include <string>
 #include <QObject>
@@ -14,13 +16,18 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 
+class Model;
 class ConcreteStatfi : public QObject, public IDataFetcher
 {
     Q_OBJECT
 public:
-    explicit ConcreteStatfi(QObject *parent = nullptr);
+    explicit ConcreteStatfi(Model* model, QObject *parent = nullptr);
 
-    virtual std::vector<std::vector<double>> fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location = {});
+    virtual void fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location = {});
+    std::vector<std::vector<double>> getCurrentData();
+    virtual std::vector<double> getSupportedTimeFrame();
+    virtual std::vector<std::string> getSupportedStations();
+    virtual std::vector<std::string> getSupportedGases();
 
 private slots:
     void post(QByteArray data);
@@ -28,10 +35,12 @@ private slots:
 
 private:
     const QUrl url_ = QUrl("https://pxnet2.stat.fi/PXWeb/api/v1/en/ymp/taulukot/Kokodata.px");
-    const std::pair<int, int> supportedTimeFrame = {1975, 2017};
+    const std::vector<double> supportedTimeFrame_ = {1975, 2017};
+    const std::vector<std::string> supportedGases_ = {};
 
     QNetworkAccessManager* manager_;
-    std::vector<double> values_;
+    Model* model_;
+    std::vector<std::vector<double> > currentData_ = {};
 
 
     /*!

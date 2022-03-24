@@ -2,19 +2,38 @@
 
 #include <QDebug>
 
-ConcreteStatfi::ConcreteStatfi(QObject *parent) : QObject(parent)
+ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
+  , model_(model)
 {
     manager_ = new QNetworkAccessManager();
 }
 
-std::vector<std::vector<double> > ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location)
+void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location)
 {
     Q_UNUSED(location);
 
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
+}
 
+std::vector<std::vector<double> > ConcreteStatfi::getCurrentData()
+{
+    return currentData_;
+}
+
+std::vector<double> ConcreteStatfi::getSupportedTimeFrame()
+{
+    return supportedTimeFrame_;
+}
+
+std::vector<std::string> ConcreteStatfi::getSupportedStations()
+{
     return {};
+}
+
+std::vector<std::string> ConcreteStatfi::getSupportedGases()
+{
+    return supportedGases_;
 }
 
 void ConcreteStatfi::post(QByteArray data)
@@ -56,6 +75,8 @@ void ConcreteStatfi::readyRead()
     auto values = arrayToVector(jsonObject["value"].toArray());
 
     qDebug() << values;
+    currentData_.push_back(values);
+    model_->getData(this);
 
     return;
 }
