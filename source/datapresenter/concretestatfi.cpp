@@ -14,8 +14,12 @@ std::vector<std::vector<double> > ConcreteStatfi::fetchData(std::vector<std::str
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
 
+    // EERO MUOKKAA TÄMÄ TOIMIVAKSI :)
+    // TÄÄLLÄ PITÄÄ PALAUTTAA VECTOR<VECTOR<DOUBLE>>
+    // MVC TOIMII
+
     // testi dataa
-    const std::vector<double> x = {1, 2, 3, 4, 5};
+    const std::vector<double> x = {1, 4, 3, 2, 5};
     const std::vector<double> y = {1, 2, 1, 2, 1};
 
     // palauttaa testi dataa

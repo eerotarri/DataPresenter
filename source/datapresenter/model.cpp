@@ -1,5 +1,6 @@
 #include "model.hh"
 #include <iostream>
+#include <QBarSet>
 
 
 namespace Data
@@ -21,24 +22,25 @@ void Model::setupView()
 {
     // hakee kaasut databasesta smearille
     std::vector<std::string> smearGases = {"CO2", "SO2", "NOx"};
-    QString smear = "smear";
-    view_->createGasGroupBox(smear, smearGases);
+    //QString smear = "smear";
+    view_->createGasGroupBox(SMEAR, smearGases);
 
     // hakee kaasut databasesta statfille
-    QString statfi = "statfi";
-    std::vector<std::string> statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
-    view_->createGasGroupBox(statfi, statfiGases);
+    //QString statfi = "statfi";
+    //std::vector<std::string> statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
+    std::vector<std::string> statfiGases = {"Khk_yht", "Khk_yht_index", "Khk_yht_las", "Khk_yht_las_index"};
+    view_->createGasGroupBox(STATFI, statfiGases);
 
     // hakee molempien
-    QString compare = "compare";
+    //QString compare = "compare";
     std::vector<std::string> compareGases = {"CO2", "SO2", "NOx", "CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
-    view_->createGasGroupBox(compare, compareGases);
+    view_->createGasGroupBox(COMPARE, compareGases);
 
     // hakee asemat
     std::vector<std::string> stations = {"Hyytiälä", "Kumpula", "Värriö"};
-    view_->createStationGroupBox(smear, stations);
-    view_->createStationGroupBox(statfi, stations);
-    view_->createStationGroupBox(compare, stations);
+    view_->createStationGroupBox(SMEAR, stations);
+    view_->createStationGroupBox(STATFI, stations);
+    view_->createStationGroupBox(COMPARE, stations);
 
     view_->setup();
 }
@@ -46,6 +48,8 @@ void Model::setupView()
 void Model::changeDatabase(const QString current_database)
 {
     currentDatabase_ = current_database;
+    //checkedGases_.clear();
+    checkedStations_.clear();
 
     if( current_database == SMEAR ){
         view_->showSmear();
@@ -83,21 +87,34 @@ void Model::updateChartView()
     std::vector<std::vector<double>> data = fetchData();
     // yhdestä kaasusta tehdään yksi kuva
 
-    if ( currentDatabase_ == STATFI ){
+    if ( currentDatabase_ == SMEAR ){
         // miten erotellaan vektorista eri kaasut asemien kanssa
     }
-    else if ( currentDatabase_ == SMEAR ){
+    else if ( currentDatabase_ == STATFI ){
+        int gas = 0;
         for ( std::vector<double> gasData : data ){
-            createChart({gasData});
+            createBarChart(gasData);
+            ++gas;
         }
     }
 
 }
 
+void Model::updateStatfiTimeRange(int startYear, int endYear)
+{
+    statfiStartYear_ = startYear;
+    statfiEndYear_ = endYear;
+}
+
 void Model::createChart(std::vector<std::vector<double>> gasData)
 {
+    // TÄÄÄ TULEE POISTAA
+
     // testi dataa
-    std::vector<int> timeSelection = {"2010", "2011"};
+    // statfi stringinä
+    std::vector<QString> timeSelection = {"2010", "2011", "2012", "2013", "2014"};
+    // smear stringinä vai inttinä??
+    //std::vector<int> timeSelection1 = {2010, 2011, 2012, 2013, 2014};
 
     // käytetään?
     //int timeRangeLength = 2011 - 2010 + 1;
@@ -105,25 +122,62 @@ void Model::createChart(std::vector<std::vector<double>> gasData)
     //std::iota(timeSelection.begin(), timeSelection.end(), 2010);
 
     // asemat samaan kuvaan
+    /*
     for ( std::vector<double> stationData : gasData ){
-        QLineSeries *series = setChartSelection(stationData, timeSelection);
+        QBarSeries *series = createBarSeries(stationData, timeSelection);
 
         QChart *chart = new QChart();
 
         // samaan chartiin lisätään samat kaasut eri asemilta
         chart->addSeries(series);
         chart->setTitle("OTSIKKO");
+        chart->createDefaultAxes();
 
         view_->updateChart(chart);
+    }*/
+}
+
+void Model::createLineChart(std::vector<std::vector<double> > gasData)
+{
+
+}
+
+void Model::createBarChart(std::vector<double> gasData)
+{
+    int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
+    std::vector<int> timeRange(timeRangeLength);
+    std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
+
+    QStringList timeSelection;
+    QString yearString;
+    for ( int year : timeRange ) {
+        yearString = QString::number(year);
+        timeSelection.append(yearString);
     }
+
+    QChart *chart = new QChart();
+    chart->setTitle("OTSIKKO");
+
+    QBarSeries *series = createBarSeries(gasData);
+    chart->addSeries(series);
+
+    QBarCategoryAxis *axisX = new QBarCategoryAxis;
+    axisX->append(timeSelection);
+
+    chart->createDefaultAxes();
+    chart->setAxisX(axisX, series);
+    // laittaa serieksen nimen piiloon
+    chart->legend()->setVisible(false);
+
+    view_->updateChart(chart);
 }
 
 std::vector<std::vector<double> > Model::fetchData()
 {
-    std::vector<std::string> time = {"2010", "2011"};
-    std::vector<int> years = {2010, 2017};
-    std::vector<std::string> gas = {CO2_IN_TONNES};
-    std::vector<std::string> location = {};
+    std::vector<std::string> time = {std::to_string(statfiStartYear_), std::to_string(statfiEndYear_)};
+    std::vector<std::string> gases(checkedGases_.begin(), checkedGases_.end());
+    // EI toimi jos set on tyhjä
+    //std::vector<std::string> stations(checkedStations_.begin(), checkedGases_.end());
 
     // näitä käytetään niin saadaan valitut kaasut ja asemat
     //std::vector<std::string> gases(checkedGases_.begin(), checkedGases_.end());
@@ -131,38 +185,31 @@ std::vector<std::vector<double> > Model::fetchData()
     //stationCount_ = gases.size();
 
     // kummasta databasesta haetaan?
-    std::vector<std::vector<double>> data = statfiIDataFetcher_->fetchData(time, gas, location);
+    std::vector<std::vector<double>> data = statfiIDataFetcher_->fetchData(time, gases, {});
 
     return data;
 }
 
-QLineSeries* Model::setChartSelection(std::vector<double> dataSelection, std::vector<int> timeselection)
+QBarSeries *Model::createBarSeries(const std::vector<double> dataSelection)
 {
-    // asema kerrallaan
+    QBarSeries *series = new QBarSeries;
+    QBarSet *set = new QBarSet("???");
 
-
-    /*
-    for ( std::vector<double> gasData : data ){
-        QLineSeries *series = new QLineSeries;
-
+    for ( double value : dataSelection ) {
+        set->append(value);
     }
+    series->append(set);
+
+    return series;
+}
+
+QLineSeries *Model::createLineSeries(const std::vector<double> dataSelection, const std::vector<int> timeselection)
+{
     QLineSeries *series = new QLineSeries;
-    for (unsigned int i{0}; i < std::min(Data::x.size(), Data::y.size()); ++i) {
-        series->append(Data::x[i], Data::y[i]);
-    }
-
-
-
-    */
-    //std::cout << data[0][0] << std::endl;
-        QLineSeries *series = new QLineSeries;
     for (unsigned int i{0}; i < std::min(timeselection.size(), dataSelection.size()); ++i) {
-        //std::cout << data[0][i] << std::endl;
         series->append(timeselection[i],dataSelection[i]);
-        //series->append()
     }
     return series;
-    //view_->updateChart(series, "OTSIKKO tähän");
 }
 
 

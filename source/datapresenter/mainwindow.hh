@@ -8,9 +8,11 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QLineSeries>
+#include <QBarSeries>
 #include <QLayout>
 #include <QGroupBox>
 #include <QGraphicsEffect>
+#include <QSpinBox>
 
 #include "timerangedialog.hh"
 #include "valuetabledialog.hh"
@@ -44,8 +46,8 @@ public:
     ~MainWindow();
 
     void setController(Controller* controller);
-    void createGasGroupBox(QString &database, std::vector<std::string> &gases);
-    void createStationGroupBox(QString &database, std::vector<std::string> &stations);
+    void createGasGroupBox(QString database, std::vector<std::string> gases);
+    void createStationGroupBox(QString database, std::vector<std::string> stations);
     void setup();
     void updateChart(QChart *chart);
 
@@ -61,6 +63,8 @@ private slots:
     void on_valueTableButton_clicked();
     void on_databaseComboBox_currentTextChanged();
     void on_showDataButton_clicked();
+    void on_toYearSpinBox_valueChanged(int year);
+    void on_fromYearSpinBox_valueChanged(int year);
 
     // uutta
     void stationCheckboxStateChanged(int state);
@@ -68,6 +72,8 @@ private slots:
 
 private:
     void createSidebar();
+    void createStatfiTimeRangeWidget();
+    void createNewChartAreaWidget();
 
     Ui::MainWindow *ui;
     Controller* controller_;
@@ -98,7 +104,6 @@ private:
     QGroupBox *smearStationGroupBox_;
 
     QGroupBox *statfiGasGroupBox_;
-    QGroupBox *statfiStationGroupBox_;
 
     QGroupBox *compareGasGroupBox_;
     QGroupBox *compareStationGroupBox_;
@@ -112,6 +117,11 @@ private:
     QPushButton* compareButton_;
     QPushButton* quitButton_;
     QPushButton* setTimeRangeButton_;
+
+    QWidget *statfiTimeRangeWidget_;
+    QSpinBox *toYearSpinBox_;
+    QSpinBox *fromYearSpinBox_;
+
     TimeRangeDialog* time_range_dialog_;
     ValueTableDialog* value_table_dialog_;
     YearSelectDialog* year_select_dialog_;

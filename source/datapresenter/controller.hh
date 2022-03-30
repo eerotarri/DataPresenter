@@ -18,7 +18,7 @@ public slots:
     void dadabaseComboBoxCurrentTextChanged(const QString& current_database);
     void stationCheckBoxStateChanged(const std::string& name, int state);
     void gasCheckBoxStateChanged(const std::string& name, int state);
-    void showDatabuttonClicked();
+    void showDatabuttonClicked(int startTime, int endTime);
 
 private:
     Model* model_;
