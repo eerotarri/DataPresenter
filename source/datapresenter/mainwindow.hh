@@ -27,8 +27,11 @@ QT_END_NAMESPACE
     using QChartView = QtCharts::QChartView;
 #endif
 
-const QString SMEAR = "smear";
-const QString STATFI = "statfi";
+// databases
+const QString SMEAR = "SMEAR";
+const QString STATFI = "STATFI";
+
+const QString COMPARE = "COMPARE";
 
 class Controller;
 

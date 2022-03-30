@@ -17,12 +17,14 @@ int main(int argc, char *argv[])
     view->show();
 
     // STATFI test lines
+    /*
     std::vector<std::string> timeRange = {"2010", "2011"};
     std::vector<std::string> gas = {"Khk_yht_index", "Khk_yht_las_index"};
 
     ConcreteStatfi* statfi = new ConcreteStatfi();
 
     statfi->fetchData(timeRange, gas);
+    */
 
     return a.exec();
 }
