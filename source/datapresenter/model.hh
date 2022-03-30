@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "mainwindow.hh"
+#include "idatafetcher.hh"
+#include "concretestatfi.hh"
 #include <set>
 
 class Model : public QObject
@@ -24,9 +26,12 @@ private:
     QLineSeries* setChartSelection(const QString dataSelection, const QString timeselection);
 
     MainWindow* view_;
+    IDataFetcher* statfiIDataFetcher_;
+    //IDataFetcher* smearIDataFetcher_;
 
     std::set<std::string> checkedStations_;
     std::set<std::string> checkedGases_;
+
 };
 
 #endif // MODEL_HH

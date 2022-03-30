@@ -11,6 +11,7 @@ namespace Data
 Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
+    , statfiIDataFetcher_(new ConcreteStatfi)
     /*, checkedStations_
     , checkedGases_*/
 {
@@ -99,6 +100,10 @@ void Model::createChart(const QString gasSelection, const QString stationSelecti
 QLineSeries* Model::setChartSelection(const QString dataSelection, const QString timeselection)
 {
     // poimii datan
+    std::vector<std::string> time = {"2010", "2017"};
+    std::vector<std::string> gas = {"CO2"};
+    std::vector<std::string> location = {"Kumpula", "Hyytiälä"};
+    std::vector<std::vector<double>> data = statfiIDataFetcher_->fetchData(time, gas, location);
 
     QLineSeries *series = new QLineSeries;
     for (unsigned int i{0}; i < std::min(Data::x.size(), Data::y.size()); ++i) {
