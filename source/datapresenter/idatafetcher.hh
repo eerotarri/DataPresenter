@@ -4,6 +4,14 @@
 #include <vector>
 #include <string>
 
+// Copy the method below to your code and change classname if necessary.
+
+//void Model::getData(IDataFetcher *sender)
+//{
+//    auto data = sender->getCurrentData();
+//    // Nyt datan voi tallentaa tai suoraan esittää graafisesti
+//}
+
 class IDataFetcher
 {
 public:
@@ -40,7 +48,7 @@ public:
      * @brief Get function for the stations that are possible for certain website queries
      * @return stations in the form of std::vector<std::string>
      *
-     * This mehtod will return an empty vector if location is not a parameter at all in given website
+     * This method will return an empty vector if location is not a parameter at all in given website
      */
     virtual std::vector<std::string> getSupportedStations() = 0;
 
