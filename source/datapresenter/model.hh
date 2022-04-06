@@ -38,7 +38,7 @@ private:
     void createBarChart(std::vector<double> gasData);
     std::vector<std::vector<double>> fetchData();
     QBarSeries* createBarSeries(const std::vector<double> dataSelection);
-    QLineSeries* createLineSeries(const std::vector<double> dataSelection, const std::vector<int> timeselection);
+    QLineSeries* createLineSeries(const std::vector<double> dataSelection, const std::vector<double> timeselection);
 
     MainWindow* view_;
     IDataFetcher* statfiIDataFetcher_;

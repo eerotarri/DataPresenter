@@ -16,7 +16,6 @@
 
 #include "timerangedialog.hh"
 #include "valuetabledialog.hh"
-#include "yearselectdialog.hh"
 
 
 QT_BEGIN_NAMESPACE
@@ -124,7 +123,6 @@ private:
 
     TimeRangeDialog* time_range_dialog_;
     ValueTableDialog* value_table_dialog_;
-    YearSelectDialog* year_select_dialog_;
 
     QGraphicsBlurEffect *blurEffect_;
 

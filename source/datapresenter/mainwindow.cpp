@@ -63,7 +63,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     , time_range_dialog_(new TimeRangeDialog(this))
     , value_table_dialog_(new ValueTableDialog(this))
-    , year_select_dialog_(new YearSelectDialog(this))
 
     , blurEffect_(new QGraphicsBlurEffect)
 
@@ -227,6 +226,10 @@ void MainWindow::showStatfi()
 
     statfiGasGroupBox_->setVisible(true);
     statfiTimeRangeWidget_->setVisible(true);
+
+    compareButton_->setVisible(false);
+    setTimeRangeButton_->setVisible(false);
+    valueTableButton_->setVisible(false);
 }
 
 void MainWindow::showSmear()
@@ -239,6 +242,10 @@ void MainWindow::showSmear()
 
     smearGasGroupBox_->setVisible(true);
     smearStationGroupBox_->setVisible(true);
+
+    compareButton_->setVisible(true);
+    setTimeRangeButton_->setVisible(true);
+    valueTableButton_->setVisible(true);
 }
 
 void MainWindow::showCompare()
@@ -251,6 +258,10 @@ void MainWindow::showCompare()
 
     compareGasGroupBox_->setVisible(true);
     compareStationGroupBox_->setVisible(true);
+
+    compareButton_->setVisible(false);
+    setTimeRangeButton_->setVisible(true);
+    valueTableButton_->setVisible(false);
 }
 
 void MainWindow::on_startButton_clicked()
@@ -265,8 +276,7 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_compareButton_clicked()
 {
-    // Täl hetkel ku painaa compare napist saa yearselect ikkuna näkyviin
-    year_select_dialog_->show();
+    //mitä tänne?
 }
 
 void MainWindow::on_setTimeRangeButton_clicked()

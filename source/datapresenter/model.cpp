@@ -89,6 +89,8 @@ void Model::updateChartView()
 
     if ( currentDatabase_ == SMEAR ){
         // miten erotellaan vektorista eri kaasut asemien kanssa
+        std::vector<std::vector<double>> testiData = {{3,4,5,4,3},{6,5,6,5,6}};
+        createLineChart(testiData);
     }
     else if ( currentDatabase_ == STATFI ){
         int gas = 0;
@@ -96,6 +98,8 @@ void Model::updateChartView()
             createBarChart(gasData);
             ++gas;
         }
+    } else if ( currentDatabase_ == COMPARE ){
+
     }
 
 }
@@ -137,9 +141,33 @@ void Model::createChart(std::vector<std::vector<double>> gasData)
     }*/
 }
 
-void Model::createLineChart(std::vector<std::vector<double> > gasData)
+void Model::createLineChart(std::vector<std::vector<double> > gasData /* std::vector<double> timeSelection */)
 {
+    //int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
+    //std::vector<int> timeRange(timeRangeLength);
+    //std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
 
+    //QStringList timeSelection;
+    //QString yearString;
+    std::vector<double> timeSelection = {1,2,3,4,5}; // paremetrina
+
+    QChart *chart = new QChart();
+    chart->setTitle("OTSIKKO");
+
+    for ( std::vector data : gasData ) {
+        QLineSeries *series = createLineSeries(data, timeSelection);
+        chart->addSeries(series);
+    }
+
+    //QBarCategoryAxis *axisX = new QBarCategoryAxis;
+    //axisX->append(timeSelection);
+
+    chart->createDefaultAxes();
+    //chart->setAxisX(axisX, series);
+    // laittaa serieksen nimen piiloon
+    chart->legend()->setVisible(false);
+
+    view_->updateChart(chart);
 }
 
 void Model::createBarChart(std::vector<double> gasData)
@@ -203,7 +231,7 @@ QBarSeries *Model::createBarSeries(const std::vector<double> dataSelection)
     return series;
 }
 
-QLineSeries *Model::createLineSeries(const std::vector<double> dataSelection, const std::vector<int> timeselection)
+QLineSeries *Model::createLineSeries(const std::vector<double> dataSelection, const std::vector<double> timeselection)
 {
     QLineSeries *series = new QLineSeries;
     for (unsigned int i{0}; i < std::min(timeselection.size(), dataSelection.size()); ++i) {
