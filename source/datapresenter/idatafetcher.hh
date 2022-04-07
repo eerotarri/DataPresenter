@@ -26,7 +26,7 @@ public:
      * networks asynchronously. fetchData alone is responsible for taking client parameters and executing
      * the process of getting the correct data from network to local.
      */
-    virtual void fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location = {}) = 0;
+    virtual void fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {}) = 0;
 
     /**
      * @brief Get function for the data previously fetched from network

@@ -8,15 +8,21 @@ ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
     manager_ = new QNetworkAccessManager();
 }
 
-void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location)
+void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location)
 {
     Q_UNUSED(location);
+    currentData_.clear();
+    std::vector<double> range{};
+    for (size_t i = 0; i < timeRange.size(); i++) {
+        range.push_back(std::stod(timeRange[i]));
+    }
+    currentData_.push_back(range);
 
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
 }
 
-std::vector<std::vector<double> > ConcreteStatfi::getCurrentData()
+std::vector<std::vector<double>> ConcreteStatfi::getCurrentData()
 {
     return currentData_;
 }
@@ -76,19 +82,17 @@ void ConcreteStatfi::readyRead()
 
     qDebug() << values;
     currentData_.push_back(values);
-    model_->getData(this);
 
     return;
 }
 
-QByteArray ConcreteStatfi::generateQuery(std::vector<std::string> data, std::vector<std::string> years)
+QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<std::string> years)
 {
     QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
     // Dynamically adds datasets to query
-    for (size_t i = 0; i < data.size(); ++i) {
-        query.append("\"" + data.at(i) + "\",");
-    }
+    query.append("\"" + data + "\",");
+
 
     query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
