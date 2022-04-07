@@ -2,28 +2,44 @@
 
 #include <QDebug>
 
-ConcreteStatfi::ConcreteStatfi(QObject *parent) : QObject(parent)
+ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
+  , model_(model)
 {
     manager_ = new QNetworkAccessManager();
 }
 
-std::vector<std::vector<double> > ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location)
+void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location)
 {
     Q_UNUSED(location);
+    currentData_.clear();
+    std::vector<double> range{};
+    for (size_t i = 0; i < timeRange.size(); i++) {
+        range.push_back(std::stod(timeRange[i]));
+    }
+    currentData_.push_back(range);
 
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
+}
 
-    // EERO MUOKKAA TÄMÄ TOIMIVAKSI :)
-    // TÄÄLLÄ PITÄÄ PALAUTTAA VECTOR<VECTOR<DOUBLE>>
-    // MVC TOIMII
+std::vector<std::vector<double>> ConcreteStatfi::getCurrentData()
+{
+    return currentData_;
+}
 
-    // testi dataa
-    const std::vector<double> x = {1, 4, 3, 2, 5};
-    const std::vector<double> y = {1, 2, 1, 2, 1};
+std::vector<double> ConcreteStatfi::getSupportedTimeFrame()
+{
+    return supportedTimeFrame_;
+}
 
-    // palauttaa testi dataa
-    return {x,y};
+std::vector<std::string> ConcreteStatfi::getSupportedStations()
+{
+    return {};
+}
+
+std::vector<std::string> ConcreteStatfi::getSupportedGases()
+{
+    return supportedGases_;
 }
 
 void ConcreteStatfi::post(QByteArray data)
@@ -65,18 +81,18 @@ void ConcreteStatfi::readyRead()
     auto values = arrayToVector(jsonObject["value"].toArray());
 
     qDebug() << values;
+    currentData_.push_back(values);
 
     return;
 }
 
-QByteArray ConcreteStatfi::generateQuery(std::vector<std::string> data, std::vector<std::string> years)
+QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<std::string> years)
 {
     QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
     // Dynamically adds datasets to query
-    for (size_t i = 0; i < data.size(); ++i) {
-        query.append("\"" + data.at(i) + "\",");
-    }
+    query.append("\"" + data + "\",");
+
 
     query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
