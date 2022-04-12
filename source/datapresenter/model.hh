@@ -17,7 +17,7 @@ const std::string CO2_INTENSITY_INDEXED = "Khk_yht_las_index";
 // smear's gases
 
 // stations
-
+class ConcreteStatfi;
 class Model : public QObject
 {
     Q_OBJECT
@@ -29,14 +29,15 @@ public:
     void changeDatabase(const QString current_database);
     void updateCheckedStations(const std::string name, int state);
     void updateCheckedGases(const std::string name, int state);
-    void updateChartView();
+    void fetchData();
+    void updateChartView(IDataFetcher* base);
     void updateStatfiTimeRange(int startYear, int endYear);
 
 private:
     void createChart(std::vector<std::vector<double>> gasData);
     void createLineChart(std::vector<std::vector<double>> gasData);
     void createBarChart(std::vector<double> gasData);
-    std::vector<std::vector<double>> fetchData();
+
     QBarSeries* createBarSeries(const std::vector<double> dataSelection);
     QLineSeries* createLineSeries(const std::vector<double> dataSelection, const std::vector<double> timeselection);
 

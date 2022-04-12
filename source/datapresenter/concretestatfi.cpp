@@ -12,11 +12,11 @@ void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string g
 {
     Q_UNUSED(location);
     currentData_.clear();
-    std::vector<double> range{};
-    for (size_t i = 0; i < timeRange.size(); i++) {
-        range.push_back(std::stod(timeRange[i]));
-    }
-    currentData_.push_back(range);
+//    std::vector<double> range{};
+//    for (size_t i = 0; i < timeRange.size(); i++) {
+//        range.push_back(std::stod(timeRange[i]));
+//    }
+//    currentData_.push_back(range);
 
     QByteArray query = generateQuery(gas, timeRange);
     post(query);
@@ -80,8 +80,12 @@ void ConcreteStatfi::readyRead()
 
     auto values = arrayToVector(jsonObject["value"].toArray());
 
-    qDebug() << values;
+
     currentData_.push_back(values);
+
+    qDebug() << values;
+
+    model_->updateChartView(this);
 
     return;
 }
@@ -97,8 +101,9 @@ QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<std::stri
     query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
     // Dynamically adds timerange to query
-    for (size_t i = 0; i < data.size(); ++i) {
-        query.append("\"" + years.at(i) + "\",");
+    for (int i = 0; i <= stoi(years.at(1)) - stoi(years.at(0)); ++i) {
+
+        query.append("\"" + std::to_string(stoi(years.at(0)) + i) + "\",");
     }
 
     query.append("]}}]}");

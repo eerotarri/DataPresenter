@@ -2,6 +2,8 @@
 #include <iostream>
 #include <QBarSet>
 
+#include <QDebug>
+
 
 namespace Data
 {
@@ -82,9 +84,9 @@ void Model::updateCheckedGases(const std::string name, int state)
     }
 }
 
-void Model::updateChartView()
+void Model::updateChartView(IDataFetcher* base)
 {
-    std::vector<std::vector<double>> data = fetchData();
+    auto data = base->getCurrentData();
     // yhdestä kaasusta tehdään yksi kuva
 
     if ( currentDatabase_ == SMEAR ){
@@ -94,10 +96,13 @@ void Model::updateChartView()
     }
     else if ( currentDatabase_ == STATFI ){
         int gas = 0;
-        for ( std::vector<double> gasData : data ){
-            createBarChart(gasData);
-            ++gas;
+        if (data.size() == checkedGases_.size()) {
+            for ( std::vector<double> gasData : data ){
+                createBarChart(gasData);
+                ++gas;
+            }
         }
+
     } else if ( currentDatabase_ == COMPARE ){
 
     }
@@ -172,6 +177,7 @@ void Model::createLineChart(std::vector<std::vector<double> > gasData /* std::ve
 
 void Model::createBarChart(std::vector<double> gasData)
 {
+    qDebug() << "käy";
     int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
     std::vector<int> timeRange(timeRangeLength);
     std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
@@ -200,7 +206,7 @@ void Model::createBarChart(std::vector<double> gasData)
     view_->updateChart(chart);
 }
 
-std::vector<std::vector<double> > Model::fetchData()
+void Model::fetchData()
 {
     std::vector<std::string> time = {std::to_string(statfiStartYear_), std::to_string(statfiEndYear_)};
     std::vector<std::string> gases(checkedGases_.begin(), checkedGases_.end());
@@ -213,9 +219,10 @@ std::vector<std::vector<double> > Model::fetchData()
     //stationCount_ = gases.size();
 
     // kummasta databasesta haetaan?
-    std::vector<std::vector<double>> data = statfiIDataFetcher_->fetchData(time, gases, {});
+    for (std::string gas : checkedGases_) {
+        statfiIDataFetcher_->fetchData(time, gas);
+    }
 
-    return data;
 }
 
 QBarSeries *Model::createBarSeries(const std::vector<double> dataSelection)

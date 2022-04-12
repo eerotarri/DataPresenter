@@ -36,5 +36,5 @@ void Controller::gasCheckBoxStateChanged(const std::string &name, int state)
 void Controller::showDatabuttonClicked(int startTime, int endTime)
 {
     model_->updateStatfiTimeRange(startTime, endTime);
-    model_->updateChartView();
+    model_->fetchData();
 }
