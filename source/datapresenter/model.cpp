@@ -12,7 +12,7 @@ namespace Data
 Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
-    , statfiIDataFetcher_(new ConcreteStatfi)
+    , statfiIDataFetcher_(new ConcreteStatfi(this))
     /*, checkedStations_
     , checkedGases_*/
 {

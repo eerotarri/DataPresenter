@@ -23,7 +23,7 @@ class ConcreteStatfi : public QObject, public IDataFetcher
 public:
     explicit ConcreteStatfi(Model* model, QObject *parent = nullptr);
 
-    virtual void fetchData(std::vector<std::string> timeRange, std::vector<std::string> gas, std::vector<std::string> location = {});
+    virtual void fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {});
     std::vector<std::vector<double>> getCurrentData();
     virtual std::vector<double> getSupportedTimeFrame();
     virtual std::vector<std::string> getSupportedStations();
