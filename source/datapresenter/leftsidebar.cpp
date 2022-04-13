@@ -5,18 +5,25 @@
 LeftSidebar::LeftSidebar(QWidget *parent)
     : QWidget{parent}
 {
+    this->setMinimumWidth(170);
+
     line_->setFrameShape(QFrame::HLine);
     line_->setFrameShadow(QFrame::Sunken);
 
-    baseLayout_->addWidget(smearCheckBox_);
-    baseLayout_->addWidget(smearGasGroupBox_);
-    baseLayout_->addWidget(smearStationGroupBox_);
-    baseLayout_->addWidget(smearTimeRangeWidget_);
-    baseLayout_->addWidget(line_);
-    baseLayout_->addWidget(statfiCheckBox_);
-    baseLayout_->addWidget(statfiGasGroupBox_);
-    baseLayout_->addWidget(statfiTimeRangeWidget_);
-    baseLayout_->addWidget(showButton_,9,0,Qt::AlignBottom);
+    containerWidgetLayout_->addWidget(smearCheckBox_);
+    containerWidgetLayout_->addWidget(smearGasGroupBox_);
+    containerWidgetLayout_->addWidget(smearStationGroupBox_);
+    containerWidgetLayout_->addWidget(smearTimeRangeWidget_);
+    containerWidgetLayout_->addWidget(line_);
+    containerWidgetLayout_->addWidget(statfiCheckBox_);
+    containerWidgetLayout_->addWidget(statfiGasGroupBox_);
+    containerWidgetLayout_->addWidget(statfiTimeRangeWidget_);
+
+    containerWidget_->setLayout(containerWidgetLayout_);
+    scrollArea_->setWidget(containerWidget_);
+
+    baseLayout_->addWidget(scrollArea_);
+    baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
 
     smearTimeRangeWidget_->setTitle("Select time range");
     statfiTimeRangeWidget_->setTitle("Select time range");

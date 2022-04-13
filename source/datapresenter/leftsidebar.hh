@@ -9,6 +9,7 @@
 #include <QGroupBox>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QScrollArea>
 
 struct selectedOptions {
     std::vector<std::string> gases;
@@ -42,6 +43,11 @@ private:
 
     QGridLayout *baseLayout_ = new QGridLayout;
     QFrame *line_ = new QFrame;
+
+    QWidget *containerWidget_ = new QWidget;
+    QVBoxLayout *containerWidgetLayout_ = new QVBoxLayout;
+
+    QScrollArea *scrollArea_ = new QScrollArea;
 
     QCheckBox *smearCheckBox_ = new QCheckBox("SMEAR");
     QCheckBox *statfiCheckBox_ = new QCheckBox("STATFI");
