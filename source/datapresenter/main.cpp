@@ -1,19 +1,19 @@
-#include <concretestatfi.hh>
-
 #include "mainwindow.hh"
 #include "model.hh"
 #include "controller.hh"
+
 #include <QApplication>
+#include <concretestatfi.hh>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    MainWindow* view{new MainWindow()};
-    Model* model{new Model(view)};
+    Model* model{new Model()};
     Controller* controller{new Controller(model)};
+    MainWindow* view{new MainWindow(controller)};
 
-    view->setController(controller);
+    model->setView(view);
     view->show();
 
     return a.exec();

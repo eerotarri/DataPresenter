@@ -1,6 +1,8 @@
 #ifndef MODEL_HH
 #define MODEL_HH
 
+#include "idatafetcher.hh"
+/*
 #include <QObject>
 #include "mainwindow.hh"
 #include "idatafetcher.hh"
@@ -16,6 +18,12 @@ const std::string CO2_INTENSITY_INDEXED = "Khk_yht_las_index";
 
 // smear's gases
 
+*/
+#include <QObject>
+
+class MainWindow;
+
+/*
 // stations
 class Model : public QObject
 {
@@ -51,6 +59,18 @@ private:
     int statfiStartYear_;
     int statfiEndYear_;
 
+};
+*/
+class Model : public QObject
+{
+    Q_OBJECT
+public:
+    Model(QObject *parent = nullptr);
+    void setView(MainWindow *view);
+    void updateChartView(IDataFetcher* base);
+
+private:
+    MainWindow *view_;
 };
 
 #endif // MODEL_HH

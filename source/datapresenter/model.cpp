@@ -1,4 +1,21 @@
 #include "model.hh"
+
+Model::Model(QObject *parent)
+    : QObject{parent}
+    , view_{nullptr}
+{
+}
+
+void Model::setView(MainWindow *view)
+{
+    view_ = view;
+}
+
+void Model::updateChartView(IDataFetcher *base)
+{
+
+}
+/*
 #include <iostream>
 #include <QBarSet>
 
@@ -15,8 +32,8 @@ Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
     , statfiIDataFetcher_(new ConcreteStatfi(this))
-    /*, checkedStations_
-    , checkedGases_*/
+    , checkedStations_
+    , checkedGases_
 {
 }
 
@@ -131,7 +148,7 @@ void Model::createChart(std::vector<std::vector<double>> gasData)
     //std::iota(timeSelection.begin(), timeSelection.end(), 2010);
 
     // asemat samaan kuvaan
-    /*
+
     for ( std::vector<double> stationData : gasData ){
         QBarSeries *series = createBarSeries(stationData, timeSelection);
 
@@ -143,11 +160,14 @@ void Model::createChart(std::vector<std::vector<double>> gasData)
         chart->createDefaultAxes();
 
         view_->updateChart(chart);
-    }*/
-}
+    }
 
-void Model::createLineChart(std::vector<std::vector<double> > gasData /* std::vector<double> timeSelection */)
-{
+}
+*/
+
+//void Model::createLineChart(std::vector<std::vector<double> > gasData /* std::vector<double> timeSelection */)
+//{
+    /*
     //int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
     //std::vector<int> timeRange(timeRangeLength);
     //std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
@@ -246,5 +266,5 @@ QLineSeries *Model::createLineSeries(const std::vector<double> dataSelection, co
     }
     return series;
 }
-
+*/
 

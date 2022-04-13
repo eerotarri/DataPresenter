@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
+/*
 #include <QMainWindow>
 #include <QChartView>
 #include <QWidget>
@@ -16,7 +17,16 @@
 
 #include "timerangedialog.hh"
 #include "valuetabledialog.hh"
+*/
 
+#include "rightsidebar.hh"
+#include "leftsidebar.hh"
+#include "controller.hh"
+
+#include <QMainWindow>
+#include <QWidget>
+#include <QLayout>
+#include <QScrollArea>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,6 +38,7 @@ QT_END_NAMESPACE
     using QChartView = QtCharts::QChartView;
 #endif
 
+/*
 // databases
 const QString SMEAR = "SMEAR";
 const QString STATFI = "STATFI";
@@ -125,6 +136,37 @@ private:
     ValueTableDialog* value_table_dialog_;
 
     QGraphicsBlurEffect *blurEffect_;
+
+};
+*/
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(Controller *controller, QWidget *parent = nullptr);
+    ~MainWindow();
+
+    //void setController(Controller* controller);
+
+private slots:
+
+
+private:
+    void setup();
+
+    Ui::MainWindow *ui;
+    Controller *controller_;
+
+    QWidget *mainWidget_ = new QWidget();
+    QGridLayout *mainLayout_ = new QGridLayout();
+
+    RightSidebar *rightSidebarWidget_ = new RightSidebar;
+    LeftSidebar *leftSidebarWidget_ = new LeftSidebar;
+
+    QScrollArea *scrollArea_ = new QScrollArea;
+    QWidget *cardAreaWidget_ = new QWidget();
+    QGridLayout *cardAreaLayout_ = new QGridLayout();
 
 };
 #endif // MAINWINDOW_HH

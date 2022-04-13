@@ -1,5 +1,7 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
+
+/*
 #include "controller.hh"
 #include "timerangedialog.hh"
 
@@ -9,18 +11,20 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QScrollBar>
-
+*/
 
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     using QLineSeries = QtCharts::QLineSeries;
 #endif
 
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(Controller *controller, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , controller_{nullptr}
+    , controller_{controller}
 
+
+    /*
     , startButton_(new QPushButton("Start"))
 
     , mainWidget_(new QWidget)
@@ -65,8 +69,14 @@ MainWindow::MainWindow(QWidget *parent)
     , value_table_dialog_(new ValueTableDialog(this))
 
     , blurEffect_(new QGraphicsBlurEffect)
-
+    */
 {
+    ui->setupUi(this);
+
+    setup();
+
+    connect(rightSidebarWidget_, SIGNAL(quitButtonClicked()), controller_, SLOT(closeApplication()));
+    /*
     ui->setupUi(this);
 
     connect(startButton_, SIGNAL(clicked()), this, SLOT(on_startButton_clicked()));
@@ -89,6 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
     chart_view_->setParent(graphic_frame_);  // add chart view to UI
     chart_view_->resize(graphic_frame_->size());
     chart_->setGraphicsEffect(blurEffect_);*/
+    /*
 
     startWidget->setLayout(startLayout);
     startLayout->addWidget(startButton_);
@@ -96,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent)
     startButton_->setMaximumHeight(50);
 
     setCentralWidget(startWidget);
+    */
 }
 
 MainWindow::~MainWindow()
@@ -103,7 +115,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::setup()
+{
+    setCentralWidget(mainWidget_);
+    mainWidget_->setLayout(mainLayout_);
 
+    mainLayout_->addWidget(leftSidebarWidget_, 1, 1);
+    mainLayout_->addWidget(scrollArea_, 1, 2);
+    mainLayout_->addWidget(rightSidebarWidget_, 1, 3);
+
+    mainLayout_->setColumnMinimumWidth(2, 500);
+    mainLayout_->setColumnMinimumWidth(1, 150);
+
+    scrollArea_->setWidget(cardAreaWidget_);
+    scrollArea_->setWidgetResizable(true);
+
+    cardAreaWidget_->setLayout(cardAreaLayout_);
+
+    /*
+    // TESTIÄ
+    ChartCard *card = new LineChartCard();
+    card->setHeader("KAASU");
+    card->createChartCard(DATES,DATA,STATIONS);
+    cardAreaLayout_->addWidget(card);
+    // MUISTA POISTAA
+    */
+
+}
+/*
 void MainWindow::setController(Controller *controller)
 {
     controller_ = controller;
@@ -396,3 +435,4 @@ void MainWindow::createNewChartAreaWidget()
     chartAreaWidget_ = newChartAreaWidget;
     chartLayout_ = newChartLayout;
 }
+*/

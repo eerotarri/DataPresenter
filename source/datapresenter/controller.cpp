@@ -1,4 +1,18 @@
 #include "controller.hh"
+#include <QDebug>
+
+Controller::Controller(Model *model, QObject *parent)
+    : QObject{parent}
+    , model_{model}
+{
+}
+
+void Controller::closeApplication()
+{
+    qDebug() << "Controller: Close application.";
+}
+
+/*
 #include <iostream>
 
 Controller::Controller(Model* model, QObject* parent)
@@ -38,3 +52,4 @@ void Controller::showDatabuttonClicked(int startTime, int endTime)
     model_->updateStatfiTimeRange(startTime, endTime);
     model_->fetchData();
 }
+*/
