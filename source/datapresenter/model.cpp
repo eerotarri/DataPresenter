@@ -55,7 +55,7 @@ void Model::createCard(selectedOptions *selectedOptions)
     card->setHeader("KAASU");
     card->createChartCard(DATES,DATA,STATIONS);
 
-    //view_->cardCreated();
+    view_->addCardToCardArea(card);
     // TESTI
 }
 /*
