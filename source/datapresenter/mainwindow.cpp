@@ -88,7 +88,8 @@ void MainWindow::addCardToCardArea(ChartCard *newCard)
 
 selectedOptions *MainWindow::getSelectedOptions(std::string database)
 {
-
+    selectedOptions *selected = leftSidebarWidget_->getSelectedOptions(database);
+    return selected;
 }
 
 std::vector<std::string> MainWindow::getSelectedDatabases()

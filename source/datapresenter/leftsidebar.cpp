@@ -69,10 +69,13 @@ std::vector<std::string> LeftSidebar::getSelectedDatabase()
 
 selectedOptions *LeftSidebar::getSelectedOptions(std::string database)
 {
-    if ( database == "SMEAR" ){
+    if ( database == "smear" ){
         return smearOptions;
     }
-    return statfiOptions;
+    else if ( database == "statfi" ){
+        return statfiOptions;
+    }
+    return nullptr;
 }
 
 void LeftSidebar::smearCheckBoxStateChanged(int state)

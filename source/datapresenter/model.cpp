@@ -40,6 +40,7 @@ void Model::updateCardArea()
 {
     qDebug() << "Model: Update cardArea.";
     createCard(nullptr);
+    updateSelectedOptions();
 }
 
 void Model::updateSelectedOptions()
