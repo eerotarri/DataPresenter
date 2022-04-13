@@ -17,6 +17,20 @@
     using QLineSeries = QtCharts::QLineSeries;
 #endif
 
+// TESTI
+#include <QDate>
+QString date1 = "20/12/2015";
+QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");
+QString date2 = "24/12/2015";
+QDate Date2 = QDate::fromString(date2,"dd/MM/yyyy");
+std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
+std::vector<QString> STATIONS = {"S1", "S2"};
+std::vector<QDate> DATES ={Date1, Date2};
+
+//#include "ChartCard.hh"
+#include "barchartcard.hh"
+#include "linechartcard.hh"
+// MUISTA POISTAA
 
 MainWindow::MainWindow(Controller *controller, QWidget *parent)
     : QMainWindow(parent)
@@ -75,7 +89,11 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
 
     setup();
 
-    connect(rightSidebarWidget_, SIGNAL(quitButtonClicked()), controller_, SLOT(closeApplication()));
+    connect(rightSidebarWidget_, SIGNAL(quitButtonClicked()), this, SLOT(closeApplication()));
+    connect(rightSidebarWidget_, SIGNAL(preferencesButtonClicked()), controller_, SLOT(showPreferences()));
+    connect(rightSidebarWidget_, SIGNAL(saveButtonClicked()), controller_, SLOT(saveOptionsToPreferences()));
+    connect(rightSidebarWidget_, SIGNAL(statisticsButtonClicked()), controller_, SLOT(showStatistics()));
+    connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
     /*
     ui->setupUi(this);
 
@@ -115,6 +133,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::addCardToCardArea(ChartCard *newCard)
+{
+    cardArea_->addCard(newCard);
+}
+
+void MainWindow::closeApplication()
+{
+    close();
+}
+
 void MainWindow::setup()
 {
     setCentralWidget(mainWidget_);
@@ -127,19 +155,20 @@ void MainWindow::setup()
     mainLayout_->setColumnMinimumWidth(2, 500);
     mainLayout_->setColumnMinimumWidth(1, 150);
 
-    scrollArea_->setWidget(cardAreaWidget_);
+    scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);
 
-    cardAreaWidget_->setLayout(cardAreaLayout_);
+    //cardAreaWidget_->setLayout(cardAreaLayout_);
 
-    /*
+
     // TESTIÄ
-    ChartCard *card = new LineChartCard();
-    card->setHeader("KAASU");
-    card->createChartCard(DATES,DATA,STATIONS);
-    cardAreaLayout_->addWidget(card);
+    //ChartCard *card = new LineChartCard();
+    //card->setHeader("KAASU");
+    //card->createChartCard(DATES,DATA,STATIONS);
+ //cardArea_->addCard(card);
+    //cardAreaLayout_->addWidget(card);
     // MUISTA POISTAA
-    */
+
 
 }
 /*

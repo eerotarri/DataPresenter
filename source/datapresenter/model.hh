@@ -2,6 +2,7 @@
 #define MODEL_HH
 
 #include "idatafetcher.hh"
+#include "leftsidebar.hh"
 /*
 #include <QObject>
 #include "mainwindow.hh"
@@ -68,8 +69,13 @@ public:
     Model(QObject *parent = nullptr);
     void setView(MainWindow *view);
     void updateChartView(IDataFetcher* base);
+    void showPreferences();
+    void saveToPreferences();
+    void showStatistics();
+    void updateCardArea();
 
 private:
+    void createCard(selectedOptions *selectedOptions);
     MainWindow *view_;
 };
 

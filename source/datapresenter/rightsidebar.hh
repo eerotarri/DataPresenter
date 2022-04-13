@@ -17,13 +17,13 @@ public:
 
 signals:
     void quitButtonClicked();
-    void historyButtonClicked();
+    void preferencesButtonClicked();
     void saveButtonClicked();
     void statisticsButtonClicked();
 
 private slots:
     void emitQuitButtonClicked();
-    void emitHistoryButtonClicked();
+    void emitPreferencesButtonClicked();
     void emitSaveButtonClicked();
     void emitStatisticsButtonClicked();
 
@@ -33,8 +33,8 @@ private:
 
     QGridLayout *baseLayout_ = new QGridLayout;
 
-    QPushButton *historyButton_ = new QPushButton("History");
-    QPushButton *saveButton_ = new QPushButton("Save");
+    QPushButton *preferencesButton_ = new QPushButton("Preferences");
+    QPushButton *saveButton_ = new QPushButton("Save to preferences");
 
     QPushButton *statisticsButton_ = new QPushButton("Statistics");
 

@@ -25,11 +25,12 @@ public:
     selectedOptions *getSelectedOptions(std::string database);
 
 signals:
+    void showButtonClicked();
 
 private slots:
     void smearCheckBoxStateChanged(int state);
     void statfiCheckBoxStateChanged(int state);
-    void showButtonClicked();
+    void emitShowButtonClicked();
 
 private:
     void updateSelectedOptions();

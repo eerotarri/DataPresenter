@@ -43,7 +43,7 @@ LeftSidebar::LeftSidebar(QWidget *parent)
 
     connect(smearCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(smearCheckBoxStateChanged(int)));
     connect(statfiCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(statfiCheckBoxStateChanged(int)));
-    connect(showButton_, SIGNAL(clicked()), this, SLOT(showButtonClicked()));
+    connect(showButton_, SIGNAL(clicked()), this, SLOT(emitShowButtonClicked()));
 }
 
 std::vector<std::string> LeftSidebar::getSelectedDatabase()
@@ -94,11 +94,11 @@ void LeftSidebar::statfiCheckBoxStateChanged(int state)
     }
 }
 
-void LeftSidebar::showButtonClicked()
+void LeftSidebar::emitShowButtonClicked()
 {
     updateSelectedOptions();
     if ( isValidOptions() ){
-        // emit signal to view
+        emit showButtonClicked();
     }
 }
 

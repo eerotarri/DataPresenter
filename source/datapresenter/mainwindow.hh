@@ -22,6 +22,7 @@
 #include "rightsidebar.hh"
 #include "leftsidebar.hh"
 #include "controller.hh"
+#include "cardarea.hh"
 
 #include <QMainWindow>
 #include <QWidget>
@@ -146,11 +147,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(Controller *controller, QWidget *parent = nullptr);
     ~MainWindow();
+    void addCardToCardArea(ChartCard *newCard);
 
     //void setController(Controller* controller);
 
-private slots:
+public slots:
+    //void cardCreated(ChartCard*);
 
+private slots:
+    void closeApplication();
 
 private:
     void setup();
@@ -165,8 +170,8 @@ private:
     LeftSidebar *leftSidebarWidget_ = new LeftSidebar;
 
     QScrollArea *scrollArea_ = new QScrollArea;
-    QWidget *cardAreaWidget_ = new QWidget();
-    QGridLayout *cardAreaLayout_ = new QGridLayout();
+    CardArea *cardArea_ = new CardArea;
+    //QGridLayout *cardAreaLayout_ = new QGridLayout();
 
 };
 #endif // MAINWINDOW_HH
