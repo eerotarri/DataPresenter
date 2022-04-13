@@ -1,19 +1,21 @@
-#include "linechartcard.hh"
+#include "scatterchartcard.hh"
 
-#include <QLineSeries>
+#include <QScatterSeries>
 
-LineChartCard::LineChartCard()
+
+#include <iostream>
+
+ScatterChartCard::ScatterChartCard()
 {
     this->setChart(chart_);
 }
 
-void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
+void ScatterChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
 {
-    QLineSeries *series;
+    QScatterSeries *series;
     int s = 0;
 
-    axisX_->setTickCount(10);
-    axisX_->setFormat("dd MM yyyy");
+    axisX_->setTickCount(dates.size());
     chart_->addAxis(axisX_, Qt::AlignBottom);
 
     axisY_->setLabelFormat("%i");
@@ -25,7 +27,7 @@ void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::v
     axisY_->setTickCount(10);
 
     for ( std::vector<double> values : data ){
-        series = new QLineSeries();
+        series = new QScatterSeries();
         series->setName(stations[s]);
 
         for ( int i = 0; i < values.size(); i++ ){
@@ -35,8 +37,8 @@ void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::v
             series->append(date.toMSecsSinceEpoch(), value);
         }
         chart_->addSeries(series);
-        series->attachAxis(axisX_);
         series->attachAxis(axisY_);
+        series->attachAxis(axisX_);
         s++;
     }
 
@@ -47,18 +49,18 @@ void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::v
     chart_->legend()->setAlignment(Qt::AlignBottom);
 }
 
-void LineChartCard::setHeader(QString header)
+void ScatterChartCard::setHeader(QString header)
 {
     chart_->setTitle(header);
 }
 
-void LineChartCard::setAxesTitles(QString xtitle, QString ytitle)
+void ScatterChartCard::setAxesTitles(QString xtitle, QString ytitle)
 {
     axisX_->setTitleText(xtitle);
     axisY_->setTitleText(ytitle);
 }
 
-void LineChartCard::setXAxisFormat(QString format)
+void ScatterChartCard::setXAxisFormat(QString format)
 {
     axisX_->setFormat(format);
 }

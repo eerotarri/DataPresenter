@@ -21,6 +21,7 @@ SOURCES += \
     mainwindow.cpp \
     model.cpp \
     rightsidebar.cpp \
+    scatterchartcard.cpp \
     timerangedialog.cpp \
     timerangewidget.cpp \
     valuetabledialog.cpp
@@ -38,6 +39,7 @@ HEADERS += \
     mainwindow.hh \
     model.hh \
     rightsidebar.hh \
+    scatterchartcard.hh \
     timerangedialog.hh \
     timerangewidget.hh \
     valuetabledialog.hh

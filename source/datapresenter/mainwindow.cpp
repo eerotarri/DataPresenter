@@ -1,6 +1,25 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 
+/* TESTI DATAA
+#include "barchartcard.hh"
+#include "linechartcard.hh"
+#include "scatterchartcard.hh"
+#include <QDate>
+QString date1 = "20/12/2015";
+QDate Date1 = QDate::fromString(date1, "dd/MM/yyyy");
+QString date2 = "21/12/2015";
+QDate Date2 = QDate::fromString(date2, "dd/MM/yyyy");
+QString date3 = "22/12/2015";
+QDate Date3 = QDate::fromString(date3, "dd/MM/yyyy");
+QString date4 = "23/12/2015";
+QDate Date4 = QDate::fromString(date4, "dd/MM/yyyy");
+QString date5 = "24/12/2015";
+QDate Date5 = QDate::fromString(date5, "dd/MM/yyyy");
+std::vector<std::vector<double>> DATA = {{2,4,5,2,5},{5,2,8,3,1}};
+std::vector<QString> STATIONS = {"S1", "S2"};
+std::vector<QDate> DATES = {Date1, Date2, Date3, Date4, Date5};
+*/
 /*
 #include "controller.hh"
 #include "timerangedialog.hh"
@@ -13,19 +32,10 @@
 #include <QScrollBar>
 */
 
+
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     using QLineSeries = QtCharts::QLineSeries;
 #endif
-
-// TESTI
-#include <QDate>
-QString date1 = "20/12/2015";
-QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");
-QString date2 = "24/12/2015";
-QDate Date2 = QDate::fromString(date2,"dd/MM/yyyy");
-std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
-std::vector<QString> STATIONS = {"S1", "S2"};
-std::vector<QDate> DATES ={Date1, Date2};
 
 MainWindow::MainWindow(Controller *controller, QWidget *parent)
     : QMainWindow(parent)
@@ -33,6 +43,9 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     , controller_{controller}
 {
     ui->setupUi(this);
+
+    // taustaväri
+    this->setStyleSheet("background-color: #8a2be2");
 
     setup();
 
@@ -108,15 +121,18 @@ void MainWindow::setup()
     setCentralWidget(mainWidget_);
     mainWidget_->setLayout(mainLayout_);
 
-    mainLayout_->addWidget(leftSidebarWidget_, 1, 1);
-    mainLayout_->addWidget(scrollArea_, 1, 2);
-    mainLayout_->addWidget(rightSidebarWidget_, 1, 3);
+    mainLayout_->addWidget(leftSidebarWidget_, 0, 0);
+    mainLayout_->addWidget(scrollArea_, 0, 1);
+    mainLayout_->addWidget(rightSidebarWidget_, 0, 2);
 
-    mainLayout_->setColumnMinimumWidth(2, 500);
-    mainLayout_->setColumnMinimumWidth(1, 150);
+    mainLayout_->setColumnMinimumWidth(1, 500);
+    mainLayout_->setColumnMinimumWidth(0, 250);
+    // ei toimi, miksi??
+    mainLayout_->setColumnStretch(0,0);
 
     scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);
+
 }
 /*
 void MainWindow::setController(Controller *controller)

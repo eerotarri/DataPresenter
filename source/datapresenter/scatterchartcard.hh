@@ -1,15 +1,14 @@
-#ifndef LINECHARTCARD_HH
-#define LINECHARTCARD_HH
+#ifndef SCATTERCHARTCARD_HH
+#define SCATTERCHARTCARD_HH
 
 #include "chartcard.hh"
-
 #include <QDateTimeAxis>
 #include <QValueAxis>
 
-class LineChartCard : public ChartCard
+class ScatterChartCard : public ChartCard
 {
 public:
-    LineChartCard();
+    ScatterChartCard();
     void createChartCard(std::vector<QDate> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""});
     void setHeader(QString header);
     void setAxesTitles(QString xtitle, QString ytitle);
@@ -21,4 +20,4 @@ private:
     QValueAxis *axisY_ = new QValueAxis;
 };
 
-#endif // LINECHARTCARD_HH
+#endif // SCATTERCHARTCARD_HH

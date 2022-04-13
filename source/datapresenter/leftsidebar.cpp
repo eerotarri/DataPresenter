@@ -21,6 +21,7 @@ LeftSidebar::LeftSidebar(QWidget *parent)
 
     containerWidget_->setLayout(containerWidgetLayout_);
     scrollArea_->setWidget(containerWidget_);
+    scrollArea_->setWidgetResizable(true);
 
     baseLayout_->addWidget(scrollArea_);
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);

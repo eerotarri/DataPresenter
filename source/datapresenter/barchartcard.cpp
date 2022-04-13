@@ -1,8 +1,5 @@
 #include "barchartcard.hh"
 
-#include <QBarCategoryAxis>
-#include <QValueAxis>
-
 BarChartCard::BarChartCard()
 {
     this->setChart(chart_);
@@ -13,7 +10,7 @@ void BarChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::ve
     QStringList dateList;
 
     for ( QDate date : dates ){
-        QString dateStr = date.toString("dd.MM.yyyy");
+        QString dateStr = date.toString(format_);
         dateList.append(dateStr);
     }
 
@@ -23,6 +20,17 @@ void BarChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::ve
 void BarChartCard::setHeader(QString header)
 {
     chart_->setTitle(header);
+}
+
+void BarChartCard::setAxesTitles(QString xtitle, QString ytitle)
+{
+    axisX_->setTitleText(xtitle);
+    axisY_->setTitleText(ytitle);
+}
+
+void BarChartCard::setXAxisFormat(QString format)
+{
+    format_ = format;
 }
 
 void BarChartCard::createChart(QStringList dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
@@ -42,16 +50,12 @@ void BarChartCard::createChart(QStringList dates, std::vector<std::vector<double
 
     chart_->addSeries(series);
 
-    QBarCategoryAxis *axisX = new QBarCategoryAxis();
-    axisX->append(dates);
-    axisX->setTitleText("Date");
-    chart_->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
+    axisX_->append(dates);
+    chart_->addAxis(axisX_, Qt::AlignBottom);
+    series->attachAxis(axisX_);
 
-    QValueAxis *axisY = new QValueAxis();
-    axisY->setTitleText("YKSIKKÖ");
-    chart_->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
+    chart_->addAxis(axisY_, Qt::AlignLeft);
+    series->attachAxis(axisY_);
 
     if ( stations[0] == "" ){
         chart_->legend()->setVisible(false);
