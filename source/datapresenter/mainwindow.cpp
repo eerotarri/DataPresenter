@@ -1,6 +1,25 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 
+// Testi
+#include "barchartcard.hh"
+#include "linechartcard.hh"
+#include "scatterchartcard.hh"
+#include <QDate>
+QString date1 = "20/12/2015";
+QDate Date1 = QDate::fromString(date1, "dd/MM/yyyy");
+QString date2 = "21/12/2015";
+QDate Date2 = QDate::fromString(date2, "dd/MM/yyyy");
+QString date3 = "22/12/2015";
+QDate Date3 = QDate::fromString(date3, "dd/MM/yyyy");
+QString date4 = "23/12/2015";
+QDate Date4 = QDate::fromString(date4, "dd/MM/yyyy");
+QString date5 = "24/12/2015";
+QDate Date5 = QDate::fromString(date5, "dd/MM/yyyy");
+std::vector<std::vector<double>> DATA = {{2,4,5,2,5},{5,2,8,3,1}};
+std::vector<QString> STATIONS = {"S1", "S2"};
+std::vector<QDate> DATES = {Date1, Date2, Date3, Date4, Date5};
+
 /*
 #include "controller.hh"
 #include "timerangedialog.hh"
@@ -12,6 +31,7 @@
 #include <QLabel>
 #include <QScrollBar>
 */
+
 
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     using QLineSeries = QtCharts::QLineSeries;
@@ -72,6 +92,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     */
 {
     ui->setupUi(this);
+    this->setStyleSheet("background-color: rgb(204, 231, 47)");
 
     setup();
 
@@ -131,6 +152,18 @@ void MainWindow::setup()
     scrollArea_->setWidgetResizable(true);
 
     cardAreaWidget_->setLayout(cardAreaLayout_);
+
+
+    // TESTIÄ
+    ChartCard *card = new BarChartCard();
+    card->setHeader("KAASU");
+    card->setAxesTitles("DATE", "YKSIKKÖ");
+    // Jätetään vuosi pois, jotta saadaan lisää tilaa
+    card->setXAxisFormat("dd.MM");
+    card->createChartCard(DATES,DATA,STATIONS);
+    cardAreaLayout_->addWidget(card);
+    // MUISTA POISTAA
+
 
     /*
     // TESTIÄ
