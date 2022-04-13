@@ -1,7 +1,7 @@
 #include "mainwindow.hh"
 #include "ui_mainwindow.h"
 
-// Testi
+/* TESTI DATAA
 #include "barchartcard.hh"
 #include "linechartcard.hh"
 #include "scatterchartcard.hh"
@@ -19,7 +19,7 @@ QDate Date5 = QDate::fromString(date5, "dd/MM/yyyy");
 std::vector<std::vector<double>> DATA = {{2,4,5,2,5},{5,2,8,3,1}};
 std::vector<QString> STATIONS = {"S1", "S2"};
 std::vector<QDate> DATES = {Date1, Date2, Date3, Date4, Date5};
-
+*/
 /*
 #include "controller.hh"
 #include "timerangedialog.hh"
@@ -43,7 +43,9 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     , controller_{controller}
 {
     ui->setupUi(this);
-    this->setStyleSheet("background-color: rgb(204, 231, 47)");
+
+    // taustaväri
+    this->setStyleSheet("background-color: #8a2be2");
 
     setup();
 
