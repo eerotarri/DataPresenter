@@ -42,6 +42,10 @@ LeftSidebar::LeftSidebar(QWidget *parent)
 
     createGroupBoxes();
 
+    // värit
+    scrollArea_->setStyleSheet("background-color: white");
+    showButton_->setStyleSheet("background-color: #00bfff");
+
     smearGasGroupBox_->setVisible(false);
     smearStationGroupBox_->setVisible(false);
     smearTimeRangeWidget_->setVisible(false);
@@ -138,28 +142,28 @@ bool LeftSidebar::isValidOptions()
     bool allIsValid = true;
     if ( smearCheckBox_->isChecked() ){
         if ( smearOptions->gases.empty() ){
-            smearGasGroupBox_->setStyleSheet("color: red");
+            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red;");
             allIsValid = false;
         }
         else {
-            smearGasGroupBox_->setStyleSheet("color: black");
+            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
         }
         if ( smearOptions->stations.empty() ){
-            smearStationGroupBox_->setStyleSheet("color: red");
+            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
             allIsValid = false;
         }
         else {
-            smearStationGroupBox_->setStyleSheet("color: black");
+            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
         }
     }
 
     if ( statfiCheckBox_->isChecked() ){
         if ( statfiOptions->gases.empty() ){
-            statfiGasGroupBox_->setStyleSheet("color: red");
+            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
             allIsValid = false;
         }
         else {
-            statfiGasGroupBox_->setStyleSheet("color: black");
+            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
         }
     }
     if ( allIsValid ){

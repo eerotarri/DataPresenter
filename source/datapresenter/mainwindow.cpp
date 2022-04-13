@@ -45,7 +45,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     ui->setupUi(this);
 
     // taustaväri
-    this->setStyleSheet("background-color: #8a2be2");
+    this->setStyleSheet("background-color: #8a2be2;");
 
     setup();
 
@@ -109,16 +109,18 @@ void MainWindow::setup()
     setCentralWidget(mainWidget_);
     mainWidget_->setLayout(mainLayout_);
 
-    mainLayout_->addWidget(leftSidebarWidget_, 0, 0);
-    mainLayout_->addWidget(scrollArea_, 0, 1);
-    mainLayout_->addWidget(rightSidebarWidget_, 0, 2);
+    mainLayout_->addWidget(leftSidebarWidget_, 0, 1);
+    mainLayout_->addWidget(scrollArea_, 0, 2);
+    mainLayout_->addWidget(rightSidebarWidget_, 0, 3);
 
-    mainLayout_->setColumnMinimumWidth(1, 500);
-    mainLayout_->setColumnMinimumWidth(0, 250);
-    // ei toimi, miksi??
-    mainLayout_->setColumnStretch(0,0);
+    mainLayout_->setColumnMinimumWidth(2, 500);
+    // vasen palkin koko
+    leftSidebarWidget_->setMinimumWidth(250);
+    leftSidebarWidget_->setMaximumWidth(250);
 
     scrollArea_->setWidget(cardArea_);
+    // väri
+    scrollArea_->setStyleSheet("background-color: #b0c4de");
     scrollArea_->setWidgetResizable(true);
 
 }
