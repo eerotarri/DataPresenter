@@ -1,4 +1,5 @@
 #include "model.hh"
+#include "mainwindow.hh"
 
 #include <QDebug>
 #include "linechartcard.hh"
@@ -38,7 +39,9 @@ void Model::showStatistics()
 void Model::updateCardArea()
 {
     qDebug() << "Model: Update cardArea.";
+    createCard(nullptr);
 }
+
 
 void Model::createCard(selectedOptions *selectedOptions)
 {

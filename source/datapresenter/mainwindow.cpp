@@ -27,63 +27,10 @@ std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
 std::vector<QString> STATIONS = {"S1", "S2"};
 std::vector<QDate> DATES ={Date1, Date2};
 
-//#include "ChartCard.hh"
-#include "barchartcard.hh"
-#include "linechartcard.hh"
-// MUISTA POISTAA
-
 MainWindow::MainWindow(Controller *controller, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , controller_{controller}
-
-
-    /*
-    , startButton_(new QPushButton("Start"))
-
-    , mainWidget_(new QWidget)
-    , mainLayout_(new QGridLayout)
-
-    , sidebarWidget_(new QWidget)
-    , sidebarLayout_(new QGridLayout)
-
-    , graphic_frame_(new QFrame)
-    //, chart_(new QChart)
-    , chart_view_(new QChartView)
-
-    , chartLayout_(new QGridLayout)
-
-    , scrollArea_(new QScrollArea)
-    , chartAreaWidget_(new QWidget)
-
-    , databaseComboBox_(new QComboBox)
-
-    , smearGasGroupBox_(new QGroupBox)
-    , smearStationGroupBox_(new QGroupBox)
-
-    , statfiGasGroupBox_(new QGroupBox)
-
-    , compareGasGroupBox_(new QGroupBox)
-    , compareStationGroupBox_(new QGroupBox)
-
-    , gasGroupBox_()
-    , stationGroupBox_()
-
-    , showDataButton_(new QPushButton("Show data"))
-    , valueTableButton_(new QPushButton("average"))
-    , compareButton_(new QPushButton("compare"))
-    , quitButton_(new QPushButton("quit"))
-    , setTimeRangeButton_(new QPushButton("set time range"))
-
-    , statfiTimeRangeWidget_(new QWidget)
-    , toYearSpinBox_(new QSpinBox)
-    , fromYearSpinBox_(new QSpinBox)
-
-    , time_range_dialog_(new TimeRangeDialog(this))
-    , value_table_dialog_(new ValueTableDialog(this))
-
-    , blurEffect_(new QGraphicsBlurEffect)
-    */
 {
     ui->setupUi(this);
 
@@ -94,7 +41,8 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     connect(rightSidebarWidget_, SIGNAL(saveButtonClicked()), controller_, SLOT(saveOptionsToPreferences()));
     connect(rightSidebarWidget_, SIGNAL(statisticsButtonClicked()), controller_, SLOT(showStatistics()));
     connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
-    /*
+
+/*
     ui->setupUi(this);
 
     connect(startButton_, SIGNAL(clicked()), this, SLOT(on_startButton_clicked()));
@@ -157,19 +105,6 @@ void MainWindow::setup()
 
     scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);
-
-    //cardAreaWidget_->setLayout(cardAreaLayout_);
-
-
-    // TESTIÄ
-    //ChartCard *card = new LineChartCard();
-    //card->setHeader("KAASU");
-    //card->createChartCard(DATES,DATA,STATIONS);
- //cardArea_->addCard(card);
-    //cardAreaLayout_->addWidget(card);
-    // MUISTA POISTAA
-
-
 }
 /*
 void MainWindow::setController(Controller *controller)

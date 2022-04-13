@@ -2,8 +2,8 @@
 #define CONTROLLER_HH
 
 #include <QObject>
-//#include "model.hh"
-class Model;
+#include "model.hh"
+//class Model;
 
 class Controller : public QObject
 {

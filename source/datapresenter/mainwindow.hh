@@ -1,24 +1,6 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
-/*
-#include <QMainWindow>
-#include <QChartView>
-#include <QWidget>
-#include <QComboBox>
-#include <QCheckBox>
-#include <QPushButton>
-#include <QLineSeries>
-#include <QBarSeries>
-#include <QLayout>
-#include <QGroupBox>
-#include <QGraphicsEffect>
-#include <QSpinBox>
-
-#include "timerangedialog.hh"
-#include "valuetabledialog.hh"
-*/
-
 #include "rightsidebar.hh"
 #include "leftsidebar.hh"
 #include "controller.hh"
@@ -149,11 +131,6 @@ public:
     ~MainWindow();
     void addCardToCardArea(ChartCard *newCard);
 
-    //void setController(Controller* controller);
-
-public slots:
-    //void cardCreated(ChartCard*);
-
 private slots:
     void closeApplication();
 
@@ -171,7 +148,6 @@ private:
 
     QScrollArea *scrollArea_ = new QScrollArea;
     CardArea *cardArea_ = new CardArea;
-    //QGridLayout *cardAreaLayout_ = new QGridLayout();
 
 };
 #endif // MAINWINDOW_HH
