@@ -121,14 +121,14 @@ void MainWindow::setup()
     setCentralWidget(mainWidget_);
     mainWidget_->setLayout(mainLayout_);
 
-    mainLayout_->addWidget(leftSidebarWidget_, 0, 0);
+    mainLayout_->addWidget(leftSidebarWidget_, 0, 0,Qt::AlignLeft);
     mainLayout_->addWidget(scrollArea_, 0, 1);
     mainLayout_->addWidget(rightSidebarWidget_, 0, 2);
 
     mainLayout_->setColumnMinimumWidth(1, 500);
-    mainLayout_->setColumnMinimumWidth(0, 250);
+    mainLayout_->setColumnMinimumWidth(0, 220);
     // ei toimi, miksi??
-    mainLayout_->setColumnStretch(0,0);
+    //mainLayout_->setColumnStretch(0,0);
 
     scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);

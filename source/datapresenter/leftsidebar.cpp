@@ -18,10 +18,13 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     containerWidgetLayout_->addWidget(statfiCheckBox_);
     containerWidgetLayout_->addWidget(statfiGasGroupBox_);
     containerWidgetLayout_->addWidget(statfiTimeRangeWidget_);
+    containerWidgetLayout_->addWidget(new QWidget, 0, Qt::AlignBottom);
 
     containerWidget_->setLayout(containerWidgetLayout_);
     scrollArea_->setWidget(containerWidget_);
     scrollArea_->setWidgetResizable(true);
+    //scrollArea_->setFixedWidth(200);
+    scrollArea_->setMinimumWidth(200);
 
     baseLayout_->addWidget(scrollArea_);
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
