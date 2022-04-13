@@ -130,6 +130,8 @@ public:
     MainWindow(Controller *controller, QWidget *parent = nullptr);
     ~MainWindow();
     void addCardToCardArea(ChartCard *newCard);
+    selectedOptions *getSelectedOptions(std::string database);
+    std::vector<std::string> getSelectedDatabases();
 
 private slots:
     void closeApplication();

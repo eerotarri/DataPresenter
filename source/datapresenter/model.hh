@@ -76,8 +76,11 @@ public:
     void updateCardArea();
 
 private:
+    void updateSelectedOptions();
     void createCard(selectedOptions *selectedOptions);
     MainWindow *view_;
+    selectedOptions *smearSelectedOptions_ = nullptr;
+    selectedOptions *statfiSelectedOptions_ = nullptr;
 };
 
 #endif // MODEL_HH

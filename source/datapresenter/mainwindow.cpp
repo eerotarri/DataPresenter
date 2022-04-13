@@ -86,6 +86,17 @@ void MainWindow::addCardToCardArea(ChartCard *newCard)
     cardArea_->addCard(newCard);
 }
 
+selectedOptions *MainWindow::getSelectedOptions(std::string database)
+{
+
+}
+
+std::vector<std::string> MainWindow::getSelectedDatabases()
+{
+    std::vector<std::string> databases = leftSidebarWidget_->getSelectedDatabase();
+    return databases;
+}
+
 void MainWindow::closeApplication()
 {
     close();

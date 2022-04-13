@@ -42,6 +42,25 @@ void Model::updateCardArea()
     createCard(nullptr);
 }
 
+void Model::updateSelectedOptions()
+{
+    std::vector<std::string> databases = view_->getSelectedDatabases();
+
+    for( std::string database : databases ){
+        selectedOptions *selected = view_->getSelectedOptions(database);
+
+        if ( database == "smear" ){
+            qDebug() << "Model: Update selected options from Smear.";
+            smearSelectedOptions_ = selected;
+        }
+        else if ( database == "statfi" ){
+            qDebug() << "Model: Update selected options from Statfi.";
+            statfiSelectedOptions_ = selected;
+        }
+    }
+    qDebug() << "Model: Selected options updated.";
+}
+
 
 void Model::createCard(selectedOptions *selectedOptions)
 {
