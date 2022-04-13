@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "model.hh"
+//class Model;
 
 class Controller : public QObject
 {
@@ -21,7 +22,10 @@ public slots:
     void gasCheckBoxStateChanged(const std::string& name, int state);
     void showDatabuttonClicked(int startTime, int endTime);
     */
-    void closeApplication();
+    void showPreferences();
+    void saveOptionsToPreferences();
+    void showStatistics();
+    void updateCardArea();
 private:
     Model* model_;
 };

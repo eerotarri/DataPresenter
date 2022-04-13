@@ -1,4 +1,8 @@
 #include "model.hh"
+#include "mainwindow.hh"
+
+#include <QDebug>
+#include "linechartcard.hh"
 
 Model::Model(QObject *parent)
     : QObject{parent}
@@ -13,7 +17,49 @@ void Model::setView(MainWindow *view)
 
 void Model::updateChartView(IDataFetcher *base)
 {
+    // view_->getSelectedOptions();
+    // createChartCard();
+}
 
+void Model::showPreferences()
+{
+    qDebug() << "Model: Show preferences.";
+}
+
+void Model::saveToPreferences()
+{
+    qDebug() << "Model: Save to preferences.";
+}
+
+void Model::showStatistics()
+{
+    qDebug() << "Model: Show statistics.";
+}
+
+void Model::updateCardArea()
+{
+    qDebug() << "Model: Update cardArea.";
+    createCard(nullptr);
+}
+
+
+void Model::createCard(selectedOptions *selectedOptions)
+{
+    // TESTI
+    QString date1 = "20/12/2015";
+    QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");
+    QString date2 = "24/12/2015";
+    QDate Date2 = QDate::fromString(date2,"dd/MM/yyyy");
+    std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
+    std::vector<QString> STATIONS = {"S1", "S2"};
+    std::vector<QDate> DATES ={Date1, Date2};
+
+    ChartCard *card = new LineChartCard();
+    card->setHeader("KAASU");
+    card->createChartCard(DATES,DATA,STATIONS);
+
+    view_->addCardToCardArea(card);
+    // TESTI
 }
 /*
 #include <iostream>

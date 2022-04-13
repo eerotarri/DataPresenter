@@ -37,67 +37,23 @@ std::vector<QDate> DATES = {Date1, Date2, Date3, Date4, Date5};
     using QLineSeries = QtCharts::QLineSeries;
 #endif
 
-
 MainWindow::MainWindow(Controller *controller, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , controller_{controller}
-
-
-    /*
-    , startButton_(new QPushButton("Start"))
-
-    , mainWidget_(new QWidget)
-    , mainLayout_(new QGridLayout)
-
-    , sidebarWidget_(new QWidget)
-    , sidebarLayout_(new QGridLayout)
-
-    , graphic_frame_(new QFrame)
-    //, chart_(new QChart)
-    , chart_view_(new QChartView)
-
-    , chartLayout_(new QGridLayout)
-
-    , scrollArea_(new QScrollArea)
-    , chartAreaWidget_(new QWidget)
-
-    , databaseComboBox_(new QComboBox)
-
-    , smearGasGroupBox_(new QGroupBox)
-    , smearStationGroupBox_(new QGroupBox)
-
-    , statfiGasGroupBox_(new QGroupBox)
-
-    , compareGasGroupBox_(new QGroupBox)
-    , compareStationGroupBox_(new QGroupBox)
-
-    , gasGroupBox_()
-    , stationGroupBox_()
-
-    , showDataButton_(new QPushButton("Show data"))
-    , valueTableButton_(new QPushButton("average"))
-    , compareButton_(new QPushButton("compare"))
-    , quitButton_(new QPushButton("quit"))
-    , setTimeRangeButton_(new QPushButton("set time range"))
-
-    , statfiTimeRangeWidget_(new QWidget)
-    , toYearSpinBox_(new QSpinBox)
-    , fromYearSpinBox_(new QSpinBox)
-
-    , time_range_dialog_(new TimeRangeDialog(this))
-    , value_table_dialog_(new ValueTableDialog(this))
-
-    , blurEffect_(new QGraphicsBlurEffect)
-    */
 {
     ui->setupUi(this);
     this->setStyleSheet("background-color: rgb(204, 231, 47)");
 
     setup();
 
-    connect(rightSidebarWidget_, SIGNAL(quitButtonClicked()), controller_, SLOT(closeApplication()));
-    /*
+    connect(rightSidebarWidget_, SIGNAL(quitButtonClicked()), this, SLOT(closeApplication()));
+    connect(rightSidebarWidget_, SIGNAL(preferencesButtonClicked()), controller_, SLOT(showPreferences()));
+    connect(rightSidebarWidget_, SIGNAL(saveButtonClicked()), controller_, SLOT(saveOptionsToPreferences()));
+    connect(rightSidebarWidget_, SIGNAL(statisticsButtonClicked()), controller_, SLOT(showStatistics()));
+    connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
+
+/*
     ui->setupUi(this);
 
     connect(startButton_, SIGNAL(clicked()), this, SLOT(on_startButton_clicked()));
@@ -136,6 +92,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::addCardToCardArea(ChartCard *newCard)
+{
+    cardArea_->addCard(newCard);
+}
+
+void MainWindow::closeApplication()
+{
+    close();
+}
+
 void MainWindow::setup()
 {
     setCentralWidget(mainWidget_);
@@ -148,31 +114,8 @@ void MainWindow::setup()
     mainLayout_->setColumnMinimumWidth(2, 500);
     mainLayout_->setColumnMinimumWidth(1, 150);
 
-    scrollArea_->setWidget(cardAreaWidget_);
+    scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);
-
-    cardAreaWidget_->setLayout(cardAreaLayout_);
-
-
-    // TESTIÄ
-    ChartCard *card = new BarChartCard();
-    card->setHeader("KAASU");
-    card->setAxesTitles("DATE", "YKSIKKÖ");
-    // Jätetään vuosi pois, jotta saadaan lisää tilaa
-    card->setXAxisFormat("dd.MM");
-    card->createChartCard(DATES,DATA,STATIONS);
-    cardAreaLayout_->addWidget(card);
-    // MUISTA POISTAA
-
-
-    /*
-    // TESTIÄ
-    ChartCard *card = new LineChartCard();
-    card->setHeader("KAASU");
-    card->createChartCard(DATES,DATA,STATIONS);
-    cardAreaLayout_->addWidget(card);
-    // MUISTA POISTAA
-    */
 
 }
 /*

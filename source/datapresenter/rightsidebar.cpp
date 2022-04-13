@@ -5,7 +5,7 @@ RightSidebar::RightSidebar(QWidget *parent)
 {
     createPlotOptionGroupBox();
 
-    baseLayout_->addWidget(historyButton_);
+    baseLayout_->addWidget(preferencesButton_);
     baseLayout_->addWidget(saveButton_);
     baseLayout_->addWidget(statisticsButton_);
     baseLayout_->addWidget(plotOptionGroupBox_);
@@ -13,6 +13,9 @@ RightSidebar::RightSidebar(QWidget *parent)
 
     this->setLayout(baseLayout_);
 
+    connect(preferencesButton_, SIGNAL(clicked()), this, SLOT(emitPreferencesButtonClicked()));
+    connect(saveButton_, SIGNAL(clicked()), this, SLOT(emitSaveButtonClicked()));
+    connect(statisticsButton_, SIGNAL(clicked()), this, SLOT(emitStatisticsButtonClicked()));
     connect(quitButton_, SIGNAL(clicked()), this, SLOT(emitQuitButtonClicked()));
 }
 
@@ -21,9 +24,9 @@ void RightSidebar::emitQuitButtonClicked()
     emit quitButtonClicked();
 }
 
-void RightSidebar::emitHistoryButtonClicked()
+void RightSidebar::emitPreferencesButtonClicked()
 {
-    emit historyButtonClicked();
+    emit preferencesButtonClicked();
 }
 
 void RightSidebar::emitSaveButtonClicked()

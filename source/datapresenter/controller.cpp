@@ -7,9 +7,24 @@ Controller::Controller(Model *model, QObject *parent)
 {
 }
 
-void Controller::closeApplication()
+void Controller::showPreferences()
 {
-    qDebug() << "Controller: Close application.";
+    model_->showPreferences();
+}
+
+void Controller::saveOptionsToPreferences()
+{
+    model_->saveToPreferences();
+}
+
+void Controller::showStatistics()
+{
+    model_->showStatistics();
+}
+
+void Controller::updateCardArea()
+{
+    model_->updateCardArea();
 }
 
 /*

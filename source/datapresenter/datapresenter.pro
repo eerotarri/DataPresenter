@@ -11,6 +11,7 @@ CONFIG += c++11
 
 SOURCES += \
     barchartcard.cpp \
+    cardarea.cpp \
     checkboxgroup.cpp \
     concretestatfi.cpp \
     controller.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     barchartcard.hh \
+    cardarea.hh \
     chartcard.hh \
     checkboxgroup.hh \
     concretestatfi.hh \
