@@ -24,6 +24,8 @@ void CheckBoxGroup::setItems(std::vector<std::string> items)
 
         groupBoxLayout->addWidget(itemCheckBox);
     }
+
+    //this->setMinimumHeight(items.size()*20);
 }
 
 std::vector<std::string> CheckBoxGroup::getCheckedItems()
