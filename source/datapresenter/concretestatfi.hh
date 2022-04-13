@@ -36,7 +36,7 @@ private slots:
 private:
     const QUrl url_ = QUrl("https://pxnet2.stat.fi/PXWeb/api/v1/en/ymp/taulukot/Kokodata.px");
     const std::vector<double> supportedTimeFrame_ = {1975, 2017};
-    const std::vector<std::string> supportedGases_ = {"Khk_yht","Khk_yht_index","Khk_yht_las","Khk_yht_las_index"};
+    const std::vector<std::string> supportedGases_ = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
 
     QNetworkAccessManager* manager_;
     Model* model_;
@@ -49,6 +49,7 @@ private:
     */
     QByteArray generateQuery(std::string data, std::vector<std::string> years);
     std::vector<double> arrayToVector(QJsonArray array);
+    std::string toEncodedQuery(std::string gas);
 };
 
 #endif // CONCRETESTATFI_HH

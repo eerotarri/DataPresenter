@@ -17,7 +17,6 @@ const std::string CO2_INTENSITY_INDEXED = "Khk_yht_las_index";
 // smear's gases
 
 // stations
-class ConcreteStatfi;
 class Model : public QObject
 {
     Q_OBJECT

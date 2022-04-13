@@ -1,4 +1,4 @@
-#include "concretestatfi.hh"
+﻿#include "concretestatfi.hh"
 
 #include <QDebug>
 
@@ -95,7 +95,7 @@ QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<std::stri
     QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
     // Dynamically adds datasets to query
-    query.append("\"" + data + "\",");
+    query.append("\"" + toEncodedQuery(data) + "\",");
 
 
     query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
@@ -119,6 +119,23 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
     }
 
     return dataVector;
+}
+
+std::string ConcreteStatfi::toEncodedQuery(std::string gas)
+{
+    if (gas == "CO2 in tonnes") {
+        return "Khk_yht";
+    }
+    if (gas == "CO2 intensity") {
+        return "Khk_yht_las";
+    }
+    if (gas == "CO2 indexed") {
+        return "Khk_yht_index";
+    }
+    if (gas == "CO2 indensity indexed") {
+        return "Khk_yht_las_index";
+    }
+    return "ERROR";
 }
 
 
