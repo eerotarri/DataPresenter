@@ -1,4 +1,5 @@
 ﻿#include "concretestatfi.hh"
+#include "model.hh"
 
 #include <QDebug>
 

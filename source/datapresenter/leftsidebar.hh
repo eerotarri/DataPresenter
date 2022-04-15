@@ -17,11 +17,14 @@ struct selectedOptions {
     std::vector<std::string> timeRange;
 };
 
+struct supportedOptions;
+
 class LeftSidebar : public QWidget
 {
     Q_OBJECT
 public:
     explicit LeftSidebar(QWidget *parent = nullptr);
+    void setSupportedOptions(supportedOptions *options);
     std::vector<std::string> getSelectedDatabase();
     selectedOptions *getSelectedOptions(std::string database);
 

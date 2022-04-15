@@ -23,13 +23,6 @@ std::vector<QDate> DATES = {Date1, Date2, Date3, Date4, Date5};
 /*
 #include "controller.hh"
 #include "timerangedialog.hh"
-
-#include <iostream>
-
-#include <QLineSeries>
-#include <QGridLayout>
-#include <QLabel>
-#include <QScrollBar>
 */
 
 
@@ -56,20 +49,8 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
 
 /*
-    ui->setupUi(this);
-
-    connect(startButton_, SIGNAL(clicked()), this, SLOT(on_startButton_clicked()));
-    connect(quitButton_, SIGNAL(clicked()), this, SLOT(on_quitButton_clicked()));
-    connect(compareButton_, SIGNAL(clicked()), this, SLOT(on_compareButton_clicked()));
-    connect(setTimeRangeButton_, SIGNAL(clicked()), this, SLOT(on_setTimeRangeButton_clicked()));
-    connect(valueTableButton_, SIGNAL(clicked()), this, SLOT(on_valueTableButton_clicked()));
-    connect(databaseComboBox_, SIGNAL(currentTextChanged(QString)), this, SLOT(on_databaseComboBox_currentTextChanged()));
-    connect(showDataButton_, SIGNAL(clicked()), this, SLOT(on_showDataButton_clicked()));
     connect(toYearSpinBox_, SIGNAL(valueChanged(int)), this, SLOT(on_toYearSpinBox_valueChanged(int)));
     connect(fromYearSpinBox_, SIGNAL(valueChanged(int)), this, SLOT(on_fromYearSpinBox_valueChanged(int)));
-
-    QWidget *startWidget = new QWidget;
-    QHBoxLayout *startLayout = new QHBoxLayout;
 
     this->setWindowTitle("Sovelluksen NIMI tähän");
 
@@ -77,21 +58,19 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     /*chart_view_->setRenderHint(QPainter::Antialiasing);
     chart_view_->setParent(graphic_frame_);  // add chart view to UI
     chart_view_->resize(graphic_frame_->size());
-    chart_->setGraphicsEffect(blurEffect_);*/
-    /*
+    chart_->setGraphicsEffect(blurEffect_);
+*/
 
-    startWidget->setLayout(startLayout);
-    startLayout->addWidget(startButton_);
-    startButton_->setMaximumWidth(150);
-    startButton_->setMaximumHeight(50);
-
-    setCentralWidget(startWidget);
-    */
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setSupportedOptions(supportedOptions *options)
+{
+    leftSidebarWidget_->setSupportedOptions(options);
 }
 
 void MainWindow::addCardToCardArea(ChartCard *newCard)
@@ -247,79 +226,6 @@ void MainWindow::updateChart(QChart *chart)
     //chart_->removeAllSeries();
 }
 
-void MainWindow::showStatfi()
-{
-    compareGasGroupBox_->setVisible(false);
-    compareStationGroupBox_->setVisible(false);
-
-    smearGasGroupBox_->setVisible(false);
-    smearStationGroupBox_->setVisible(false);
-
-    statfiGasGroupBox_->setVisible(true);
-    statfiTimeRangeWidget_->setVisible(true);
-
-    compareButton_->setVisible(false);
-    setTimeRangeButton_->setVisible(false);
-    valueTableButton_->setVisible(false);
-}
-
-void MainWindow::showSmear()
-{
-    compareGasGroupBox_->setVisible(false);
-    compareStationGroupBox_->setVisible(false);
-
-    statfiGasGroupBox_->setVisible(false);
-    statfiTimeRangeWidget_->setVisible(false);
-
-    smearGasGroupBox_->setVisible(true);
-    smearStationGroupBox_->setVisible(true);
-
-    compareButton_->setVisible(true);
-    setTimeRangeButton_->setVisible(true);
-    valueTableButton_->setVisible(true);
-}
-
-void MainWindow::showCompare()
-{
-    statfiGasGroupBox_->setVisible(false);
-    statfiTimeRangeWidget_->setVisible(false);
-
-    smearGasGroupBox_->setVisible(false);
-    smearStationGroupBox_->setVisible(false);
-
-    compareGasGroupBox_->setVisible(true);
-    compareStationGroupBox_->setVisible(true);
-
-    compareButton_->setVisible(false);
-    setTimeRangeButton_->setVisible(true);
-    valueTableButton_->setVisible(false);
-}
-
-void MainWindow::on_startButton_clicked()
-{
-    controller_->startButtonClicked();
-}
-
-void MainWindow::on_quitButton_clicked()
-{
-    close();
-}
-
-void MainWindow::on_compareButton_clicked()
-{
-    //mitä tänne?
-}
-
-void MainWindow::on_setTimeRangeButton_clicked()
-{
-    time_range_dialog_->show();
-}
-
-void MainWindow::on_valueTableButton_clicked()
-{
-    value_table_dialog_->show();
-}
-
 void MainWindow::on_databaseComboBox_currentTextChanged()
 {
     blurEffect_->setBlurRadius(3);
@@ -336,84 +242,6 @@ void MainWindow::on_showDataButton_clicked()
 
     // MITES smearin kohdalla kun asetetaan päivinä?
     controller_->showDatabuttonClicked(fromYearSpinBox_->value(), toYearSpinBox_->value());
-}
-
-void MainWindow::on_toYearSpinBox_valueChanged(int year)
-{
-    fromYearSpinBox_->setMaximum(year);
-}
-
-void MainWindow::on_fromYearSpinBox_valueChanged(int year)
-{
-    toYearSpinBox_->setMinimum(year);
-}
-
-void MainWindow::stationCheckboxStateChanged(int state)
-{
-    QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
-    controller_->stationCheckBoxStateChanged(checkbox->text().toStdString(), state);
-}
-
-void MainWindow::gasCheckboxStateChanged(int state)
-{
-    QCheckBox *checkbox = qobject_cast<QCheckBox*>(sender());
-    controller_->gasCheckBoxStateChanged(checkbox->text().toStdString(), state);
-}
-
-void MainWindow::createSidebar()
-{
-    createStatfiTimeRangeWidget();
-
-    sidebarWidget_->setLayout(sidebarLayout_);
-    sidebarWidget_->setMaximumWidth(300);
-
-    databaseComboBox_->addItem("SMEAR");
-    databaseComboBox_->addItem("STATFI");
-    databaseComboBox_->addItem("COMPARE");
-
-    sidebarLayout_->addWidget(databaseComboBox_, 1, 1);
-
-    sidebarLayout_->addWidget(smearGasGroupBox_, 2, 1);
-    sidebarLayout_->addWidget(smearStationGroupBox_, 3, 1);
-
-    sidebarLayout_->addWidget(statfiGasGroupBox_, 2, 1);
-    sidebarLayout_->addWidget(statfiTimeRangeWidget_, 3, 1);
-
-    sidebarLayout_->addWidget(compareGasGroupBox_, 2, 1);
-    sidebarLayout_->addWidget(compareStationGroupBox_, 3, 1);
-
-    // compareButton pitäisi olla yearselectbutton
-    // yearselect pitäisi näkyä vain statfissa
-    // timerange pitäisi näkyä vain smearissa
-    // comparedialogia ei ole toteutettu
-    sidebarLayout_->addWidget(compareButton_, 5, 1);
-    sidebarLayout_->addWidget(setTimeRangeButton_, 4, 1);
-
-    sidebarLayout_->addWidget(showDataButton_, 6, 1);
-}
-
-void MainWindow::createStatfiTimeRangeWidget()
-{
-    QLabel *toLabel = new QLabel("To:");
-    QLabel *fromLabel = new QLabel("From:");
-    QLabel *infoLabel = new QLabel("Select time range");
-
-    QGridLayout *timeRangeLayout = new QGridLayout;
-    timeRangeLayout->addWidget(infoLabel, 1, 1, 1, 2);
-    timeRangeLayout->addWidget(fromLabel, 2, 1);
-    timeRangeLayout->addWidget(toLabel, 3, 1);
-    timeRangeLayout->addWidget(fromYearSpinBox_, 2, 2);
-    timeRangeLayout->addWidget(toYearSpinBox_, 3, 2);
-
-    // Statfin aikajana
-    toYearSpinBox_->setMinimum(1975);
-    toYearSpinBox_->setMaximum(2017);
-    fromYearSpinBox_->setMinimum(1975);
-    fromYearSpinBox_->setMaximum(2017);
-
-    statfiTimeRangeWidget_->setMaximumHeight(100);
-
-    statfiTimeRangeWidget_->setLayout(timeRangeLayout);
 }
 
 void MainWindow::createNewChartAreaWidget()

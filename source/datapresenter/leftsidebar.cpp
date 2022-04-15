@@ -1,4 +1,5 @@
 #include "leftsidebar.hh"
+#include "model.hh"
 
 #include <QDebug>
 
@@ -55,6 +56,13 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     connect(smearCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(smearCheckBoxStateChanged(int)));
     connect(statfiCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(statfiCheckBoxStateChanged(int)));
     connect(showButton_, SIGNAL(clicked()), this, SLOT(emitShowButtonClicked()));
+}
+
+void LeftSidebar::setSupportedOptions(supportedOptions *options)
+{
+    smearStationGroupBox_->setItems(options->smearStations);
+    smearGasGroupBox_->setItems(options->smearGases);
+    statfiGasGroupBox_->setItems(options->statfiGases);
 }
 
 std::vector<std::string> LeftSidebar::getSelectedDatabase()
@@ -126,16 +134,11 @@ void LeftSidebar::updateSelectedOptions()
 
 void LeftSidebar::createGroupBoxes()
 {
-    // Hakee tiedot
-    std::vector<std::string> stations = {"Värriö","Kumpula","Hyytiälä"};
-    std::vector<std::string> smearGases = {"CO2","NOx","SO2"};
-    std::vector<std::string> statfiGases = {"CO2","CO3","CO4"};
-
-    smearStationGroupBox_->setItems(stations);
+    //smearStationGroupBox_->setItems(stations);
     smearStationGroupBox_->setTitle("Stations from SMEAR");
-    smearGasGroupBox_->setItems(smearGases);
+    //smearGasGroupBox_->setItems(smearGases);
     smearGasGroupBox_->setTitle("Gases from SMEAR");
-    statfiGasGroupBox_->setItems(statfiGases);
+    //statfiGasGroupBox_->setItems(statfiGases);
     statfiGasGroupBox_->setTitle("Gases from STATFI");
 }
 
