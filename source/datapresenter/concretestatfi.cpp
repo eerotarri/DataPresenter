@@ -124,15 +124,19 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
 std::string ConcreteStatfi::toEncodedQuery(std::string gas)
 {
     if (gas == "CO2 in tonnes") {
+        currentUnit_ = "1000 t";
         return "Khk_yht";
     }
     if (gas == "CO2 intensity") {
+        currentUnit_ = "intensity";
         return "Khk_yht_las";
     }
     if (gas == "CO2 indexed") {
+        currentUnit_ = "indexed, 1990 = 100";
         return "Khk_yht_index";
     }
     if (gas == "CO2 indensity indexed") {
+        currentUnit_ = "indexed, 1990 = 100";
         return "Khk_yht_las_index";
     }
     return "ERROR";

@@ -63,6 +63,11 @@ private:
 
 };
 */
+struct Preferences{
+    selectedOptions *statfiPreferences;
+    selectedOptions *smearPreferences;
+};
+
 class Model : public QObject
 {
     Q_OBJECT
@@ -81,6 +86,7 @@ private:
     MainWindow *view_;
     selectedOptions *smearSelectedOptions_ = nullptr;
     selectedOptions *statfiSelectedOptions_ = nullptr;
+    Preferences *preferences_ = nullptr;
 };
 
 #endif // MODEL_HH

@@ -24,7 +24,7 @@ public:
     explicit ConcreteStatfi(Model* model, QObject *parent = nullptr);
 
     virtual void fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {});
-    std::vector<std::vector<double>> getCurrentData();
+    virtual std::vector<std::vector<double>> getCurrentData();
     virtual std::vector<double> getSupportedTimeFrame();
     virtual std::vector<std::string> getSupportedStations();
     virtual std::vector<std::string> getSupportedGases();
@@ -41,6 +41,7 @@ private:
     QNetworkAccessManager* manager_;
     Model* model_;
     std::vector<std::vector<double> > currentData_ = {};
+    std::string currentUnit_ = "";
 
 
     /*!

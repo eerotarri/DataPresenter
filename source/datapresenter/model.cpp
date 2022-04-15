@@ -29,6 +29,13 @@ void Model::showPreferences()
 void Model::saveToPreferences()
 {
     qDebug() << "Model: Save to preferences.";
+    auto db = view_->getSelectedDatabases();
+    if (std::find(db.begin(), db.end(), "smear") != db.end()) {
+        preferences_->smearPreferences = view_->getSelectedOptions("smear");
+    }
+    if (std::find(db.begin(), db.end(), "statfi") != db.end()) {
+        preferences_->statfiPreferences = view_->getSelectedOptions("statfi");
+    }
 }
 
 void Model::showStatistics()
