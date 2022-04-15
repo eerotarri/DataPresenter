@@ -79,10 +79,10 @@ public:
     void saveToPreferences();
     void showStatistics();
     void updateCardArea();
+    void createCard(selectedOptions *selectedOptions, IDataFetcher* fetcher);
 
 private:
     void updateSelectedOptions();
-    void createCard(selectedOptions *selectedOptions);
     MainWindow *view_;
     selectedOptions *smearSelectedOptions_ = nullptr;
     selectedOptions *statfiSelectedOptions_ = nullptr;

@@ -45,8 +45,11 @@ void Model::showStatistics()
 
 void Model::updateCardArea()
 {
+    // Tää funktio kutsuis fetchDataa ja Concretet kutsuu createCardia kun haku on valmis.
+    // fetchData(parametrit, mitä, onkaan);
+
     qDebug() << "Model: Update cardArea.";
-    createCard(nullptr);
+    createCard(nullptr, nullptr);
     updateSelectedOptions();
 }
 
@@ -70,8 +73,10 @@ void Model::updateSelectedOptions()
 }
 
 
-void Model::createCard(selectedOptions *selectedOptions)
+void Model::createCard(selectedOptions *selectedOptions, IDataFetcher* fetcher)
 {
+    // auto data = fetcher->getCurrentData();
+
     // TESTI
     QString date1 = "20/12/2015";
     QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");

@@ -85,7 +85,7 @@ void ConcreteStatfi::readyRead()
 
     qDebug() << values;
 
-    model_->updateChartView(this);
+    model_->createCard(nullptr, this);
 
     return;
 }
