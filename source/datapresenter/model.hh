@@ -67,7 +67,7 @@ public:
     Model(QObject *parent = nullptr);
     void setView(MainWindow *view);
     void setupView();
-    void updateChartView(IDataFetcher* base);
+    //void updateChartView(IDataFetcher* base);
     void showPreferences();
     void saveToPreferences();
     void showStatistics();
@@ -77,6 +77,7 @@ public:
 private:
     void getSupportedOptions();
     void updateSelectedOptions();
+    // void getData()
     MainWindow *view_;
     selectedOptions *smearSelectedOptions_ = nullptr;
     selectedOptions *statfiSelectedOptions_ = nullptr;

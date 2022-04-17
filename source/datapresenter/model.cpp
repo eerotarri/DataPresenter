@@ -2,6 +2,8 @@
 #include "mainwindow.hh"
 
 #include <QDebug>
+#include <iostream>
+
 #include "linechartcard.hh"
 
 Model::Model(QObject *parent)
@@ -19,12 +21,6 @@ void Model::setupView()
 {
     getSupportedOptions();
     view_->setSupportedOptions(supportedOptions_);
-}
-
-void Model::updateChartView(IDataFetcher *base)
-{
-    // view_->getSelectedOptions();
-    // createChartCard();
 }
 
 void Model::showPreferences()
@@ -53,10 +49,28 @@ void Model::updateCardArea()
 {
     // Tää funktio kutsuis fetchDataa ja Concretet kutsuu createCardia kun haku on valmis.
     // fetchData(parametrit, mitä, onkaan);
+    std::vector<std::string> databases = view_->getSelectedDatabases();
+    updateSelectedOptions();
+
+    for ( std::string base : databases ){
+        if ( base == "smear" ){
+            for ( std::string gas : smearSelectedOptions_->gases ){
+                qDebug() << "SMEAR";
+                //smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
+            }
+        }
+        if ( base == "statfi" ){
+            for ( std::string gas : statfiSelectedOptions_->gases ){
+                qDebug() << "STATFI";
+                //statfi_->fetchData(statfiSelectedOptions_->timeRange, gas, statfiSelectedOptions_->stations);
+            }
+        }
+    }
 
     qDebug() << "Model: Update cardArea.";
+
+
     createCard(nullptr, nullptr);
-    updateSelectedOptions();
 }
 
 void Model::updateSelectedOptions()

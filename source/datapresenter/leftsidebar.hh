@@ -12,9 +12,9 @@
 #include <QScrollArea>
 
 struct selectedOptions {
-    std::vector<std::string> gases;
-    std::vector<std::string> stations;
-    std::vector<std::string> timeRange;
+    std::vector<std::string> gases = {};
+    std::vector<std::string> stations = {};
+    std::vector<std::string> timeRange = {};
 };
 
 struct supportedOptions;
