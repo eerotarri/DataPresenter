@@ -63,15 +63,11 @@ void Model::updateCardArea()
         if ( base == "statfi" ){
             for ( std::string gas : statfiSelectedOptions_->gases ){
                 qDebug() << "STATFI";
-                //statfi_->fetchData({"2000", "2006"}, gas, statfiSelectedOptions_->stations);
+                statfi_->fetchData(statfiSelectedOptions_->timeRange, gas, statfiSelectedOptions_->stations);
             }
         }
     }
-
     qDebug() << "Model: Update cardArea.";
-
-
-//    createCard(nullptr);
 }
 
 void Model::updateSelectedOptions()
@@ -98,14 +94,16 @@ void Model::createCard(IDataFetcher* fetcher)
 {
     auto data = fetcher->getCurrentData();
 
+    qDebug() << "tää" << data;
+
     // TESTI
     QString date1 = "20/12/2015";
-    QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");
+    QDateTime Date1 = QDateTime::fromString(date1,"dd/MM/yyyy");
     QString date2 = "24/12/2015";
-    QDate Date2 = QDate::fromString(date2,"dd/MM/yyyy");
+    QDateTime Date2 = QDateTime::fromString(date2,"dd/MM/yyyy");
     std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
     std::vector<QString> STATIONS = {"S1", "S2"};
-    std::vector<QDate> DATES ={Date1, Date2};
+    std::vector<QDateTime> DATES ={Date1, Date2};
 
     ChartCard *card = new LineChartCard();
     card->setHeader("KAASU");

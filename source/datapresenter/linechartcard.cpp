@@ -7,7 +7,7 @@ LineChartCard::LineChartCard()
     this->setChart(chart_);
 }
 
-void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
+void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
 {
     QLineSeries *series;
     int s = 0;
@@ -29,8 +29,7 @@ void LineChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::v
         series->setName(stations[s]);
 
         for ( int i = 0; i < values.size(); i++ ){
-            QDateTime date;
-            date.setDate(dates[i]);
+            QDateTime date = dates[i];
             double value = values[i];
             series->append(date.toMSecsSinceEpoch(), value);
         }

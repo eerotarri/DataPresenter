@@ -64,7 +64,6 @@ private:
     TimeRangeWidget *statfiTimeRangeWidget_ = new TimeRangeWidget;
 
     QPushButton *showButton_ = new QPushButton("Show");
-
 };
 
 #endif // LEFTSIDEBAR_HH

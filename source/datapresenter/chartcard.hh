@@ -8,7 +8,7 @@
 class ChartCard : public QChartView
 {
 public:
-    virtual void createChartCard(std::vector<QDate> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""}) = 0;
+    virtual void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""}) = 0;
     virtual void setHeader(QString header) = 0;
     virtual void setAxesTitles(QString xtitle, QString ytitle) = 0;
     virtual void setXAxisFormat(QString format) = 0;

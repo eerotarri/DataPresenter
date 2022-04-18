@@ -10,7 +10,7 @@ class LineChartCard : public ChartCard
 {
 public:
     LineChartCard();
-    void createChartCard(std::vector<QDate> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""});
+    void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""});
     void setHeader(QString header);
     void setAxesTitles(QString xtitle, QString ytitle);
     void setXAxisFormat(QString format);

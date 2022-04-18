@@ -10,7 +10,7 @@ ScatterChartCard::ScatterChartCard()
     this->setChart(chart_);
 }
 
-void ScatterChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
+void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
 {
     QScatterSeries *series;
     int s = 0;
@@ -31,8 +31,7 @@ void ScatterChartCard::createChartCard(std::vector<QDate> dates, std::vector<std
         series->setName(stations[s]);
 
         for ( int i = 0; i < values.size(); i++ ){
-            QDateTime date;
-            date.setDate(dates[i]);
+            QDateTime date = dates[i];
             double value = values[i];
             series->append(date.toMSecsSinceEpoch(), value);
         }

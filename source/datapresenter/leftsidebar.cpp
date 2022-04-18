@@ -128,8 +128,11 @@ void LeftSidebar::updateSelectedOptions()
 {
     smearOptions->gases = smearGasGroupBox_->getCheckedItems();
     smearOptions->stations = smearStationGroupBox_->getCheckedItems();
+    smearOptions->timeRange = smearTimeRangeWidget_->getTimeRange();
+
     statfiOptions->gases = statfiGasGroupBox_->getCheckedItems();
     statfiOptions->stations = {};
+    statfiOptions->timeRange = statfiTimeRangeWidget_->getTimeRange();
 }
 
 void LeftSidebar::createGroupBoxes()

@@ -5,11 +5,11 @@ BarChartCard::BarChartCard()
     this->setChart(chart_);
 }
 
-void BarChartCard::createChartCard(std::vector<QDate> dates, std::vector<std::vector<double>> data, std::vector<QString> stations)
+void BarChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations)
 {
     QStringList dateList;
 
-    for ( QDate date : dates ){
+    for ( QDateTime date : dates ){
         QString dateStr = date.toString(format_);
         dateList.append(dateStr);
     }
