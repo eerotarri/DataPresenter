@@ -20,7 +20,7 @@ public:
 
 private:
 
-    void setUp();
+    void setup();
 
     Ui::ValueTableDialog *ui;
 };

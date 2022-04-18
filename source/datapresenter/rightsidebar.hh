@@ -12,6 +12,7 @@ class RightSidebar : public QWidget
     Q_OBJECT
 public:
     explicit RightSidebar(QWidget *parent = nullptr);
+    QRadioButton *getCurrentPlotOption();
 
     // getSelectedPlotOption();
 
@@ -20,12 +21,14 @@ signals:
     void preferencesButtonClicked();
     void saveButtonClicked();
     void statisticsButtonClicked();
+    void plotOptionChanged();
 
 private slots:
     void emitQuitButtonClicked();
     void emitPreferencesButtonClicked();
     void emitSaveButtonClicked();
     void emitStatisticsButtonClicked();
+    void emitPlotOptionChanged(bool checked);
 
 private:
     void createPlotOptionGroupBox();
@@ -44,6 +47,8 @@ private:
     QRadioButton *scatterRadioButton_ = new QRadioButton("scatter graph");
 
     QPushButton *quitButton_ = new QPushButton("Quit");
+
+    QRadioButton *currentPlotOption_ = nullptr;
 };
 
 #endif // RIGHTSIDEBAR_HH

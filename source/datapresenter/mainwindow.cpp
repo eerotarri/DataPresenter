@@ -48,6 +48,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     connect(rightSidebarWidget_, SIGNAL(saveButtonClicked()), controller_, SLOT(saveOptionsToPreferences()));
     connect(rightSidebarWidget_, SIGNAL(statisticsButtonClicked()), controller_, SLOT(showStatistics()));
     connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
+    connect(rightSidebarWidget_, SIGNAL(plotOptionChanged()), controller_, SLOT(updateCardArea()));
 
 /*
 
@@ -91,6 +92,11 @@ std::vector<std::string> MainWindow::getSelectedDatabases()
 {
     std::vector<std::string> databases = leftSidebarWidget_->getSelectedDatabase();
     return databases;
+}
+
+QRadioButton *MainWindow::getCurrentPlotOption()
+{
+    return rightSidebarWidget_->getCurrentPlotOption();
 }
 
 void MainWindow::closeApplication()

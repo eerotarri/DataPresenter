@@ -24,8 +24,8 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
 
     // NÄIN SAA MUOKATTUA Y-AKSELIA SOPIVAKSI
     // katsotaan yksikön mukaan? -> oma funktio
-    axisY_->setRange(0,10);
-    axisY_->setTickCount(10);
+    //axisY_->setRange(0,10);
+    //axisY_->setTickCount(10);
 
     for ( std::vector<double> values : data ){
         series = new QScatterSeries();
@@ -54,10 +54,10 @@ void ScatterChartCard::setHeader(QString header)
     chart_->setTitle(header);
 }
 
-void ScatterChartCard::setAxesTitles(QString xtitle, QString ytitle)
+void ScatterChartCard::setAxesTitles(QString xTitle, QString yTitle)
 {
-    axisX_->setTitleText(xtitle);
-    axisY_->setTitleText(ytitle);
+    axisX_->setTitleText(xTitle);
+    axisY_->setTitleText(yTitle);
 }
 
 void ScatterChartCard::setXAxisFormat(QString format)

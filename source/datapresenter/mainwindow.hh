@@ -50,6 +50,7 @@ public:
     void addCardToCardArea(ChartCard *newCard);
     selectedOptions *getSelectedOptions(std::string database);
     std::vector<std::string> getSelectedDatabases();
+    QRadioButton *getCurrentPlotOption();
 
 private slots:
     void closeApplication();

@@ -12,7 +12,7 @@ public:
     LineChartCard();
     void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""});
     void setHeader(QString header);
-    void setAxesTitles(QString xtitle, QString ytitle);
+    void setAxesTitles(QString xTitle, QString yTitle);
     void setXAxisFormat(QString format);
 
 private:

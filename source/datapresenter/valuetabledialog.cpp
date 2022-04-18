@@ -7,7 +7,7 @@ ValueTableDialog::ValueTableDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setUp();
+    setup();
 }
 
 ValueTableDialog::~ValueTableDialog()
@@ -15,7 +15,7 @@ ValueTableDialog::~ValueTableDialog()
     delete ui;
 }
 
-void ValueTableDialog::setUp()
+void ValueTableDialog::setup()
 {
     QTableWidget *tableWidget = new QTableWidget;
     QVBoxLayout *layout = new QVBoxLayout;

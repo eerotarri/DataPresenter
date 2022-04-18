@@ -5,6 +5,8 @@
 #include <iostream>
 
 #include "linechartcard.hh"
+#include "barchartcard.hh"
+#include "scatterchartcard.hh"
 
 Model::Model(QObject *parent)
     : QObject{parent}
@@ -95,6 +97,27 @@ void Model::createCard(IDataFetcher* fetcher)
 {
     auto data = fetcher->getCurrentData();
 
+    auto plotOption = view_->getCurrentPlotOption();
+
+    ChartCard *card;
+
+    if ( plotOption->text() == "line graph" ){
+        card = new LineChartCard();
+        qDebug() << "Model: Line graph.";
+    }
+    else if ( plotOption->text() == "bar graph" ){
+        card = new BarChartCard();
+        qDebug() << "Model: Bar graph.";
+    }
+    else if ( plotOption->text() == "scatter graph" ){
+        card = new ScatterChartCard();
+        qDebug() << "Model: Scatter graph.";
+    }
+    else {
+        card = nullptr;
+        qDebug() << "Model: None graph.";
+    }
+
     qDebug() << "tää" << data;
 
     // TESTI
@@ -106,7 +129,6 @@ void Model::createCard(IDataFetcher* fetcher)
     //std::vector<QString> STATIONS = {"S1", "S2"};
     std::vector<QDateTime> DATES ={Date1, Date2};
 
-    ChartCard *card = new LineChartCard();
     card->setHeader("KAASU");
     card->createChartCard(DATES,data,{""});
 

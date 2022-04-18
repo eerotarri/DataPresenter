@@ -53,10 +53,10 @@ void LineChartCard::setHeader(QString header)
     chart_->setTitle(header);
 }
 
-void LineChartCard::setAxesTitles(QString xtitle, QString ytitle)
+void LineChartCard::setAxesTitles(QString xTitle, QString yTitle)
 {
-    axisX_->setTitleText(xtitle);
-    axisY_->setTitleText(ytitle);
+    axisX_->setTitleText(xTitle);
+    axisY_->setTitleText(yTitle);
 }
 
 void LineChartCard::setXAxisFormat(QString format)

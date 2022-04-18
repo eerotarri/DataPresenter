@@ -16,8 +16,6 @@ public:
     void setMinimum(QString min);
     void setMaximum(QString max);
 
-signals:
-
 private slots:
     void resetTimeFrame(QDate date);
 

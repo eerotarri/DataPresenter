@@ -23,10 +23,10 @@ void BarChartCard::setHeader(QString header)
     chart_->setTitle(header);
 }
 
-void BarChartCard::setAxesTitles(QString xtitle, QString ytitle)
+void BarChartCard::setAxesTitles(QString xTitle, QString yTitle)
 {
-    axisX_->setTitleText(xtitle);
-    axisY_->setTitleText(ytitle);
+    axisX_->setTitleText(xTitle);
+    axisY_->setTitleText(yTitle);
 }
 
 void BarChartCard::setXAxisFormat(QString format)

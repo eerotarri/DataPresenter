@@ -1,4 +1,5 @@
 #include "rightsidebar.hh"
+#include <QDebug>
 
 RightSidebar::RightSidebar(QWidget *parent)
     : QWidget{parent}
@@ -20,11 +21,23 @@ RightSidebar::RightSidebar(QWidget *parent)
     quitButton_->setStyleSheet("background-color: #00bfff");
     plotOptionGroupBox_->setStyleSheet("background-color: #b0c4de");
 
+    lineRadioButton_->setChecked(true);
+    currentPlotOption_ = lineRadioButton_;
 
     connect(preferencesButton_, SIGNAL(clicked()), this, SLOT(emitPreferencesButtonClicked()));
     connect(saveButton_, SIGNAL(clicked()), this, SLOT(emitSaveButtonClicked()));
     connect(statisticsButton_, SIGNAL(clicked()), this, SLOT(emitStatisticsButtonClicked()));
     connect(quitButton_, SIGNAL(clicked()), this, SLOT(emitQuitButtonClicked()));
+    connect(lineRadioButton_, SIGNAL(toggled(bool)), this, SLOT(emitPlotOptionChanged(bool)));
+    connect(barRadioButton_, SIGNAL(toggled(bool)), this, SLOT(emitPlotOptionChanged(bool)));
+    connect(scatterRadioButton_, SIGNAL(toggled(bool)), this, SLOT(emitPlotOptionChanged(bool)));
+
+
+}
+
+QRadioButton *RightSidebar::getCurrentPlotOption()
+{
+    return currentPlotOption_;
 }
 
 void RightSidebar::emitQuitButtonClicked()
@@ -45,6 +58,30 @@ void RightSidebar::emitSaveButtonClicked()
 void RightSidebar::emitStatisticsButtonClicked()
 {
     emit statisticsButtonClicked();
+}
+
+void RightSidebar::emitPlotOptionChanged(bool checked)
+{
+    if ( checked ){
+        if ( qobject_cast<QRadioButton*>(sender()) == lineRadioButton_ ){
+            currentPlotOption_ = lineRadioButton_;
+            qDebug() << "Plot line.";
+        }
+        else if ( qobject_cast<QRadioButton*>(sender()) == barRadioButton_ ){
+            currentPlotOption_ = barRadioButton_;
+            qDebug() << "Plot bar.";
+        }
+        else if ( qobject_cast<QRadioButton*>(sender()) == scatterRadioButton_ ){
+            currentPlotOption_ = scatterRadioButton_;
+            qDebug() << "Plot scatter.";
+        }
+        else {
+            currentPlotOption_ = nullptr;
+            qDebug() << "None plot option.";
+        }
+
+        emit plotOptionChanged();
+    }
 }
 
 void RightSidebar::createPlotOptionGroupBox()
