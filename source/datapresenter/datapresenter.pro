@@ -13,6 +13,7 @@ SOURCES += \
     barchartcard.cpp \
     cardarea.cpp \
     checkboxgroup.cpp \
+    concretesmear.cpp \
     concretestatfi.cpp \
     controller.cpp \
     leftsidebar.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     cardarea.hh \
     chartcard.hh \
     checkboxgroup.hh \
+    concretesmear.hh \
     concretestatfi.hh \
     controller.hh \
     idatafetcher.hh \

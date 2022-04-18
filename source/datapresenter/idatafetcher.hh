@@ -57,7 +57,6 @@ public:
      * @return possible gases in the form of std::vector<std::string>
      */
     virtual std::vector<std::string> getSupportedGases() = 0;
-
 };
 
 #endif // IDATAFETCHER_HH
