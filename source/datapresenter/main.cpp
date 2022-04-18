@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     MainWindow* view{new MainWindow(controller)};
 
     model->setView(view);
+    model->setupView();
     view->show();
 
     return a.exec();
