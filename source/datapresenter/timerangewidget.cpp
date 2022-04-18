@@ -16,7 +16,7 @@ TimeRangeWidget::TimeRangeWidget(QWidget *parent)
     layout->addWidget(toDateEdit_, 3, 2);
 
     this->setLayout(layout);
-    this->setMaximumHeight(100);
+    this->setMaximumHeight(85);
 }
 
 void TimeRangeWidget::setFormat(QString format)

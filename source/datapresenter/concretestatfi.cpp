@@ -1,4 +1,5 @@
 ﻿#include "concretestatfi.hh"
+#include "model.hh"
 
 #include <QDebug>
 
@@ -10,16 +11,18 @@ ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
 
 void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location)
 {
-    Q_UNUSED(location);
-    currentData_.clear();
-//    std::vector<double> range{};
-//    for (size_t i = 0; i < timeRange.size(); i++) {
-//        range.push_back(std::stod(timeRange[i]));
-//    }
-//    currentData_.push_back(range);
+    if ( timeRange.size() > 1) {
+        Q_UNUSED(location);
 
-    QByteArray query = generateQuery(gas, timeRange);
-    post(query);
+        //    std::vector<double> range{};
+        //    for (size_t i = 0; i < timeRange.size(); i++) {
+        //        range.push_back(std::stod(timeRange[i]));
+        //    }
+        //    currentData_.push_back(range);
+
+        QByteArray query = generateQuery(gas, timeRange);
+        post(query);
+    }
 }
 
 std::vector<std::vector<double>> ConcreteStatfi::getCurrentData()
@@ -80,34 +83,34 @@ void ConcreteStatfi::readyRead()
 
     auto values = arrayToVector(jsonObject["value"].toArray());
 
-
+    currentData_.clear();
     currentData_.push_back(values);
 
     qDebug() << values;
 
-    model_->updateChartView(this);
+    model_->createCard(this);
 
     return;
 }
 
 QByteArray ConcreteStatfi::generateQuery(std::string data, std::vector<std::string> years)
 {
-    QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
+        QByteArray query("{\"query\": [{\"code\": \"Tiedot\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
-    // Dynamically adds datasets to query
-    query.append("\"" + toEncodedQuery(data) + "\",");
+        // Dynamically adds datasets to query
+        query.append("\"" + toEncodedQuery(data) + "\",");
 
 
-    query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
+        query.append("]}},{\"code\": \"Vuosi\",\"selection\": {\"filter\": \"item\",\"values\": [");
 
-    // Dynamically adds timerange to query
-    for (int i = 0; i <= stoi(years.at(1)) - stoi(years.at(0)); ++i) {
+        // Dynamically adds timerange to query
+        for (int i = 0; i <= stoi(years.at(1)) - stoi(years.at(0)); ++i) {
 
-        query.append("\"" + std::to_string(stoi(years.at(0)) + i) + "\",");
-    }
+            query.append("\"" + std::to_string(stoi(years.at(0)) + i) + "\",");
+        }
 
-    query.append("]}}]}");
-    return query;
+        query.append("]}}]}");
+        return query;
 }
 
 std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
@@ -124,18 +127,20 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
 std::string ConcreteStatfi::toEncodedQuery(std::string gas)
 {
     if (gas == "CO2 in tonnes") {
+        currentUnit_ = "1000 t";
         return "Khk_yht";
     }
     if (gas == "CO2 intensity") {
+        currentUnit_ = "intensity";
         return "Khk_yht_las";
     }
     if (gas == "CO2 indexed") {
+        currentUnit_ = "indexed, 1990 = 100";
         return "Khk_yht_index";
     }
     if (gas == "CO2 indensity indexed") {
+        currentUnit_ = "indexed, 1990 = 100";
         return "Khk_yht_las_index";
     }
     return "ERROR";
 }
-
-

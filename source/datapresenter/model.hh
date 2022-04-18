@@ -2,28 +2,20 @@
 #define MODEL_HH
 
 #include "idatafetcher.hh"
-#include "leftsidebar.hh"
-//#include "mainwindow.hh"
-/*
-#include <QObject>
-#include "mainwindow.hh"
-#include "idatafetcher.hh"
 #include "concretestatfi.hh"
-#include <set>
-#include <QBarCategoryAxis>
 
-// statfi's gases
-const std::string CO2_IN_TONNES = "Khk_yht";
-const std::string CO2_INDEXED = "Khk_yht_index";
-const std::string CO2_INTENSITY = "Khk_yht_las";
-const std::string CO2_INTENSITY_INDEXED = "Khk_yht_las_index";
-
-// smear's gases
-
-*/
 #include <QObject>
+
+struct supportedOptions {
+    std::vector<std::string> smearGases;
+    std::vector<std::string> statfiGases;
+    std::vector<std::string> smearStations;
+    std::vector<std::string> smearTimeRange;
+    std::vector<std::string> statfiTimeRange;
+};
 
 class MainWindow;
+struct selectedOptions;
 
 /*
 // stations
@@ -63,21 +55,36 @@ private:
 
 };
 */
+struct Preferences{
+    selectedOptions *statfiPreferences;
+    selectedOptions *smearPreferences;
+};
+
 class Model : public QObject
 {
     Q_OBJECT
 public:
     Model(QObject *parent = nullptr);
     void setView(MainWindow *view);
-    void updateChartView(IDataFetcher* base);
+    void setupView();
+    //void updateChartView(IDataFetcher* base);
     void showPreferences();
     void saveToPreferences();
     void showStatistics();
     void updateCardArea();
+    void createCard(IDataFetcher* fetcher);
 
 private:
-    void createCard(selectedOptions *selectedOptions);
+    void getSupportedOptions();
+    void updateSelectedOptions();
+    // void getData()
     MainWindow *view_;
+    selectedOptions *smearSelectedOptions_ = nullptr;
+    selectedOptions *statfiSelectedOptions_ = nullptr;
+    supportedOptions *supportedOptions_ = nullptr;
+    Preferences *preferences_ = nullptr;
+    IDataFetcher *statfi_ = new ConcreteStatfi(this);
+    IDataFetcher *smear_ = nullptr; // new ConcreteSmear(this);
 };
 
 #endif // MODEL_HH

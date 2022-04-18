@@ -1,4 +1,5 @@
 #include "leftsidebar.hh"
+#include "model.hh"
 
 #include <QDebug>
 
@@ -18,10 +19,13 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     containerWidgetLayout_->addWidget(statfiCheckBox_);
     containerWidgetLayout_->addWidget(statfiGasGroupBox_);
     containerWidgetLayout_->addWidget(statfiTimeRangeWidget_);
+    containerWidgetLayout_->addWidget(new QWidget, 0, Qt::AlignBottom);
 
     containerWidget_->setLayout(containerWidgetLayout_);
     scrollArea_->setWidget(containerWidget_);
     scrollArea_->setWidgetResizable(true);
+    //scrollArea_->setFixedWidth(200);
+    scrollArea_->setMinimumWidth(200);
 
     baseLayout_->addWidget(scrollArea_);
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
@@ -42,10 +46,6 @@ LeftSidebar::LeftSidebar(QWidget *parent)
 
     createGroupBoxes();
 
-    // värit
-    scrollArea_->setStyleSheet("background-color: white");
-    showButton_->setStyleSheet("background-color: #00bfff");
-
     smearGasGroupBox_->setVisible(false);
     smearStationGroupBox_->setVisible(false);
     smearTimeRangeWidget_->setVisible(false);
@@ -56,6 +56,13 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     connect(smearCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(smearCheckBoxStateChanged(int)));
     connect(statfiCheckBox_,SIGNAL(stateChanged(int)), this, SLOT(statfiCheckBoxStateChanged(int)));
     connect(showButton_, SIGNAL(clicked()), this, SLOT(emitShowButtonClicked()));
+}
+
+void LeftSidebar::setSupportedOptions(supportedOptions *options)
+{
+    smearStationGroupBox_->setItems(options->smearStations);
+    smearGasGroupBox_->setItems(options->smearGases);
+    statfiGasGroupBox_->setItems(options->statfiGases);
 }
 
 std::vector<std::string> LeftSidebar::getSelectedDatabase()
@@ -74,10 +81,13 @@ std::vector<std::string> LeftSidebar::getSelectedDatabase()
 
 selectedOptions *LeftSidebar::getSelectedOptions(std::string database)
 {
-    if ( database == "SMEAR" ){
+    if ( database == "smear" ){
         return smearOptions;
     }
-    return statfiOptions;
+    else if ( database == "statfi" ){
+        return statfiOptions;
+    }
+    return nullptr;
 }
 
 void LeftSidebar::smearCheckBoxStateChanged(int state)
@@ -124,16 +134,11 @@ void LeftSidebar::updateSelectedOptions()
 
 void LeftSidebar::createGroupBoxes()
 {
-    // Hakee tiedot
-    std::vector<std::string> stations = {"Värriö","Kumpula","Hyytiälä"};
-    std::vector<std::string> smearGases = {"CO2","NOx","SO2"};
-    std::vector<std::string> statfiGases = {"CO2","CO3","CO4"};
-
-    smearStationGroupBox_->setItems(stations);
+    //smearStationGroupBox_->setItems(stations);
     smearStationGroupBox_->setTitle("Stations from SMEAR");
-    smearGasGroupBox_->setItems(smearGases);
+    //smearGasGroupBox_->setItems(smearGases);
     smearGasGroupBox_->setTitle("Gases from SMEAR");
-    statfiGasGroupBox_->setItems(statfiGases);
+    //statfiGasGroupBox_->setItems(statfiGases);
     statfiGasGroupBox_->setTitle("Gases from STATFI");
 }
 
@@ -142,28 +147,28 @@ bool LeftSidebar::isValidOptions()
     bool allIsValid = true;
     if ( smearCheckBox_->isChecked() ){
         if ( smearOptions->gases.empty() ){
-            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red;");
+            smearGasGroupBox_->setStyleSheet("color: red");
             allIsValid = false;
         }
         else {
-            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            smearGasGroupBox_->setStyleSheet("color: black");
         }
         if ( smearOptions->stations.empty() ){
-            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
+            smearStationGroupBox_->setStyleSheet("color: red");
             allIsValid = false;
         }
         else {
-            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            smearStationGroupBox_->setStyleSheet("color: black");
         }
     }
 
     if ( statfiCheckBox_->isChecked() ){
         if ( statfiOptions->gases.empty() ){
-            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
+            statfiGasGroupBox_->setStyleSheet("color: red");
             allIsValid = false;
         }
         else {
-            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            statfiGasGroupBox_->setStyleSheet("color: black");
         }
     }
     if ( allIsValid ){

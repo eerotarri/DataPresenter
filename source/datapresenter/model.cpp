@@ -2,6 +2,8 @@
 #include "mainwindow.hh"
 
 #include <QDebug>
+#include <iostream>
+
 #include "linechartcard.hh"
 
 Model::Model(QObject *parent)
@@ -15,20 +17,28 @@ void Model::setView(MainWindow *view)
     view_ = view;
 }
 
-void Model::updateChartView(IDataFetcher *base)
+void Model::setupView()
 {
-    // view_->getSelectedOptions();
-    // createChartCard();
+    getSupportedOptions();
+    view_->setSupportedOptions(supportedOptions_);
 }
 
 void Model::showPreferences()
 {
     qDebug() << "Model: Show preferences.";
+
 }
 
 void Model::saveToPreferences()
 {
     qDebug() << "Model: Save to preferences.";
+    auto db = view_->getSelectedDatabases();
+    if (std::find(db.begin(), db.end(), "smear") != db.end()) {
+        preferences_->smearPreferences = view_->getSelectedOptions("smear");
+    }
+    if (std::find(db.begin(), db.end(), "statfi") != db.end()) {
+        preferences_->statfiPreferences = view_->getSelectedOptions("statfi");
+    }
 }
 
 void Model::showStatistics()
@@ -38,13 +48,56 @@ void Model::showStatistics()
 
 void Model::updateCardArea()
 {
+    // Tää funktio kutsuis fetchDataa ja Concretet kutsuu createCardia kun haku on valmis.
+    // fetchData(parametrit, mitä, onkaan);
+    std::vector<std::string> databases = view_->getSelectedDatabases();
+    updateSelectedOptions();
+
+    for ( std::string base : databases ){
+        if ( base == "smear" ){
+            for ( std::string gas : smearSelectedOptions_->gases ){
+                qDebug() << "SMEAR";
+                //smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
+            }
+        }
+        if ( base == "statfi" ){
+            for ( std::string gas : statfiSelectedOptions_->gases ){
+                qDebug() << "STATFI";
+                //statfi_->fetchData({"2000", "2006"}, gas, statfiSelectedOptions_->stations);
+            }
+        }
+    }
+
     qDebug() << "Model: Update cardArea.";
-    createCard(nullptr);
+
+
+//    createCard(nullptr);
+}
+
+void Model::updateSelectedOptions()
+{
+    std::vector<std::string> databases = view_->getSelectedDatabases();
+
+    for( std::string database : databases ){
+        selectedOptions *selected = view_->getSelectedOptions(database);
+
+        if ( database == "smear" ){
+            qDebug() << "Model: Update selected options from Smear.";
+            smearSelectedOptions_ = selected;
+        }
+        if ( database == "statfi" ){
+            qDebug() << "Model: Update selected options from Statfi.";
+            statfiSelectedOptions_ = selected;
+        }
+    }
+    qDebug() << "Model: Selected options updated.";
 }
 
 
-void Model::createCard(selectedOptions *selectedOptions)
+void Model::createCard(IDataFetcher* fetcher)
 {
+    auto data = fetcher->getCurrentData();
+
     // TESTI
     QString date1 = "20/12/2015";
     QDate Date1 = QDate::fromString(date1,"dd/MM/yyyy");
@@ -61,19 +114,22 @@ void Model::createCard(selectedOptions *selectedOptions)
     view_->addCardToCardArea(card);
     // TESTI
 }
-/*
-#include <iostream>
-#include <QBarSet>
 
-#include <QDebug>
-
-
-namespace Data
+void Model::getSupportedOptions()
 {
-    static const std::vector<int> x = {1, 2, 3, 4, 5};
-    static const std::vector<int> y = {1, 2, 1, 2, 1};
-}
+    supportedOptions *options = new supportedOptions;
 
+    options->smearGases = {"CO2", "SO2", "NOx"}; //smear_->getSupportedGases();
+    options->statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"}; //statfi_->getSupportedGases();
+    options->smearStations = {"Hyytiälä", "Kumpula", "Värriö"}; //smear_->getSupportedStations();
+
+    // Missä muodossa aika?
+    //options->smearTimeRange = smear_->getSupportedTimeFrame();
+    //options->statfiTimeRange = statfi_->getSupportedTimeFrame();
+
+    supportedOptions_ = options;
+}
+/*
 Model::Model(MainWindow *view, QObject* parent)
     : QObject{parent}
     , view_{view}
@@ -81,70 +137,6 @@ Model::Model(MainWindow *view, QObject* parent)
     , checkedStations_
     , checkedGases_
 {
-}
-
-void Model::setupView()
-{
-    // hakee kaasut databasesta smearille
-    std::vector<std::string> smearGases = {"CO2", "SO2", "NOx"};
-    //QString smear = "smear";
-    view_->createGasGroupBox(SMEAR, smearGases);
-
-    // hakee kaasut databasesta statfille
-    //QString statfi = "statfi";
-    //std::vector<std::string> statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
-    std::vector<std::string> statfiGases = {"Khk_yht", "Khk_yht_index", "Khk_yht_las", "Khk_yht_las_index"};
-    view_->createGasGroupBox(STATFI, statfiGases);
-
-    // hakee molempien
-    //QString compare = "compare";
-    std::vector<std::string> compareGases = {"CO2", "SO2", "NOx", "CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
-    view_->createGasGroupBox(COMPARE, compareGases);
-
-    // hakee asemat
-    std::vector<std::string> stations = {"Hyytiälä", "Kumpula", "Värriö"};
-    view_->createStationGroupBox(SMEAR, stations);
-    view_->createStationGroupBox(STATFI, stations);
-    view_->createStationGroupBox(COMPARE, stations);
-
-    view_->setup();
-}
-
-void Model::changeDatabase(const QString current_database)
-{
-    currentDatabase_ = current_database;
-    //checkedGases_.clear();
-    checkedStations_.clear();
-
-    if( current_database == SMEAR ){
-        view_->showSmear();
-    }
-    else if( current_database == STATFI ){
-        view_->showStatfi();
-    }
-    else if( current_database == COMPARE ){
-        view_->showCompare();
-    }
-}
-
-void Model::updateCheckedStations(const std::string name, int state)
-{
-    if ( state == Qt::Checked ) {
-        checkedStations_.insert(name);
-    }
-    else {
-        checkedStations_.erase(name);
-    }
-}
-
-void Model::updateCheckedGases(const std::string name, int state)
-{
-    if ( state == Qt::Checked ) {
-        checkedGases_.insert(name);
-    }
-    else {
-        checkedGases_.erase(name);
-    }
 }
 
 void Model::updateChartView(IDataFetcher* base)
@@ -209,68 +201,6 @@ void Model::createChart(std::vector<std::vector<double>> gasData)
     }
 
 }
-*/
-
-//void Model::createLineChart(std::vector<std::vector<double> > gasData /* std::vector<double> timeSelection */)
-//{
-    /*
-    //int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
-    //std::vector<int> timeRange(timeRangeLength);
-    //std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
-
-    //QStringList timeSelection;
-    //QString yearString;
-    std::vector<double> timeSelection = {1,2,3,4,5}; // paremetrina
-
-    QChart *chart = new QChart();
-    chart->setTitle("OTSIKKO");
-
-    for ( std::vector data : gasData ) {
-        QLineSeries *series = createLineSeries(data, timeSelection);
-        chart->addSeries(series);
-    }
-
-    //QBarCategoryAxis *axisX = new QBarCategoryAxis;
-    //axisX->append(timeSelection);
-
-    chart->createDefaultAxes();
-    //chart->setAxisX(axisX, series);
-    // laittaa serieksen nimen piiloon
-    chart->legend()->setVisible(false);
-
-    view_->updateChart(chart);
-}
-
-void Model::createBarChart(std::vector<double> gasData)
-{
-    qDebug() << "käy";
-    int timeRangeLength = statfiEndYear_ - statfiStartYear_ + 1;
-    std::vector<int> timeRange(timeRangeLength);
-    std::iota(timeRange.begin(), timeRange.end(), statfiStartYear_);
-
-    QStringList timeSelection;
-    QString yearString;
-    for ( int year : timeRange ) {
-        yearString = QString::number(year);
-        timeSelection.append(yearString);
-    }
-
-    QChart *chart = new QChart();
-    chart->setTitle("OTSIKKO");
-
-    QBarSeries *series = createBarSeries(gasData);
-    chart->addSeries(series);
-
-    QBarCategoryAxis *axisX = new QBarCategoryAxis;
-    axisX->append(timeSelection);
-
-    chart->createDefaultAxes();
-    chart->setAxisX(axisX, series);
-    // laittaa serieksen nimen piiloon
-    chart->legend()->setVisible(false);
-
-    view_->updateChart(chart);
-}
 
 void Model::fetchData()
 {
@@ -290,27 +220,4 @@ void Model::fetchData()
     }
 
 }
-
-QBarSeries *Model::createBarSeries(const std::vector<double> dataSelection)
-{
-    QBarSeries *series = new QBarSeries;
-    QBarSet *set = new QBarSet("???");
-
-    for ( double value : dataSelection ) {
-        set->append(value);
-    }
-    series->append(set);
-
-    return series;
-}
-
-QLineSeries *Model::createLineSeries(const std::vector<double> dataSelection, const std::vector<double> timeselection)
-{
-    QLineSeries *series = new QLineSeries;
-    for (unsigned int i{0}; i < std::min(timeselection.size(), dataSelection.size()); ++i) {
-        series->append(timeselection[i],dataSelection[i]);
-    }
-    return series;
-}
 */
-
