@@ -3,6 +3,7 @@
 BarChartCard::BarChartCard()
 {
     this->setChart(chart_);
+    this->setMinimumHeight(500);
 }
 
 void BarChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations)

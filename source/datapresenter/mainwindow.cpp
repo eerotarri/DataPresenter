@@ -39,6 +39,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
 
     // taustaväri
     this->setStyleSheet("background-color: #8a2be2");
+    this->setWindowTitle("Sovelluksen NIMI tähän");
 
     setup();
 
@@ -49,10 +50,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
     connect(leftSidebarWidget_, SIGNAL(showButtonClicked()), controller_, SLOT(updateCardArea()));
 
 /*
-    connect(toYearSpinBox_, SIGNAL(valueChanged(int)), this, SLOT(on_toYearSpinBox_valueChanged(int)));
-    connect(fromYearSpinBox_, SIGNAL(valueChanged(int)), this, SLOT(on_fromYearSpinBox_valueChanged(int)));
 
-    this->setWindowTitle("Sovelluksen NIMI tähän");
 
     //chart_view_->setChart(chart_);
     /*chart_view_->setRenderHint(QPainter::Antialiasing);
@@ -71,6 +69,11 @@ MainWindow::~MainWindow()
 void MainWindow::setSupportedOptions(supportedOptions *options)
 {
     leftSidebarWidget_->setSupportedOptions(options);
+}
+
+void MainWindow::clearCardArea()
+{
+    cardArea_->clearArea();
 }
 
 void MainWindow::addCardToCardArea(ChartCard *newCard)
@@ -114,122 +117,13 @@ void MainWindow::setup()
 
 }
 /*
-void MainWindow::setController(Controller *controller)
-{
-    controller_ = controller;
-
-}
-
-void MainWindow::createGasGroupBox(QString database, std::vector<std::string> gases)
-{
-    QGroupBox *gasGroupBox;
-
-    if( database == STATFI )
-    {
-        gasGroupBox = statfiGasGroupBox_;
-    }
-    else if ( database == SMEAR )
-    {
-        gasGroupBox = smearGasGroupBox_;
-    }
-    else
-    {
-        gasGroupBox = compareGasGroupBox_;
-    }
-
-    QVBoxLayout *groupBoxLayout = new QVBoxLayout;
-    gasGroupBox->setLayout(groupBoxLayout);
-    gasGroupBox->setTitle("Gases");
-
-    for( std::string gas : gases )
-    {
-        QString gasName = QString::fromUtf8(gas.c_str());
-
-        QCheckBox *gasCheckBox = new QCheckBox;
-        gasCheckBox->setText(gasName);
-
-        connect(gasCheckBox, SIGNAL(stateChanged(int)), this, SLOT(gasCheckboxStateChanged(int)));
-
-        groupBoxLayout->addWidget(gasCheckBox);
-    }
-}
-
-void MainWindow::createStationGroupBox(QString database, std::vector<std::string> stations)
-{
-    QGroupBox *stationGroupBox;
-
-    if ( database == SMEAR )
-    {
-        stationGroupBox = smearStationGroupBox_;
-    }
-    else
-    {
-        stationGroupBox = compareStationGroupBox_;
-    }
-
-    QVBoxLayout *groupBoxLayout = new QVBoxLayout;
-    stationGroupBox->setLayout(groupBoxLayout);
-    stationGroupBox->setTitle("Stations");
-
-    for( std::string station : stations )
-    {
-        QString gasName = QString::fromUtf8(station.c_str());
-
-        QCheckBox *stationCheckBox = new QCheckBox;
-        stationCheckBox->setText(gasName);
-
-        connect(stationCheckBox, SIGNAL(stateChanged(int)), this, SLOT(stationCheckboxStateChanged(int)));
-
-        groupBoxLayout->addWidget(stationCheckBox);
-    }
-}
-
-void MainWindow::setup()
-{
-    QGridLayout* rightLayout = new QGridLayout;
-    QWidget* rightWidget = new QWidget;
-    rightWidget->setLayout(rightLayout);
-
-    setCentralWidget(mainWidget_);
-    mainWidget_->setLayout(mainLayout_);
-
-    createSidebar();
-
-    mainLayout_->addWidget(sidebarWidget_, 1, 1);
-    mainLayout_->addWidget(scrollArea_, 1, 2);
-    mainLayout_->addWidget(rightWidget, 1, 3);
-
-    rightLayout->addWidget(valueTableButton_, 1, 1);
-    rightLayout->addWidget(quitButton_, 2, 1);
-
-    mainLayout_->setColumnMinimumWidth(2, 500);
-
-    chartAreaWidget_->setLayout(chartLayout_);
-
-    //chartLayout_->setRowMinimumHeight(1, 1000);
-}
 
 void MainWindow::updateChart(QChart *chart)
 {
-    QChartView *chart_view = new QChartView;
-
-    chartLayout_->addWidget(chart_view);
-
-    chart_view->setChart(chart);
-
-    // Kuvan minimikorkeus
-    chart_view->setMinimumHeight(500);
-
     scrollArea_->setWidget(chartAreaWidget_);
     scrollArea_->setWidgetResizable(true);
 
     //chart_->removeAllSeries();
-}
-
-void MainWindow::on_databaseComboBox_currentTextChanged()
-{
-    blurEffect_->setBlurRadius(3);
-    controller_->dadabaseComboBoxCurrentTextChanged(databaseComboBox_->currentText());
 }
 
 void MainWindow::on_showDataButton_clicked()

@@ -5,6 +5,7 @@
 LineChartCard::LineChartCard()
 {
     this->setChart(chart_);
+    this->setMinimumHeight(500);
 }
 
 void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
@@ -12,7 +13,7 @@ void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<st
     QLineSeries *series;
     int s = 0;
 
-    axisX_->setTickCount(10);
+    //axisX_->setTickCount(10);
     axisX_->setFormat("dd MM yyyy");
     chart_->addAxis(axisX_, Qt::AlignBottom);
 
@@ -21,11 +22,12 @@ void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<st
 
     // NÄIN SAA MUOKATTUA Y-AKSELIA SOPIVAKSI
     // katsotaan yksikön mukaan? -> oma funktio
-    axisY_->setRange(0,10);
-    axisY_->setTickCount(10);
+    //axisY_->setRange(0,10);
+    //axisY_->setTickCount(10);
 
     for ( std::vector<double> values : data ){
         series = new QLineSeries();
+
         series->setName(stations[s]);
 
         for ( int i = 0; i < values.size(); i++ ){

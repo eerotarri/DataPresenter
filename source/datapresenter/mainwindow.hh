@@ -46,6 +46,7 @@ public:
     MainWindow(Controller *controller, QWidget *parent = nullptr);
     ~MainWindow();
     void setSupportedOptions(supportedOptions *options);
+    void clearCardArea();
     void addCardToCardArea(ChartCard *newCard);
     selectedOptions *getSelectedOptions(std::string database);
     std::vector<std::string> getSelectedDatabases();

@@ -1,4 +1,5 @@
 #include "cardarea.hh"
+#include <QDebug>
 
 CardArea::CardArea(QWidget *parent)
     : QWidget{parent}
@@ -18,5 +19,6 @@ void CardArea::clearArea()
         delete card_ptr;
     }
 
+    qDebug() << "CardArea: Clear.";
     cards_.clear();
 }
