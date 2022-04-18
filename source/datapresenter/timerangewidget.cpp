@@ -17,6 +17,9 @@ TimeRangeWidget::TimeRangeWidget(QWidget *parent)
 
     this->setLayout(layout);
     this->setMaximumHeight(85);
+
+    connect(fromDateEdit_, SIGNAL(dateChanged(QDate)), this, SLOT(resetTimeFrame(QDate)));
+    connect(toDateEdit_, SIGNAL(dateChanged(QDate)), this, SLOT(resetTimeFrame(QDate)));
 }
 
 void TimeRangeWidget::setFormat(QString format)
@@ -49,13 +52,19 @@ void TimeRangeWidget::setMinimum(QString min)
     QDate date = date.fromString(min,format_);
 
     fromDateEdit_->setMinimumDate(date);
-    toDateEdit_->setMinimumDate(date);
+    toDateEdit_->setMinimumDate(fromDateEdit_->date());
 }
 
 void TimeRangeWidget::setMaximum(QString max)
 {
     QDate date = date.fromString(max,format_);
 
-    fromDateEdit_->setMaximumDate(date);
+    fromDateEdit_->setMaximumDate(toDateEdit_->date());
     toDateEdit_->setMaximumDate(date);
+}
+
+void TimeRangeWidget::resetTimeFrame(QDate date)
+{
+    fromDateEdit_->setMaximumDate(toDateEdit_->date());
+    toDateEdit_->setMinimumDate(fromDateEdit_->date());
 }

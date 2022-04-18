@@ -18,6 +18,9 @@ public:
 
 signals:
 
+private slots:
+    void resetTimeFrame(QDate date);
+
 private:
     QLabel *title_ = new QLabel;
     QDateEdit *fromDateEdit_ = new QDateEdit;

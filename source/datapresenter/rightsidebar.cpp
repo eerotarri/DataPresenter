@@ -13,6 +13,14 @@ RightSidebar::RightSidebar(QWidget *parent)
 
     this->setLayout(baseLayout_);
 
+    //Värit
+    preferencesButton_->setStyleSheet("background-color: #00bfff");
+    saveButton_->setStyleSheet("background-color: #00bfff");
+    statisticsButton_->setStyleSheet("background-color: #00bfff");
+    quitButton_->setStyleSheet("background-color: #00bfff");
+    plotOptionGroupBox_->setStyleSheet("background-color: #b0c4de");
+
+
     connect(preferencesButton_, SIGNAL(clicked()), this, SLOT(emitPreferencesButtonClicked()));
     connect(saveButton_, SIGNAL(clicked()), this, SLOT(emitSaveButtonClicked()));
     connect(statisticsButton_, SIGNAL(clicked()), this, SLOT(emitStatisticsButtonClicked()));

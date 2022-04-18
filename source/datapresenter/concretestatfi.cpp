@@ -144,5 +144,3 @@ std::string ConcreteStatfi::toEncodedQuery(std::string gas)
     }
     return "ERROR";
 }
-
-

@@ -108,7 +108,7 @@ void MainWindow::setup()
     mainLayout_->addWidget(rightSidebarWidget_, 0, 2);
 
     mainLayout_->setColumnMinimumWidth(1, 500);
-    mainLayout_->setColumnMinimumWidth(0, 220);
+    mainLayout_->setColumnMinimumWidth(0, 250);
     // ei toimi, miksi??
     //mainLayout_->setColumnStretch(0,0);
 
