@@ -23,7 +23,6 @@ SOURCES += \
     model.cpp \
     rightsidebar.cpp \
     scatterchartcard.cpp \
-    timerangedialog.cpp \
     timerangewidget.cpp \
     valuetabledialog.cpp
 
@@ -42,16 +41,17 @@ HEADERS += \
     model.hh \
     rightsidebar.hh \
     scatterchartcard.hh \
-    timerangedialog.hh \
     timerangewidget.hh \
     valuetabledialog.hh
 
 FORMS += \
     mainwindow.ui \
-    timerangedialog.ui \
     valuetabledialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    stylesheet.qss

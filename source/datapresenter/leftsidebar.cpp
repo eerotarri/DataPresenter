@@ -27,10 +27,6 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     //scrollArea_->setFixedWidth(200);
     scrollArea_->setMinimumWidth(240);
 
-    // VÄRI
-    scrollArea_->setStyleSheet("background-color: white");
-    showButton_->setStyleSheet("background-color: #00bfff");
-
     baseLayout_->addWidget(scrollArea_);
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
 
@@ -154,28 +150,28 @@ bool LeftSidebar::isValidOptions()
     bool allIsValid = true;
     if ( smearCheckBox_->isChecked() ){
         if ( smearOptions->gases.empty() ){
-            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
+            smearGasGroupBox_->setStyleSheet("color: deeppink");
             allIsValid = false;
         }
         else {
-            smearGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            smearGasGroupBox_->setStyleSheet("color: #2F285A");
         }
         if ( smearOptions->stations.empty() ){
-            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
+            smearStationGroupBox_->setStyleSheet("color: deeppink");
             allIsValid = false;
         }
         else {
-            smearStationGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            smearStationGroupBox_->setStyleSheet("color: #2F285A");
         }
     }
 
     if ( statfiCheckBox_->isChecked() ){
         if ( statfiOptions->gases.empty() ){
-            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: red");
+            statfiGasGroupBox_->setStyleSheet("color: deeppink");
             allIsValid = false;
         }
         else {
-            statfiGasGroupBox_->setStyleSheet("background-color: #b0c4de; color: black");
+            statfiGasGroupBox_->setStyleSheet("color: #2F285A");
         }
     }
     if ( allIsValid ){

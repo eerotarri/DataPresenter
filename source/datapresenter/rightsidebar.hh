@@ -14,8 +14,6 @@ public:
     explicit RightSidebar(QWidget *parent = nullptr);
     QRadioButton *getCurrentPlotOption();
 
-    // getSelectedPlotOption();
-
 signals:
     void quitButtonClicked();
     void preferencesButtonClicked();

@@ -15,11 +15,13 @@ RightSidebar::RightSidebar(QWidget *parent)
     this->setLayout(baseLayout_);
 
     //Värit
-    preferencesButton_->setStyleSheet("background-color: #00bfff");
-    saveButton_->setStyleSheet("background-color: #00bfff");
-    statisticsButton_->setStyleSheet("background-color: #00bfff");
-    quitButton_->setStyleSheet("background-color: #00bfff");
+    /*
+    preferencesButton_->setStyleSheet("background-color: #4C0390");
+    saveButton_->setStyleSheet("background-color: #4C0390");
+    statisticsButton_->setStyleSheet("background-color: #4C0390");
+    quitButton_->setStyleSheet("background-color: #4C0390");
     plotOptionGroupBox_->setStyleSheet("background-color: #b0c4de");
+*/
 
     lineRadioButton_->setChecked(true);
     currentPlotOption_ = lineRadioButton_;

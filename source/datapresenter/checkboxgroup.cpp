@@ -6,8 +6,6 @@
 CheckBoxGroup::CheckBoxGroup( QGroupBox *parent)
     : QGroupBox{parent}
 {
-    // kaikille groupboxeille sama style
-    QGroupBox::setStyleSheet("background-color: #b0c4de");
 }
 
 void CheckBoxGroup::setItems(std::vector<std::string> items)

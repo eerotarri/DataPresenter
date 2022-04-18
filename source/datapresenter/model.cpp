@@ -1,12 +1,11 @@
 #include "model.hh"
 #include "mainwindow.hh"
-
-#include <QDebug>
-#include <iostream>
-
 #include "linechartcard.hh"
 #include "barchartcard.hh"
 #include "scatterchartcard.hh"
+
+#include <QDebug>
+#include <iostream>
 
 Model::Model(QObject *parent)
     : QObject{parent}
@@ -46,6 +45,7 @@ void Model::saveToPreferences()
 void Model::showStatistics()
 {
     qDebug() << "Model: Show statistics.";
+    valueTable_->show();
 }
 
 void Model::updateCardArea()
@@ -125,8 +125,6 @@ void Model::createCard(IDataFetcher* fetcher)
     QDateTime Date1 = QDateTime::fromString(date1,"yyyy");
     QString date2 = "2001";
     QDateTime Date2 = QDateTime::fromString(date2,"yyyy");
-    //std::vector<std::vector<double>> DATA = {{2,4},{5,2}};
-    //std::vector<QString> STATIONS = {"S1", "S2"};
     std::vector<QDateTime> DATES ={Date1, Date2};
 
     card->setHeader("KAASU");

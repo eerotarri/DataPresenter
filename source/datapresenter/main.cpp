@@ -3,13 +3,22 @@
 #include "controller.hh"
 
 #include <QApplication>
-#include <concretestatfi.hh>
+#include <QFile>
+#include "concretestatfi.hh"
 
 #include "concretesmear.hh"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // Load an application style
+    QFile styleFile( "stylesheet.qss" );
+    styleFile.open( QFile::ReadOnly );
+
+    // Apply the loaded stylesheet
+    QString style = QLatin1String( styleFile.readAll() );
+    a.setStyleSheet( style );
 
     Model* model{new Model()};
     Controller* controller{new Controller(model)};
