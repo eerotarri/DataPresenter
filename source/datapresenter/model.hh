@@ -72,7 +72,7 @@ public:
     void saveToPreferences();
     void showStatistics();
     void updateCardArea();
-    void createCard(selectedOptions *selectedOptions, IDataFetcher* fetcher);
+    void createCard(IDataFetcher* fetcher);
 
 private:
     void getSupportedOptions();

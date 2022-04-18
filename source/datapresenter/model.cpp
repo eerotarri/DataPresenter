@@ -26,6 +26,7 @@ void Model::setupView()
 void Model::showPreferences()
 {
     qDebug() << "Model: Show preferences.";
+
 }
 
 void Model::saveToPreferences()
@@ -62,7 +63,7 @@ void Model::updateCardArea()
         if ( base == "statfi" ){
             for ( std::string gas : statfiSelectedOptions_->gases ){
                 qDebug() << "STATFI";
-                //statfi_->fetchData(statfiSelectedOptions_->timeRange, gas, statfiSelectedOptions_->stations);
+                //statfi_->fetchData({"2000", "2006"}, gas, statfiSelectedOptions_->stations);
             }
         }
     }
@@ -70,7 +71,7 @@ void Model::updateCardArea()
     qDebug() << "Model: Update cardArea.";
 
 
-    createCard(nullptr, nullptr);
+//    createCard(nullptr);
 }
 
 void Model::updateSelectedOptions()
@@ -93,9 +94,9 @@ void Model::updateSelectedOptions()
 }
 
 
-void Model::createCard(selectedOptions *selectedOptions, IDataFetcher* fetcher)
+void Model::createCard(IDataFetcher* fetcher)
 {
-    // auto data = fetcher->getCurrentData();
+    auto data = fetcher->getCurrentData();
 
     // TESTI
     QString date1 = "20/12/2015";
