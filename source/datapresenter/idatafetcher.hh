@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <QDateTime>
 
 // Copy the method below to your code and change classname if necessary.
 
@@ -57,6 +58,10 @@ public:
      * @return possible gases in the form of std::vector<std::string>
      */
     virtual std::vector<std::string> getSupportedGases() = 0;
+
+    virtual QString getUnits() = 0;
+
+    virtual std::vector<QDateTime> getTimeVector() = 0;
 };
 
 #endif // IDATAFETCHER_HH
