@@ -1,13 +1,15 @@
-# Program's name
+# Datapresenter
 
-The program monitors real time greenhouse gas data and compares current data with historial greenhouse gas data. The purpose of the program is that user can note the impact of gases on climate change.
+The program monitors real time and historial greenhouse gas data from SMEAR and STATFI. The purpose of the program is that user can note the impact of gases on climate change.
 
-MAIN branch does not have any functionality yet. 
+## Runing code
+
+Project must be open in Qt Creator for running it. Pressing Run-button in Qt Creator starts the program.
 
 ## Usage
 
-MVC-branch:
-Running the code opens the UI window where you can start the program. Set time range, compare and average buttons open new windows, but user can’t do anything on them. From the combo box user can choose statfi, smear or compare. Compare doesn’t work yet. When user selects statfi or smear, she can also choose different gases and stations. After that user can press Show data button and graph shows up. At this point the graph’s data is always the same and it is defined in model.cpp. From quit button user can close the program.
+Main-branch:
+Running the code opens the UI window. When user selects statfi or smear, she can also choose different gases, stations and time ranges. After that user can press Show button and graph shows up. Program checks users input and notifies user of invalid inputs. If user selects both databases, application shows graphs for all selected gases. In that case user can compare different graphs from different databases. Statistics buttons opens new window where user can view min, max and average values from SMEAR. From quit button user can close the program.
 
 Interface:
 IMPORTANT for developers:
@@ -19,6 +21,19 @@ Running the code opens the empty UI window and prints data fetched from STATFI a
 SMEAR-branch:
 Running the code opens the empty UI window and prints data fetched from SMEAR as a debug message. The test parameters are defined in main.cpp.
 
+## Technologies
 
+This project is created by using c++ and Qt Creator.
+
+## Future features
+
+We hope that there is more stations and gases in the future. Also more plot options could be added to the program and multiple plot options could be added to the same chart.
+
+## Authors
+
+Julia Harttunen
+Verna Leisti
+Krista Mätäsniemi
+Eero Tarri
 
 
