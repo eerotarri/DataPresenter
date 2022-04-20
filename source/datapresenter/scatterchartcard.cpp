@@ -15,7 +15,7 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
     QScatterSeries *series;
     int s = 0;
 
-    axisX_->setFormat("dd MM yyyy");
+    //axisX_->setFormat("yyyy");
     chart_->addAxis(axisX_, Qt::AlignBottom);
 
     //axisY_->setLabelFormat("%d");
@@ -61,6 +61,7 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
     QDateTime start = dates.front().addYears(-1);
     QDateTime end = dates.back().addYears(1);
 
+    // mikkä tähä
     min = min - 0.1;
     max = max + 0.1;
 
