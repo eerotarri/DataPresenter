@@ -99,7 +99,7 @@ void MainWindow::setup()
 
     mainLayout_->setColumnMinimumWidth(1, 500);
     mainLayout_->setColumnMinimumWidth(0, 250);
-    mainLayout_->setColumnMinimumWidth(2, 150);
+    mainLayout_->setColumnMinimumWidth(2, 180);
 
     scrollArea_->setWidget(cardArea_);
     scrollArea_->setWidgetResizable(true);
