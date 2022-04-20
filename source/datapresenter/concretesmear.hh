@@ -35,7 +35,6 @@ public:
             std::vector<std::string> location = {}) override;
 
     virtual std::vector<std::vector<double>> getCurrentData() override;
-    virtual QString getUnits() override;
     virtual std::vector<QDateTime> getTimeVector() override;
     std::vector<double> getMin();
     std::vector<double> getMax();

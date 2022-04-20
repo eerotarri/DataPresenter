@@ -45,12 +45,6 @@ std::vector<std::string> ConcreteStatfi::getSupportedGases()
     return supportedGases_;
 }
 
-QString ConcreteStatfi::getUnits()
-{
-    // TO DO
-    return "";
-}
-
 std::vector<QDateTime> ConcreteStatfi::getTimeVector()
 {
     // TO DO
@@ -100,7 +94,7 @@ void ConcreteStatfi::readyRead()
 
     qDebug() << values;
 
-    model_->createCard(this);
+    model_->createCard(this, "yyyy", ""); //kesken
 
     return;
 }

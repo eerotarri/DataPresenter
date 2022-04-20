@@ -4,6 +4,7 @@
 #include "idatafetcher.hh"
 #include "concretestatfi.hh"
 #include "concretesmear.hh"
+#include "concretesmear.hh"
 #include "valuetabledialog.hh"
 
 #include <QObject>
@@ -35,7 +36,8 @@ public:
     void saveToPreferences();
     void showStatistics();
     void updateCardArea();
-    void createCard(IDataFetcher* fetcher);
+    void createCard(IDataFetcher* fetcher, QString format, QString unit);
+    void getStatistics();
 
 private:
     void getSupportedOptions();
@@ -47,7 +49,7 @@ private:
     supportedOptions *supportedOptions_ = nullptr;
     Preferences *preferences_ = nullptr;
     IDataFetcher *statfi_ = new ConcreteStatfi(this);
-    IDataFetcher *smear_ = nullptr; //new ConcreteSmear(this);
+    IDataFetcher *smear_ = new ConcreteSmear(this);
     ValueTableDialog *valueTable_ = new ValueTableDialog;
 };
 

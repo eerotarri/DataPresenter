@@ -31,18 +31,13 @@ std::vector<double> ConcreteSmear::getSupportedTimeFrame()
 
 std::vector<std::vector<double>> ConcreteSmear::getCurrentData()
 {
+    model_->getStatistics();
     return currentData_;
-    // TO DO: model pyytää min, max, average ja tallentaa ne johonkin
 }
 
 std::vector<QDateTime> ConcreteSmear::getTimeVector()
 {
     return timeVec_;
-}
-
-QString ConcreteSmear::getUnits()
-{
-    return units_;
 }
 
 std::vector<double> ConcreteSmear::getMin()
@@ -82,6 +77,9 @@ void ConcreteSmear::generateUrl(std::string start, std::string end,
     url_.append("T00%3A00%3A00.000&to=");
     url_.append(QString::fromStdString(end)); // YYYY-MM-DD
     url_.append("T00%3A00%3A00.000&tablevariable=");
+
+    qDebug() << QString::fromStdString(station);
+    qDebug() << QString::fromStdString(gas);
 
     if (station == stations[0])
     {
@@ -186,6 +184,7 @@ void ConcreteSmear::processReply()
     qDebug() << "---*---*---" ;
     arrayToVector(jsonObject["data"].toArray());
 
+    model_->createCard(this, "MM-dd-hh:mm", units_); // kesken
     qDebug() << "end";
 
     return;

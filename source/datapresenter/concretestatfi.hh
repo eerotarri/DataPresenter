@@ -28,7 +28,6 @@ public:
     virtual std::vector<double> getSupportedTimeFrame();
     virtual std::vector<std::string> getSupportedStations();
     virtual std::vector<std::string> getSupportedGases();
-    virtual QString getUnits();
     virtual std::vector<QDateTime> getTimeVector();
 
 private slots:
