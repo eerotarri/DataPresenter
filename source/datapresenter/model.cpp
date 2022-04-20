@@ -77,6 +77,9 @@ void Model::updateCardArea()
         }
     }
     qDebug() << "Model: Update cardArea.";
+
+    std::vector<ChartCard*> cards = view_->getCards();
+
 }
 
 void Model::updateSelectedOptions()
@@ -102,6 +105,7 @@ void Model::updateSelectedOptions()
 void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
 {
     auto data = fetcher->getCurrentData();
+    auto timeVec = fetcher->getTimeVector();
 
     auto plotOption = view_->getCurrentPlotOption();
 
@@ -124,6 +128,9 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
         qDebug() << "Model: None graph.";
     }
 
+    qDebug() << "Data: " << data;
+    qDebug() << "Time vector size: " << timeVec.size();
+
     // TESTI
     QString date1 = "2000";
     QDateTime Date1 = QDateTime::fromString(date1,"yyyy");
@@ -131,9 +138,12 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     QDateTime Date2 = QDateTime::fromString(date2,"yyyy");
     std::vector<QDateTime> DATES ={Date1, Date2};
 
-    card->setHeader("KAASU");
-    card->createChartCard(DATES,data,{""});
+    card->createChartCard(timeVec,data,{""});
+    qDebug() << unit;
+    card->setAxesTitles("Time", unit);
 
+    card->setXAxisFormat(format);
+    card->setHeader("KAASU");
     view_->addCardToCardArea(card);
     // TESTI
 }
@@ -142,8 +152,8 @@ void Model::getSupportedOptions()
 {
     supportedOptions *options = new supportedOptions;
 
-    options->smearGases = {"CO2", "SO2", "NOx"}; //smear_->getSupportedGases();
-    options->statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"}; //statfi_->getSupportedGases();
+    options->smearGases = smear_->getSupportedGases();
+    options->statfiGases = statfi_->getSupportedGases();
     options->smearStations = smear_->getSupportedStations();
 
     // Missä muodossa aika?

@@ -38,6 +38,10 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
 {
     std::vector<std::string> timeRange = {};
 
+    if ( !isValidTimeRange() ){
+        toDateEdit_->setDate(fromDateEdit_->date().addDays(timeRangeLenght_-1));
+    }
+
     std::string fromDate = fromDateEdit_->date().toString(format_).toStdString();
     std::string toDate = toDateEdit_->date().toString(format_).toStdString();
 
@@ -76,8 +80,24 @@ void TimeRangeWidget::setMaximum(QString max)
     toDateEdit_->setMaximumDate(date);
 }
 
+void TimeRangeWidget::setMaxTimeRangeLenght(int lenght)
+{
+    timeRangeLenght_ = lenght;
+}
+
 void TimeRangeWidget::resetTimeFrame(QDate date)
 {
     fromDateEdit_->setMaximumDate(toDateEdit_->date());
     toDateEdit_->setMinimumDate(fromDateEdit_->date());
+}
+
+bool TimeRangeWidget::isValidTimeRange()
+{
+    if ( timeRangeLenght_ != 0 ){
+        QDateTime maxTo = fromDateEdit_->dateTime().addDays(timeRangeLenght_);
+        if ( maxTo <= toDateEdit_->dateTime() ){
+            return false;
+        }
+    }
+    return true;
 }

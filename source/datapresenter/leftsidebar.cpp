@@ -31,16 +31,17 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
 
     smearTimeRangeWidget_->setTitle("Select time range");
-    statfiTimeRangeWidget_->setTitle("Select time range");
-    statfiTimeRangeWidget_->setFormat("yyyy");
-
-    statfiTimeRangeWidget_->setMinimum("1975");
-    statfiTimeRangeWidget_->setMaximum("2017");
-
+    smearTimeRangeWidget_->setFormat("yyyy-MM-dd");
     /*
     smearTimeRangeWidget_->setMinimum("---");
     smearTimeRangeWidget_->setMaximum("---");
     */
+    smearTimeRangeWidget_->setMaxTimeRangeLenght(14);
+
+    statfiTimeRangeWidget_->setTitle("Select time range");
+    statfiTimeRangeWidget_->setFormat("yyyy");
+    statfiTimeRangeWidget_->setMaximum("2017");
+    statfiTimeRangeWidget_->setMinimum("1975");
 
     this->setLayout(baseLayout_);
 
