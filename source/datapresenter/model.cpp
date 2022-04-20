@@ -77,6 +77,9 @@ void Model::updateCardArea()
         }
     }
     qDebug() << "Model: Update cardArea.";
+
+    std::vector<ChartCard*> cards = view_->getCards();
+
 }
 
 void Model::updateSelectedOptions()
