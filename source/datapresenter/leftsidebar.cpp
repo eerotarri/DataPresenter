@@ -90,6 +90,59 @@ selectedOptions *LeftSidebar::getSelectedOptions(std::string database)
     return nullptr;
 }
 
+void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
+{
+    if (smear == nullptr) {
+        smearCheckBox_->setChecked(false);
+        smearCheckBoxStateChanged(Qt::Unchecked);
+    } else {
+        smearCheckBox_->setChecked(true);
+        smearCheckBoxStateChanged(Qt::Checked);
+        // aseta kaikki smear valinnat.
+        for (QObject *const child : smearGasGroupBox_->children()) {
+            if (child->isWidgetType()) {
+                auto obj = qobject_cast<QCheckBox*>(child);
+                if (std::find(smear->gases.begin(), smear->gases.end(), obj->text().toStdString()) != smear->gases.end()) {
+                    obj->setChecked(true);
+                } else {
+                    obj->setChecked(false);
+                }
+            }
+        }
+        for (QObject *const child : smearStationGroupBox_->children()) {
+            if (child->isWidgetType()) {
+                auto obj = qobject_cast<QCheckBox*>(child);
+                if (std::find(smear->gases.begin(), smear->gases.end(), obj->text().toStdString()) != smear->gases.end()) {
+                    obj->setChecked(true);
+                } else {
+                    obj->setChecked(false);
+                }
+            }
+        }
+    }
+
+    if (statfi == nullptr) {
+        statfiCheckBox_->setChecked(false);
+        statfiCheckBoxStateChanged(Qt::Unchecked);
+    } else {
+        statfiCheckBox_->setChecked(true);
+        statfiCheckBoxStateChanged(Qt::Checked);
+        // aseta kaikki statfi valinnat.
+
+
+        for (QObject *const child : statfiGasGroupBox_->children()) {
+            if (child->isWidgetType()) {
+                auto obj = qobject_cast<QCheckBox*>(child);
+                if (std::find(statfi->gases.begin(), statfi->gases.end(), obj->text().toStdString()) != statfi->gases.end()) {
+                    obj->setChecked(true);
+                } else {
+                    obj->setChecked(false);
+                }
+            }
+        }
+    }
+}
+
 void LeftSidebar::smearCheckBoxStateChanged(int state)
 {
     if ( state == Qt::Checked ){

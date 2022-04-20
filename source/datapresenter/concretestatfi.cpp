@@ -14,11 +14,12 @@ void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string g
     if ( timeRange.size() > 1) {
         Q_UNUSED(location);
 
-        //    std::vector<double> range{};
-        //    for (size_t i = 0; i < timeRange.size(); i++) {
-        //        range.push_back(std::stod(timeRange[i]));
-        //    }
-        //    currentData_.push_back(range);
+        currentTimeRange_.clear();
+        for (int i = std::stoi(timeRange[0]); i <= std::stoi(timeRange[1]); i++) {
+            qDebug() << i;
+            QDateTime dt = QDateTime::fromString(QStringView(QString::fromStdString(timeRange[i])), QString("yyyy"));
+            currentTimeRange_.push_back(dt);
+        }
 
         QByteArray query = generateQuery(gas, timeRange);
         post(query);
@@ -47,8 +48,7 @@ std::vector<std::string> ConcreteStatfi::getSupportedGases()
 
 std::vector<QDateTime> ConcreteStatfi::getTimeVector()
 {
-    // TO DO
-    return {};
+    return currentTimeRange_;
 }
 
 void ConcreteStatfi::post(QByteArray data)
@@ -94,7 +94,7 @@ void ConcreteStatfi::readyRead()
 
     qDebug() << values;
 
-    model_->createCard(this, "yyyy", ""); //kesken
+    model_->createCard(this, "yyyy", currentUnit_); //kesken
 
     return;
 }
@@ -133,20 +133,20 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
 std::string ConcreteStatfi::toEncodedQuery(std::string gas)
 {
     if (gas == "CO2 in tonnes") {
-        currentUnit_ = "1000 t";
+        currentUnit_ = QString::fromStdString("1000 t");
         return "Khk_yht";
     }
     if (gas == "CO2 intensity") {
-        currentUnit_ = "intensity";
+        currentUnit_ = QString::fromStdString("intensity");
         return "Khk_yht_las";
     }
     if (gas == "CO2 indexed") {
-        currentUnit_ = "indexed, 1990 = 100";
+        currentUnit_ = QString::fromStdString("indexed, 1990 = 100");
         return "Khk_yht_index";
     }
     if (gas == "CO2 indensity indexed") {
-        currentUnit_ = "indexed, 1990 = 100";
+        currentUnit_ = QString::fromStdString("indexed, 1990 = 100");
         return "Khk_yht_las_index";
     }
-    return "ERROR";
+    return "UNIT ERROR";
 }

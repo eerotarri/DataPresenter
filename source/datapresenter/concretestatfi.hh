@@ -41,8 +41,10 @@ private:
 
     QNetworkAccessManager* manager_;
     Model* model_;
+
     std::vector<std::vector<double> > currentData_ = {};
-    std::string currentUnit_ = "";
+    std::vector<QDateTime> currentTimeRange_ = {};
+    QString currentUnit_ = "";
 
 
     /*!

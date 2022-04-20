@@ -28,6 +28,7 @@ void Model::showPreferences()
 {
     qDebug() << "Model: Show preferences.";
 
+    view_->showPreferences(preferences_->smearPreferences, preferences_->statfiPreferences);
 }
 
 void Model::saveToPreferences()
@@ -36,9 +37,14 @@ void Model::saveToPreferences()
     auto db = view_->getSelectedDatabases();
     if (std::find(db.begin(), db.end(), "smear") != db.end()) {
         preferences_->smearPreferences = view_->getSelectedOptions("smear");
+    } else {
+        preferences_->smearPreferences = nullptr;
     }
     if (std::find(db.begin(), db.end(), "statfi") != db.end()) {
         preferences_->statfiPreferences = view_->getSelectedOptions("statfi");
+        qDebug() << view_->getSelectedOptions("statfi")->gases.empty();
+    } else {
+        preferences_->statfiPreferences = nullptr;
     }
 }
 
