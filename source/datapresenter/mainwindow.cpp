@@ -80,7 +80,7 @@ QRadioButton *MainWindow::getCurrentPlotOption()
 
 std::vector<ChartCard *> MainWindow::getCards()
 {
-    return cardArea_.getCards();
+    return cardArea_->getCards();
 }
 
 void MainWindow::closeApplication()
