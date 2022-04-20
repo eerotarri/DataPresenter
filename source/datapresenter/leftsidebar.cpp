@@ -33,6 +33,7 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     smearTimeRangeWidget_->setTitle("Select time range");
     statfiTimeRangeWidget_->setTitle("Select time range");
     statfiTimeRangeWidget_->setFormat("yyyy");
+    smearTimeRangeWidget_->setFormat("dd/MM/yy");
 
     statfiTimeRangeWidget_->setMinimum("1975");
     statfiTimeRangeWidget_->setMaximum("2017");

@@ -15,9 +15,12 @@ public:
     void setXAxisFormat(QString format);
 
 private:
+    void setTickCount(std::vector<QDateTime> dates);
+    void setAxisXRange();
     QChart *chart_ = new QChart();
     QDateTimeAxis *axisX_ = new QDateTimeAxis;
     QValueAxis *axisY_ = new QValueAxis;
+    QString format_;
 };
 
 #endif // SCATTERCHARTCARD_HH

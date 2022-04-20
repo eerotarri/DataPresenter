@@ -102,6 +102,7 @@ void Model::updateSelectedOptions()
 void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
 {
     auto data = fetcher->getCurrentData();
+    auto timeVec = fetcher->getTimeVector();
 
     auto plotOption = view_->getCurrentPlotOption();
 
@@ -134,7 +135,7 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     std::vector<QDateTime> DATES ={Date1, Date2};
 
     card->setHeader("KAASU");
-    card->createChartCard(DATES,data,{""});
+    card->createChartCard(timeVec,data,{""});
 
     view_->addCardToCardArea(card);
     // TESTI
