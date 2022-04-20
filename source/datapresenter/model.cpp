@@ -66,7 +66,7 @@ void Model::updateCardArea()
         if ( base == "smear" ){
             for ( std::string gas : smearSelectedOptions_->gases ){
                 qDebug() << "SMEAR";
-                //smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
+                smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
             }
         }
         if ( base == "statfi" ){
@@ -99,7 +99,7 @@ void Model::updateSelectedOptions()
 }
 
 
-void Model::createCard(IDataFetcher* fetcher)
+void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
 {
     auto data = fetcher->getCurrentData();
 
@@ -146,11 +146,20 @@ void Model::getSupportedOptions()
 
     options->smearGases = {"CO2", "SO2", "NOx"}; //smear_->getSupportedGases();
     options->statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"}; //statfi_->getSupportedGases();
-    options->smearStations = {"Hyytiälä", "Kumpula", "Värriö"}; //smear_->getSupportedStations();
+    options->smearStations = smear_->getSupportedStations();
 
     // Missä muodossa aika?
     //options->smearTimeRange = smear_->getSupportedTimeFrame();
     //options->statfiTimeRange = statfi_->getSupportedTimeFrame();
 
     supportedOptions_ = options;
+}
+
+void Model::getStatistics()
+{
+    ConcreteSmear *smear = dynamic_cast<ConcreteSmear*>(smear_);
+    std::vector<double> min = smear->getMin();
+    std::vector<double> max = smear->getMax();
+    std::vector<double> average = smear->getAverage();
+    // TO DO
 }

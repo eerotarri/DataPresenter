@@ -59,8 +59,6 @@ public:
      */
     virtual std::vector<std::string> getSupportedGases() = 0;
 
-    virtual QString getUnits() = 0;
-
     virtual std::vector<QDateTime> getTimeVector() = 0;
 };
 

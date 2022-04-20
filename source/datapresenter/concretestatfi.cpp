@@ -93,7 +93,7 @@ void ConcreteStatfi::readyRead()
 
     qDebug() << values;
 
-    model_->createCard(this);
+    model_->createCard(this, "yyyy", ""); //kesken
 
     return;
 }
