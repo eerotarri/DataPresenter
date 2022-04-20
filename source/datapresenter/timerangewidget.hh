@@ -13,7 +13,7 @@ public:
     void setFormat(QString format);
     void setTitle(QString title);
     std::vector<std::string> getTimeRange();
-    void setTimeRange(std::string start, std::string end);
+    void setTimeRange(std::string start, std::string end, std::string format);
     void setMinimum(QString min);
     void setMaximum(QString max);
 

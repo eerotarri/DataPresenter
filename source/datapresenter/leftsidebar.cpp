@@ -96,6 +96,7 @@ void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
         smearCheckBox_->setChecked(false);
         smearCheckBoxStateChanged(Qt::Unchecked);
     } else {
+        statfiTimeRangeWidget_->setTimeRange(smear->timeRange[0], smear->timeRange[0], "smear");
         smearCheckBox_->setChecked(true);
         smearCheckBoxStateChanged(Qt::Checked);
         // aseta kaikki smear valinnat.
@@ -125,6 +126,7 @@ void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
         statfiCheckBox_->setChecked(false);
         statfiCheckBoxStateChanged(Qt::Unchecked);
     } else {
+        statfiTimeRangeWidget_->setTimeRange(statfi->timeRange[0], statfi->timeRange[0], "statfi");
         statfiCheckBox_->setChecked(true);
         statfiCheckBoxStateChanged(Qt::Checked);
         // aseta kaikki statfi valinnat.

@@ -1,4 +1,4 @@
-﻿#include "concretestatfi.hh"
+#include "concretestatfi.hh"
 #include "model.hh"
 
 #include <QDebug>
@@ -14,10 +14,10 @@ void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string g
     if ( timeRange.size() > 1) {
         Q_UNUSED(location);
 
+        // New time vector
         currentTimeRange_.clear();
         for (int i = std::stoi(timeRange[0]); i <= std::stoi(timeRange[1]); i++) {
-            qDebug() << i;
-            QDateTime dt = QDateTime::fromString(QStringView(QString::fromStdString(timeRange[i])), QString("yyyy"));
+            QDateTime dt = QDateTime::fromString(QString::fromStdString(std::to_string(i)), QString("yyyy"));
             currentTimeRange_.push_back(dt);
         }
 
@@ -87,14 +87,24 @@ void ConcreteStatfi::readyRead()
         return;
     }
 
+    // Find the unit.
+    QJsonObject has_unit = jsonObject["dimension"].toObject()["Tiedot"].toObject()["category"].toObject()["index"].toObject();
+    QString unit = "";
+    if (has_unit.contains("Khk_yht")) {
+        unit = "1000 t";
+    } else if (has_unit.contains("Khk_yht_las")) {
+        unit = "intensity";
+    } else {
+        unit = "indexed, 1990 = 100";
+    }
+    qDebug() << unit;
+
     auto values = arrayToVector(jsonObject["value"].toArray());
 
     currentData_.clear();
     currentData_.push_back(values);
 
-    qDebug() << values;
-
-    model_->createCard(this, "yyyy", currentUnit_); //kesken
+    model_->createCard(this, "yyyy", unit);
 
     return;
 }
@@ -133,19 +143,15 @@ std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
 std::string ConcreteStatfi::toEncodedQuery(std::string gas)
 {
     if (gas == "CO2 in tonnes") {
-        currentUnit_ = QString::fromStdString("1000 t");
         return "Khk_yht";
     }
     if (gas == "CO2 intensity") {
-        currentUnit_ = QString::fromStdString("intensity");
         return "Khk_yht_las";
     }
     if (gas == "CO2 indexed") {
-        currentUnit_ = QString::fromStdString("indexed, 1990 = 100");
         return "Khk_yht_index";
     }
     if (gas == "CO2 indensity indexed") {
-        currentUnit_ = QString::fromStdString("indexed, 1990 = 100");
         return "Khk_yht_las_index";
     }
     return "UNIT ERROR";

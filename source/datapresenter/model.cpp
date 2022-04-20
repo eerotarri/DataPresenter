@@ -124,8 +124,6 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
         qDebug() << "Model: None graph.";
     }
 
-    qDebug() << "tää" << data;
-
     // TESTI
     QString date1 = "2000";
     QDateTime Date1 = QDateTime::fromString(date1,"yyyy");
