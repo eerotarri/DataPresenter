@@ -27,7 +27,6 @@ void Model::setupView()
 void Model::showPreferences()
 {
     qDebug() << "Model: Show preferences.";
-    qDebug() << "Is empty at model: " << preferences_->statfiPreferences->gases.empty();
 
     view_->showPreferences(preferences_->smearPreferences, preferences_->statfiPreferences);
 }

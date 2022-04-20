@@ -47,6 +47,11 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
     return timeRange;
 }
 
+void TimeRangeWidget::setTimeRange(std::string start, std::string end)
+{
+    fromDateEdit_->setDate(QDate(std::stoi(start),1,1));
+}
+
 void TimeRangeWidget::setMinimum(QString min)
 {
     QDate date = date.fromString(min,format_);

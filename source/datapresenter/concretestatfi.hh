@@ -28,7 +28,6 @@ public:
     virtual std::vector<double> getSupportedTimeFrame();
     virtual std::vector<std::string> getSupportedStations();
     virtual std::vector<std::string> getSupportedGases();
-    virtual QString getUnits();
     virtual std::vector<QDateTime> getTimeVector();
 
 private slots:
@@ -42,9 +41,10 @@ private:
 
     QNetworkAccessManager* manager_;
     Model* model_;
+
     std::vector<std::vector<double> > currentData_ = {};
-    std::vector<double> currentTimeRange_ = {};
-    std::string currentUnit_ = "";
+    std::vector<QDateTime> currentTimeRange_ = {};
+    QString currentUnit_ = "";
 
 
     /*!
