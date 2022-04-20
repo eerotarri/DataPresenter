@@ -13,6 +13,11 @@ void CardArea::addCard(ChartCard *newCard)
     cards_.push_back(newCard);
 }
 
+std::vector<ChartCard *> CardArea::getCards()
+{
+    return cards_;
+}
+
 void CardArea::clearArea()
 {
     for ( ChartCard* card_ptr : cards_ ){

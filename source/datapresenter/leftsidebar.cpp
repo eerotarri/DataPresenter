@@ -31,6 +31,8 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
 
     smearTimeRangeWidget_->setTitle("Select time range");
+    smearTimeRangeWidget_->setFormat("yyyy-MM-dd");
+
     statfiTimeRangeWidget_->setTitle("Select time range");
     statfiTimeRangeWidget_->setFormat("yyyy");
     smearTimeRangeWidget_->setFormat("dd/MM/yy");

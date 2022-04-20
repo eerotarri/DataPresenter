@@ -70,7 +70,7 @@ void ConcreteSmear::fetchData(
 
 void ConcreteSmear::generateUrl(std::string start, std::string end,
                          std::string gas, std::string station)
-{
+{ 
     url_ = baseUrl;
     url_.append("/search/timeseries?aggregation=MAX&interval=60&from=");
     url_.append(QString::fromStdString(start)); // YYYY-MM-DD
@@ -83,66 +83,78 @@ void ConcreteSmear::generateUrl(std::string start, std::string end,
 
     if (station == stations[0])
     {
+        qDebug() << "VARRIO";
         // Värriö
         if(gas == gases[0])
         {
             // nox
+            qDebug() << "NOx";
             valueName_ = "VAR_META.NO_1";
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
+            qDebug() << "SO2";
             valueName_ = "VAR_META.SO2_1";
             units_ = "ppb";
         }
-        else if (gas == gases[1])
+        else if (gas == gases[2])
         {
             // co2
+            qDebug() << "CO2";
             valueName_ = "VAR_EDDY.av_c";
             units_ = "ppm";
         }
     }
     else if (station == stations[1])
     {
+        qDebug() << "HYYTIALA";
         // Hyytiälä
         if(gas == gases[0])
         {
             // nox
+            qDebug() << "NOx";
             valueName_ = "HYY_META.NO168";
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
+            qDebug() << "SO2";
             valueName_ = "HYY_META.SO2168";
             units_ = "ppb";
         }
-        else if (gas == gases[1])
+        else if (gas == gases[2])
         {
             // co2
+            qDebug() << "CO2";
             valueName_ = "HYY_META.CO2icos168";
             units_ = "ppm";
         }
     }
     else if (station == stations[2])
     {
+        qDebug() << "KUMPULA";
         // Kumpula
         if(gas == gases[0])
         {
             // nox
+            qDebug() << "NOx";
             valueName_ = "KUM_META.NO_x";
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
+            qDebug() << "SO2";
             valueName_ = "KUM_META.SO_2";
             units_ = "ppb";
         }
-        else if (gas == gases[1])
+        else if (gas == gases[2])
         {
             // co2
+            qDebug() << "CO2";
             valueName_ = "KUM_EDDY.av_c_ep";
             units_ = "ppm";
         }

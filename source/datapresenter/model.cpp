@@ -77,6 +77,9 @@ void Model::updateCardArea()
         }
     }
     qDebug() << "Model: Update cardArea.";
+
+    std::vector<ChartCard*> cards = view_->getCards();
+
 }
 
 void Model::updateSelectedOptions()
@@ -125,7 +128,8 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
         qDebug() << "Model: None graph.";
     }
 
-    qDebug() << "tää" << data;
+    qDebug() << "Data: " << data;
+    qDebug() << "Time vector size: " << timeVec.size();
 
     // TESTI
     QString date1 = "2000";
@@ -134,9 +138,12 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     QDateTime Date2 = QDateTime::fromString(date2,"yyyy");
     std::vector<QDateTime> DATES ={Date1, Date2};
 
-    card->setHeader("KAASU");
     card->createChartCard(timeVec,data,{""});
+    qDebug() << unit;
+    card->setAxesTitles("Time", unit);
 
+    card->setXAxisFormat(format);
+    card->setHeader("KAASU");
     view_->addCardToCardArea(card);
     // TESTI
 }

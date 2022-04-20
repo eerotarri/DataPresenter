@@ -51,6 +51,7 @@ private:
     IDataFetcher *statfi_ = new ConcreteStatfi(this);
     IDataFetcher *smear_ = new ConcreteSmear(this);
     ValueTableDialog *valueTable_ = new ValueTableDialog;
+    std::string gasInGraph_ = "";
 };
 
 #endif // MODEL_HH

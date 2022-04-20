@@ -52,6 +52,7 @@ public:
     selectedOptions *getSelectedOptions(std::string database);
     std::vector<std::string> getSelectedDatabases();
     QRadioButton *getCurrentPlotOption();
+    std::vector<ChartCard*> getCards();
 
 private slots:
     void closeApplication();

@@ -12,6 +12,7 @@ class CardArea : public QWidget
 public:
     explicit CardArea(QWidget *parent = nullptr);
     void addCard(ChartCard *newCard);
+    std::vector<ChartCard*> getCards();
     void clearArea();
 
 signals:
