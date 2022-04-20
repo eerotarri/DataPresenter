@@ -49,7 +49,7 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
 
 void TimeRangeWidget::setTimeRange(std::string start, std::string end)
 {
-    fromDateEdit_->setDate(QDate(std::stoi(start),1,1));
+    // fromDateEdit_->setDate();
 }
 
 void TimeRangeWidget::setMinimum(QString min)
