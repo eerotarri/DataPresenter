@@ -15,8 +15,9 @@ void ConcreteStatfi::fetchData(std::vector<std::string> timeRange, std::string g
         Q_UNUSED(location);
 
         currentTimeRange_.clear();
-        for (size_t i = 0; i < timeRange.size(); i++) {
-            QDateTime dt = QDateTime::fromString(QString::fromStdString(timeRange[i]), QString("yyyy"));
+        for (int i = std::stoi(timeRange[0]); i <= std::stoi(timeRange[1]); i++) {
+            qDebug() << i;
+            QDateTime dt = QDateTime::fromString(QStringView(QString::fromStdString(timeRange[i])), QString("yyyy"));
             currentTimeRange_.push_back(dt);
         }
 
