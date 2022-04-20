@@ -4,7 +4,7 @@
 
 ConcreteSmear::ConcreteSmear(Model* model, QObject *parent):
     QObject(parent), manager_(new QNetworkAccessManager(this)), model_(model),
-    url_(baseUrl), valueName_(""), currentData_({{0,1,2,3,4},{0,1,2,3,4}}), // test
+    url_(baseUrl), valueName_(""), currentData_({}),
     timeVec_({}), units_(""), min_({}), max_({}), average_({})
 {
 }
@@ -59,13 +59,20 @@ void ConcreteSmear::fetchData(
         std::vector<std::string> timeRange, std::string gas,
         std::vector<std::string> location)
 {
-    generateUrl(timeRange[0], timeRange[1], gas, location[0]); // test
+    currentData_ = {};
+        min_ = {};
+        max_= {};
+        average_ = {};
+    for(const std::string &station : location)
+    {
+        generateUrl(timeRange[0], timeRange[1], gas, station);
 
-    QNetworkRequest request = QNetworkRequest(QUrl(url_));
-    QNetworkReply* reply = manager_->get(request);
-    qDebug() << "reply received" ;
-    connect(reply, &QNetworkReply::readyRead, this, &ConcreteSmear::processReply);
-
+        QNetworkRequest request = QNetworkRequest(QUrl(url_));
+        QNetworkReply* reply = manager_->get(request);
+        qDebug() << "reply received" ;
+        connect(reply, &QNetworkReply::finished, this, &ConcreteSmear::processReply);
+    }
+    return;
 }
 
 void ConcreteSmear::generateUrl(std::string start, std::string end,
@@ -78,6 +85,7 @@ void ConcreteSmear::generateUrl(std::string start, std::string end,
     url_.append(QString::fromStdString(end)); // YYYY-MM-DD
     url_.append("T00%3A00%3A00.000&tablevariable=");
 
+    qDebug() << "url funktio";
     qDebug() << QString::fromStdString(station);
     qDebug() << QString::fromStdString(gas);
 
