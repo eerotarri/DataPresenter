@@ -28,6 +28,8 @@ public:
     std::vector<std::string> getSelectedDatabase();
     selectedOptions *getSelectedOptions(std::string database);
 
+    void setValues(selectedOptions* smear, selectedOptions* statfi);
+
 signals:
     void showButtonClicked();
 

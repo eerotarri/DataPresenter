@@ -51,6 +51,11 @@ void MainWindow::clearCardArea()
     cardArea_->clearArea();
 }
 
+void MainWindow::showPreferences(selectedOptions* smear, selectedOptions* statfi)
+{
+    leftSidebarWidget_->setValues(smear, statfi);
+}
+
 void MainWindow::addCardToCardArea(ChartCard *newCard)
 {
     cardArea_->addCard(newCard);

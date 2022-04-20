@@ -47,6 +47,7 @@ public:
     ~MainWindow();
     void setSupportedOptions(supportedOptions *options);
     void clearCardArea();
+    void showPreferences(selectedOptions* smear, selectedOptions* statfi);
     void addCardToCardArea(ChartCard *newCard);
     selectedOptions *getSelectedOptions(std::string database);
     std::vector<std::string> getSelectedDatabases();

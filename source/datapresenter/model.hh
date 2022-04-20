@@ -20,8 +20,8 @@ struct supportedOptions {
 };
 
 struct Preferences{
-    selectedOptions *statfiPreferences;
-    selectedOptions *smearPreferences;
+    selectedOptions *statfiPreferences = nullptr;
+    selectedOptions *smearPreferences = nullptr;
 };
 
 class Model : public QObject
@@ -45,7 +45,7 @@ private:
     selectedOptions *smearSelectedOptions_ = nullptr;
     selectedOptions *statfiSelectedOptions_ = nullptr;
     supportedOptions *supportedOptions_ = nullptr;
-    Preferences *preferences_ = nullptr;
+    Preferences *preferences_ = new Preferences;
     IDataFetcher *statfi_ = new ConcreteStatfi(this);
     IDataFetcher *smear_ = nullptr; //new ConcreteSmear(this);
     ValueTableDialog *valueTable_ = new ValueTableDialog;
