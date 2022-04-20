@@ -152,8 +152,8 @@ void Model::getSupportedOptions()
 {
     supportedOptions *options = new supportedOptions;
 
-    options->smearGases = {"CO2", "SO2", "NOx"}; //smear_->getSupportedGases();
-    options->statfiGases = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"}; //statfi_->getSupportedGases();
+    options->smearGases = smear_->getSupportedGases();
+    options->statfiGases = statfi_->getSupportedGases();
     options->smearStations = smear_->getSupportedStations();
 
     // Missä muodossa aika?

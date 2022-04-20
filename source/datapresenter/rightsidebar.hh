@@ -12,6 +12,11 @@ class RightSidebar : public QWidget
     Q_OBJECT
 public:
     explicit RightSidebar(QWidget *parent = nullptr);
+
+    /**
+     * @brief Returns current plot option selected by user.
+     * @return pointer to the selected plot option radiobutton
+     */
     QRadioButton *getCurrentPlotOption();
 
 signals:
@@ -29,6 +34,9 @@ private slots:
     void emitPlotOptionChanged(bool checked);
 
 private:
+    /**
+     * @brief Sets radiobuttons for plot options in group box.
+     */
     void createPlotOptionGroupBox();
     void setStatisticsButtonVisible(bool state = true);
 
