@@ -45,6 +45,18 @@ std::vector<std::string> ConcreteStatfi::getSupportedGases()
     return supportedGases_;
 }
 
+QString ConcreteStatfi::getUnits()
+{
+    // TO DO
+    return "";
+}
+
+std::vector<QDateTime> ConcreteStatfi::getTimeVector()
+{
+    // TO DO
+    return {};
+}
+
 void ConcreteStatfi::post(QByteArray data)
 {
     QNetworkRequest request = QNetworkRequest(QUrl(url_));

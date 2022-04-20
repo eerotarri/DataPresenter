@@ -1,9 +1,11 @@
 #include "concretesmear.hh"
+#include "model.hh"
 #include <QDebug>
 
-ConcreteSmear::ConcreteSmear(QObject *parent):
-    QObject(parent), manager_(new QNetworkAccessManager(this)),
-    url_(baseUrl)
+ConcreteSmear::ConcreteSmear(Model* model, QObject *parent):
+    QObject(parent), manager_(new QNetworkAccessManager(this)), model_(model),
+    url_(baseUrl), valueName_(""), currentData_({{0,1,2,3,4},{0,1,2,3,4}}), // test
+    timeVec_({}), units_(""), min_({}), max_({}), average_({})
 {
 }
 
@@ -12,14 +14,50 @@ ConcreteSmear::~ConcreteSmear()
     delete manager_;
 }
 
-std::vector<std::string> ConcreteSmear::returnGases()
+std::vector<std::string> ConcreteSmear::getSupportedGases()
 {
     return gases;
 }
 
-std::vector<std::string> ConcreteSmear::returnStations()
+std::vector<std::string> ConcreteSmear::getSupportedStations()
 {
     return stations;
+}
+
+std::vector<double> ConcreteSmear::getSupportedTimeFrame()
+{
+    return timeframe;
+}
+
+std::vector<std::vector<double>> ConcreteSmear::getCurrentData()
+{
+    return currentData_;
+    // TO DO: model pyytää min, max, average ja tallentaa ne johonkin
+}
+
+std::vector<QDateTime> ConcreteSmear::getTimeVector()
+{
+    return timeVec_;
+}
+
+QString ConcreteSmear::getUnits()
+{
+    return units_;
+}
+
+std::vector<double> ConcreteSmear::getMin()
+{
+    return min_;
+}
+
+std::vector<double> ConcreteSmear::getMax()
+{
+    return max_;
+}
+
+std::vector<double> ConcreteSmear::getAverage()
+{
+    return average_;
 }
 
 void ConcreteSmear::fetchData(
@@ -39,80 +77,89 @@ void ConcreteSmear::generateUrl(std::string start, std::string end,
                          std::string gas, std::string station)
 {
     url_ = baseUrl;
-    url_.append("/search/timeseries/chart?aggregation=NONE&from=");
+    url_.append("/search/timeseries?aggregation=MAX&interval=60&from=");
     url_.append(QString::fromStdString(start)); // YYYY-MM-DD
-    url_.append("T00%3A00%3A00.000&interval=60&quality=ANY&tablevariable=");
+    url_.append("T00%3A00%3A00.000&to=");
+    url_.append(QString::fromStdString(end)); // YYYY-MM-DD
+    url_.append("T00%3A00%3A00.000&tablevariable=");
 
     if (station == stations[0])
     {
         // Värriö
-        url_.append("VAR_META.");
         if(gas == gases[0])
         {
             // nox
+            valueName_ = "VAR_META.NO_1";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
+            valueName_ = "VAR_META.SO2_1";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // co2
+            valueName_ = "VAR_EDDY.av_c";
+            units_ = "ppm";
         }
     }
     else if (station == stations[1])
     {
         // Hyytiälä
-        url_.append("HYY_META.");
         if(gas == gases[0])
         {
             // nox
-            url_.append("NOx168");
+            valueName_ = "HYY_META.NO168";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
-            url_.append("SO2168");
+            valueName_ = "HYY_META.SO2168";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // co2
-            url_.append("CO2icos168");
+            valueName_ = "HYY_META.CO2icos168";
+            units_ = "ppm";
         }
     }
     else if (station == stations[2])
     {
         // Kumpula
-        url_.append("KUM_META.");
         if(gas == gases[0])
         {
             // nox
-            url_.append("NO_x");
+            valueName_ = "KUM_META.NO_x";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
-            url_.append("SO_2");
+            valueName_ = "KUM_META.SO_2";
+            units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // co2
+            valueName_ = "KUM_EDDY.av_c_ep";
+            units_ = "ppm";
         }
     }
 
-    url_.append("&to=");
-    url_.append(QString::fromStdString(end)); // YYYY-MM-DD
-    url_.append("T00%3A00%3A00.000");
+    url_.append(valueName_);
     qDebug() << "url: " << QString(url_);
 }
 
 void ConcreteSmear::processReply()
 {
-    // TO DO
+    qDebug() << "Process reply: ";
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
     QString replyText = reply->readAll();
-    qDebug() << replyText;
 
     if(reply->error() != QNetworkReply::NoError)
     {
@@ -130,30 +177,64 @@ void ConcreteSmear::processReply()
 
     QJsonObject jsonObject = jsonResponse.object();
 
-    if(!jsonObject.contains("value"))
+    if(!jsonObject.contains("data"))
     {
         qDebug() << "does not have value" ;
         return;
     }
 
-    QJsonArray jsonArray = jsonObject["values"].toArray();
+    qDebug() << "---*---*---" ;
+    arrayToVector(jsonObject["data"].toArray());
+
     qDebug() << "end";
 
     return;
 }
 
-// Station:
-// Värriö: 1: 15m
-// NOx: 540, NOX_0
-// SO2: 554, SO2_0
-// CO2: 636, CO206
+std::vector<double> ConcreteSmear::arrayToVector(QJsonArray jsonArray)
+{
+    std::vector<double> dataVec = {};
+    std::vector<QDateTime> timeVec = {};
+    double min = 1000;
+    double max = 0;
+    double average = 0;
 
-// Hyytiälä: 2: 16,8m
-// NOx: 155, NOx168
-// SO2: 163, SO2168
-// CO2: 114, CO2icos168
+    for (int i = 0; i < jsonArray.size(); i++)
+    {
+        QJsonObject dataObject = jsonArray[i].toObject();
+        double data = dataObject[valueName_].toDouble();
+        dataVec.push_back(data);
 
-// Kumpula: 3: 4m
-// NOx: 43, NO_x
-// SO2: 46, SO_2
-// CO2:
+        if(data > max){
+            max = data;
+        }
+        if(data < min){
+            min = data;
+        }
+        average = average + data;
+
+        QString timeString = dataObject["samptime"].toString();
+        QString format = "yyyy-MM-ddThh:mm:ss.sss";
+        QDateTime time = QDateTime::fromString(timeString, format);
+        timeVec.push_back(time);
+    }
+
+    if(dataVec.size() != 0){
+        average = average/dataVec.size();
+        average_.push_back(average);
+    }
+
+    min_.push_back(min);
+    max_.push_back(max);
+
+    qDebug() << dataVec.size();
+    qDebug() << min;
+    qDebug() << max;
+    qDebug() << average;
+    qDebug() << units_;
+
+    timeVec_ = timeVec;
+    currentData_.push_back(dataVec);
+
+    return dataVec;
+}
