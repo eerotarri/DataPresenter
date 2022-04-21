@@ -4,8 +4,8 @@
 
 ConcreteSmear::ConcreteSmear(Model* model, QObject *parent):
     QObject(parent), manager_(new QNetworkAccessManager(this)), model_(model),
-    url_(baseUrl), valueName_(""), currentData_({}),
-    timeVec_({}), units_(""), min_({}), max_({}), average_({})
+    url_(baseUrl), valueName_({}), currentData_({}),
+    timeVec_({}), units_(""), min_({}), max_({}), average_({}), ready_(false)
 {
 }
 
@@ -59,19 +59,31 @@ void ConcreteSmear::fetchData(
         std::vector<std::string> timeRange, std::string gas,
         std::vector<std::string> location)
 {
+    qDebug() << "---*---*---" ;
+    qDebug() << "FETCH DATA: " << QString::fromStdString(gas);
     currentData_ = {};
-        min_ = {};
-        max_= {};
-        average_ = {};
+    for(unsigned int i = 0 ; i < location.size() ; i++)
+    {
+        currentData_.push_back({});
+    }
+    min_ = {};
+    max_= {};
+    average_ = {};
+
     for(const std::string &station : location)
     {
+        qDebug() << QString::fromStdString(station);
+        qDebug() << "url funktioon fetch datasta->";
         generateUrl(timeRange[0], timeRange[1], gas, station);
-
+        qDebug() << "->takaisin fetch dataan";
         QNetworkRequest request = QNetworkRequest(QUrl(url_));
         QNetworkReply* reply = manager_->get(request);
-        qDebug() << "reply received" ;
-        connect(reply, &QNetworkReply::finished, this, &ConcreteSmear::processReply);
+        qDebug() << "reply received";
+        qDebug() << "before connect";
+        connect(reply, &QNetworkReply::readyRead, this, &ConcreteSmear::processReply);
+        qDebug() << "after connect";
     }
+    qDebug() << "---*---*---" ;
     return;
 }
 
@@ -85,96 +97,86 @@ void ConcreteSmear::generateUrl(std::string start, std::string end,
     url_.append(QString::fromStdString(end)); // YYYY-MM-DD
     url_.append("T00%3A00%3A00.000&tablevariable=");
 
-    qDebug() << "url funktio";
+    qDebug() << "-*-*-*-*-*-" ;
+    qDebug() << "URL:";
     qDebug() << QString::fromStdString(station);
     qDebug() << QString::fromStdString(gas);
 
     if (station == stations[0])
     {
-        qDebug() << "VARRIO";
         // Värriö
         if(gas == gases[0])
         {
             // nox
-            qDebug() << "NOx";
-            valueName_ = "VAR_META.NO_1";
+            valueName_.push_back("VAR_META.NO_1");
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
-            qDebug() << "SO2";
-            valueName_ = "VAR_META.SO2_1";
+            valueName_.push_back("VAR_META.SO2_1");
             units_ = "ppb";
         }
         else if (gas == gases[2])
         {
             // co2
-            qDebug() << "CO2";
-            valueName_ = "VAR_EDDY.av_c";
+            valueName_.push_back("VAR_EDDY.av_c");
             units_ = "ppm";
         }
     }
     else if (station == stations[1])
     {
-        qDebug() << "HYYTIALA";
         // Hyytiälä
         if(gas == gases[0])
         {
             // nox
-            qDebug() << "NOx";
-            valueName_ = "HYY_META.NO168";
+            valueName_.push_back("HYY_META.NO168");
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
-            qDebug() << "SO2";
-            valueName_ = "HYY_META.SO2168";
+            valueName_.push_back("HYY_META.SO2168");
             units_ = "ppb";
         }
         else if (gas == gases[2])
         {
             // co2
-            qDebug() << "CO2";
-            valueName_ = "HYY_META.CO2icos168";
+            valueName_.push_back("HYY_META.CO2icos168");
             units_ = "ppm";
         }
     }
     else if (station == stations[2])
     {
-        qDebug() << "KUMPULA";
         // Kumpula
         if(gas == gases[0])
         {
             // nox
-            qDebug() << "NOx";
-            valueName_ = "KUM_META.NO_x";
+            valueName_.push_back("KUM_META.NO_x");
             units_ = "ppb";
         }
         else if (gas == gases[1])
         {
             // so2
-            qDebug() << "SO2";
-            valueName_ = "KUM_META.SO_2";
+            valueName_.push_back("KUM_META.SO_2");
             units_ = "ppb";
         }
         else if (gas == gases[2])
         {
             // co2
-            qDebug() << "CO2";
-            valueName_ = "KUM_EDDY.av_c_ep";
+            valueName_.push_back("KUM_EDDY.av_c_ep");
             units_ = "ppm";
         }
     }
 
-    url_.append(valueName_);
-    qDebug() << "url: " << QString(url_);
+    url_.append(valueName_.at(valueName_.size() - 1));
+    qDebug() << "-*-*-*-*-*-" ;
 }
 
 void ConcreteSmear::processReply()
 {
-    qDebug() << "Process reply: ";
+    qDebug() << "-----------" ;
+    qDebug() << "PROCESS REPLY:" << valueName_;
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
     QString replyText = reply->readAll();
@@ -201,17 +203,35 @@ void ConcreteSmear::processReply()
         return;
     }
 
-    qDebug() << "---*---*---" ;
     arrayToVector(jsonObject["data"].toArray());
 
-    model_->createCard(this, "MM-dd-hh:mm", units_); // kesken
-    qDebug() << "end";
+    qDebug() << "end of value processed";
 
+    ready_ = true;
+    for(auto& vec : currentData_)
+    {
+        if(vec.empty())
+        {
+            ready_ = false;
+        }
+    }
+
+    qDebug() << "is ready: " << ready_ ;
+
+    if(ready_)
+    {
+        // model_->createCard(this, "MM-dd-hh:mm", units_); // kesken
+    }
+
+    qDebug() << "-----------" ;
     return;
 }
 
 std::vector<double> ConcreteSmear::arrayToVector(QJsonArray jsonArray)
 {
+    qDebug() << "***********" ;
+    qDebug() << "ARRAY TO VECTOR:" << valueName_;
+    int valueIndex = 0;
     std::vector<double> dataVec = {};
     std::vector<QDateTime> timeVec = {};
     double min = 1000;
@@ -221,7 +241,15 @@ std::vector<double> ConcreteSmear::arrayToVector(QJsonArray jsonArray)
     for (int i = 0; i < jsonArray.size(); i++)
     {
         QJsonObject dataObject = jsonArray[i].toObject();
-        double data = dataObject[valueName_].toDouble();
+        qDebug() << "data object: " << dataObject;
+        for(unsigned int i = 0 ; i < valueName_.size() ; i++)
+        {
+            if(dataObject.contains(valueName_[i]))
+            {
+                valueIndex = i;
+            }
+        }
+        double data = dataObject[valueName_[valueIndex]].toDouble();
         dataVec.push_back(data);
 
         if(data > max){
@@ -246,14 +274,19 @@ std::vector<double> ConcreteSmear::arrayToVector(QJsonArray jsonArray)
     min_.push_back(min);
     max_.push_back(max);
 
-    qDebug() << dataVec.size();
-    qDebug() << min;
-    qDebug() << max;
-    qDebug() << average;
-    qDebug() << units_;
+    qDebug() << dataVec;
+    qDebug() << ", the size of the vector is: " << dataVec.size();
+    qDebug() << ", the min value of it is: " << min;
+    qDebug() << ", the max value of it is: " << max;
+    qDebug() << ", the average value of it is: " << average;
+    qDebug() << ", the units of it is: " << units_;
 
     timeVec_ = timeVec;
-    currentData_.push_back(dataVec);
+    currentData_.at(valueIndex) = dataVec;
+
+    qDebug() << currentData_;
+
+    qDebug() << "***********" ;
 
     return dataVec;
 }

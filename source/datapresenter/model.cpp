@@ -65,7 +65,7 @@ void Model::updateCardArea()
     for ( std::string base : databases ){
         if ( base == "smear" ){
             for ( std::string gas : smearSelectedOptions_->gases ){
-                qDebug() << "SMEAR";
+                qDebug() << "SMEAR -> fetch data";
                 smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
             }
         }
