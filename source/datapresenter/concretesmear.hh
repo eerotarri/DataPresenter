@@ -59,6 +59,8 @@ private:
     std::vector<double> max_;
     std::vector<double> average_;
 
+    QString currentGas_;
+
 
 };
 

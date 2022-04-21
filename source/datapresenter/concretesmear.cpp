@@ -31,7 +31,7 @@ std::vector<double> ConcreteSmear::getSupportedTimeFrame()
 
 std::vector<std::vector<double>> ConcreteSmear::getCurrentData()
 {
-    model_->getStatistics();
+    model_->getStatistics(currentGas_);
     return currentData_;
 }
 
@@ -59,6 +59,8 @@ void ConcreteSmear::fetchData(
         std::vector<std::string> timeRange, std::string gas,
         std::vector<std::string> location)
 {
+    currentGas_ = QString::fromStdString(gas);
+
     currentData_ = {};
         min_ = {};
         max_= {};

@@ -101,7 +101,6 @@ void Model::updateSelectedOptions()
     qDebug() << "Model: Selected options updated.";
 }
 
-
 void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
 {
     auto data = fetcher->getCurrentData();
@@ -163,11 +162,19 @@ void Model::getSupportedOptions()
     supportedOptions_ = options;
 }
 
-void Model::getStatistics()
+void Model::getStatistics(QString gas)
 {
     ConcreteSmear *smear = dynamic_cast<ConcreteSmear*>(smear_);
     std::vector<double> min = smear->getMin();
     std::vector<double> max = smear->getMax();
     std::vector<double> average = smear->getAverage();
+
+    std::vector<std::vector<double>> valueVec;
+    valueVec.push_back(min);
+    valueVec.push_back(max);
+    valueVec.push_back(average);
+
+    valueTable_->setValues(gas, valueVec);
+
     // TO DO
 }
