@@ -38,7 +38,6 @@ private:
      * @brief Sets radiobuttons for plot options in group box.
      */
     void createPlotOptionGroupBox();
-    void setStatisticsButtonVisible(bool state = true);
 
     QGridLayout *baseLayout_ = new QGridLayout;
 

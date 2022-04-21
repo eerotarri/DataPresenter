@@ -41,6 +41,11 @@ public:
      * @param max
      */
     void setMaximum(QString max);
+
+    /**
+     * @brief Sets max time range lenght
+     * @param lenght
+     */
     void setMaxTimeRangeLenght(int lenght);
 
 private slots:

@@ -138,11 +138,11 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     QDateTime Date2 = QDateTime::fromString(date2,"yyyy");
     std::vector<QDateTime> DATES ={Date1, Date2};
 
+    card->setXAxisFormat(format);
     card->createChartCard(timeVec,data,{""});
     qDebug() << unit;
     card->setAxesTitles("Time", unit);
 
-    card->setXAxisFormat(format);
     card->setHeader("KAASU");
     view_->addCardToCardArea(card);
     // TESTI
