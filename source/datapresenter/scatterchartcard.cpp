@@ -38,7 +38,15 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
         for ( unsigned i = 0; i < values.size(); i++ ){
             QDateTime date = dates[i];
 
+
             qDebug() << date.date();
+
+            // YRITYS korjata aika
+            //auto temp_time = QDateTime::fromSecsSinceEpoch( timestamp );
+            /*auto local_offset = date.offsetFromUtc();
+            auto fixed_timestamp = date.toMSecsSinceEpoch() - local_offset;*/
+
+            // to.MSecsSinceEpoch ei huomioi karkaussekuntteja?
 
             double value = values[i];
             series->append(date.toMSecsSinceEpoch(), value);
