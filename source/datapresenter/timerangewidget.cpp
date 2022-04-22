@@ -51,6 +51,8 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
     return timeRange;
 }
 
+<<<<<<< HEAD
+=======
 void TimeRangeWidget::setTimeRange(std::string start, std::string end, std::string format)
 {
     if (format == "smear") {
@@ -61,6 +63,7 @@ void TimeRangeWidget::setTimeRange(std::string start, std::string end, std::stri
     }
 }
 
+>>>>>>> f9c201463d4c03c868507a57f3754233a4ebb57d
 void TimeRangeWidget::setMinimum(QString min)
 {
     QDate date = date.fromString(min,format_);

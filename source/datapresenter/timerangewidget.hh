@@ -28,7 +28,6 @@ public:
      * @return time frame
      */
     std::vector<std::string> getTimeRange();
-    void setTimeRange(std::string start, std::string end, std::string format);
 
     /**
      * @brief Sets the smallest possible date

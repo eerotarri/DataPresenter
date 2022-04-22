@@ -1,8 +1,6 @@
 #include "concretestatfi.hh"
 #include "model.hh"
 
-#include <QDebug>
-
 ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
   , model_(model)
 {
