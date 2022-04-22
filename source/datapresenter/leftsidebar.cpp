@@ -97,7 +97,6 @@ void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
         smearCheckBox_->setChecked(false);
         smearCheckBoxStateChanged(Qt::Unchecked);
     } else {
-        statfiTimeRangeWidget_->setTimeRange(smear->timeRange[0], smear->timeRange[0], "smear");
         smearCheckBox_->setChecked(true);
         smearCheckBoxStateChanged(Qt::Checked);
         // aseta kaikki smear valinnat.
@@ -114,7 +113,7 @@ void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
         for (QObject *const child : smearStationGroupBox_->children()) {
             if (child->isWidgetType()) {
                 auto obj = qobject_cast<QCheckBox*>(child);
-                if (std::find(smear->gases.begin(), smear->gases.end(), obj->text().toStdString()) != smear->gases.end()) {
+                if (std::find(smear->stations.begin(), smear->stations.end(), obj->text().toStdString()) != smear->stations.end()) {
                     obj->setChecked(true);
                 } else {
                     obj->setChecked(false);
@@ -127,7 +126,6 @@ void LeftSidebar::setValues(selectedOptions *smear, selectedOptions *statfi)
         statfiCheckBox_->setChecked(false);
         statfiCheckBoxStateChanged(Qt::Unchecked);
     } else {
-        statfiTimeRangeWidget_->setTimeRange(statfi->timeRange[0], statfi->timeRange[0], "statfi");
         statfiCheckBox_->setChecked(true);
         statfiCheckBoxStateChanged(Qt::Checked);
         // aseta kaikki statfi valinnat.

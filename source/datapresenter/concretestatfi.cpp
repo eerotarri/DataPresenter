@@ -1,8 +1,6 @@
 #include "concretestatfi.hh"
 #include "model.hh"
 
-#include <QDebug>
-
 ConcreteStatfi::ConcreteStatfi(Model* model, QObject *parent) : QObject(parent)
   , model_(model)
 {
@@ -102,7 +100,6 @@ void ConcreteStatfi::readyRead()
     } else {
         unit = "indexed, 1990 = 100";
     }
-    qDebug() << unit;
 
     auto values = arrayToVector(jsonObject["value"].toArray());
 

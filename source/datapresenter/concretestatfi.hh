@@ -23,6 +23,7 @@ class ConcreteStatfi : public QObject, public IDataFetcher
 public:
     explicit ConcreteStatfi(Model* model, QObject *parent = nullptr);
 
+    // Virtual functions explained in IDataFetcher.hh
     virtual void fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {});
     virtual std::vector<std::vector<double>> getCurrentData();
     virtual std::vector<double> getSupportedTimeFrame();
@@ -53,7 +54,15 @@ private:
      * \brief Generates QByteArray formatted query for posting
     */
     QByteArray generateQuery(std::string data, std::vector<std::string> years);
+    /*!
+     * \fn std::vector<double> ConcreteStatfi::arrayToVector(QJsonArray array)
+     * \brief Changes JsonArray to vector of doubles
+    */
     std::vector<double> arrayToVector(QJsonArray array);
+    /*!
+     * \fn std::string ConcreteStatfi::toEncodedQuery(std::string gas)
+     * \brief Takes website given code for a gas and returns corresponding gas name
+    */
     std::string toEncodedQuery(std::string gas);
 };
 

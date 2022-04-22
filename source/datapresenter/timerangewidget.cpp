@@ -51,19 +51,6 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
     return timeRange;
 }
 
-void TimeRangeWidget::setTimeRange(std::string start, std::string end, std::string format)
-{
-    if (format == "smear") {
-
-    } else if (format == "statfi") {
-        fromDateEdit_->setDate(QDate(std::stoi(start), 1, 1));
-        toDateEdit_->setDate(QDate(std::stoi(end), 1, 1));
-    }
-    qDebug() << "start " << QString::fromStdString(start);
-    qDebug() << "end " << QString::fromStdString(start);
-
-}
-
 void TimeRangeWidget::setMinimum(QString min)
 {
     QDate date = date.fromString(min,format_);
