@@ -58,19 +58,15 @@ void RightSidebar::emitPlotOptionChanged(bool checked)
     if ( checked ){
         if ( qobject_cast<QRadioButton*>(sender()) == lineRadioButton_ ){
             currentPlotOption_ = lineRadioButton_;
-            qDebug() << "Plot line.";
         }
         else if ( qobject_cast<QRadioButton*>(sender()) == barRadioButton_ ){
             currentPlotOption_ = barRadioButton_;
-            qDebug() << "Plot bar.";
         }
         else if ( qobject_cast<QRadioButton*>(sender()) == scatterRadioButton_ ){
             currentPlotOption_ = scatterRadioButton_;
-            qDebug() << "Plot scatter.";
         }
         else {
             currentPlotOption_ = nullptr;
-            qDebug() << "None plot option.";
         }
 
         emit plotOptionChanged();
