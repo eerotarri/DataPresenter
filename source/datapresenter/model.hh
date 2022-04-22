@@ -68,7 +68,7 @@ public:
      * @param format for time unit
      * @param unit for gas
      */
-    void createCard(IDataFetcher* fetcher, QString format, QString unit);
+    void createCard(IDataFetcher* fetcher, QString format, QString unit, QString title);
 
     /**
      * @brief Gets min, max and average values for valueTableDialog from Smear.

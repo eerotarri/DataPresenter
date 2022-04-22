@@ -24,6 +24,5 @@ void CardArea::clearArea()
         delete card_ptr;
     }
 
-    qDebug() << "CardArea: Clear.";
     cards_.clear();
 }

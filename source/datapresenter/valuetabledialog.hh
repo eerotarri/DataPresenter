@@ -25,11 +25,12 @@ public:
      */
     void setValues(QString gas, std::vector<std::vector<double>> values);
 
-private:
     /**
      * @brief Sets all values in valueTable to be -
      */
     void resetValues();
+
+private:
 
     /**
      * @brief Adds needed rows and columns to the valueTable.

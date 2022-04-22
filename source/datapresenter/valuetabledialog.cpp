@@ -19,8 +19,8 @@ ValueTableDialog::~ValueTableDialog()
 
 void ValueTableDialog::resetValues()
 {
-    for ( std::vector<std::vector<QTableWidgetItem*>> vVec : items_ ){
-        for ( std::vector<QTableWidgetItem*> sVec : vVec ){
+    for ( std::vector<std::vector<QTableWidgetItem*>> &vVec : items_ ){
+        for ( std::vector<QTableWidgetItem*> &sVec : vVec ){
             for ( QTableWidgetItem *item : sVec ){
                 item->setText("-");
             }
@@ -30,29 +30,24 @@ void ValueTableDialog::resetValues()
 
 void ValueTableDialog::setValues(QString gas, std::vector<std::vector<double>> values)
 {
-    resetValues();
     int index;
 
     if ( gas == "NOx" ){
         index = 0;
-        qDebug() << "ValueTable: NOx";
     }
     else if ( gas == "SO2" ){
         index = 1;
-        qDebug() << "ValueTable: SO2";
     }
     else {
         index = 2;
-        qDebug() << "ValueTable: CO2";
     }
 
-    std::vector<std::vector<QTableWidgetItem*>> gases = items_[index];
+    std::vector<std::vector<QTableWidgetItem*>> &gases = items_[index];
 
     for ( int v = 0; v < 3; ++v ){
 
         for ( int s = 0; s < 3; ++s ){
-            qDebug() << values[v][s];
-            items_[index][v][s]->setText(QString::number(values[s][v], 'f', 2));
+            gases[v][s]->setText(QString::number(values[s][v], 'f', 2));
         }
     }
 }

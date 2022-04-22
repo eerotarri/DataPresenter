@@ -12,7 +12,7 @@ void CheckBoxGroup::setItems(std::vector<std::string> items)
 {
     QVBoxLayout *groupBoxLayout = new QVBoxLayout;
     this->setLayout(groupBoxLayout);
-    for( std::string item : items )
+    for( std::string &item : items )
     {
         QString itemName = QString::fromUtf8(item.c_str());
 

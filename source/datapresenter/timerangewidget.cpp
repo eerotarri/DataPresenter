@@ -59,9 +59,6 @@ void TimeRangeWidget::setTimeRange(std::string start, std::string end, std::stri
         fromDateEdit_->setDate(QDate(std::stoi(start), 1, 1));
         toDateEdit_->setDate(QDate(std::stoi(end), 1, 1));
     }
-    qDebug() << "start " << QString::fromStdString(start);
-    qDebug() << "end " << QString::fromStdString(start);
-
 }
 
 void TimeRangeWidget::setMinimum(QString min)

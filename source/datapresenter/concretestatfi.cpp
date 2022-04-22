@@ -72,7 +72,6 @@ void ConcreteStatfi::readyRead()
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "STATFI: There was an error fetching the data from website.";
         return;
     }
 
@@ -81,14 +80,12 @@ void ConcreteStatfi::readyRead()
 
 
     if (jsonResponse.isNull() || !jsonResponse.isObject()) {
-        qDebug() << "STATFI: Fetched data did not exist or it was not convertible to object.";
         return;
     }
 
     QJsonObject jsonObject = jsonResponse.object();
 
     if (!jsonObject.contains("value")) {
-        qDebug() << "STATFI: Fetched data does not contain asked values.";
         return;
     }
 
@@ -102,14 +99,13 @@ void ConcreteStatfi::readyRead()
     } else {
         unit = "indexed, 1990 = 100";
     }
-    qDebug() << unit;
 
     auto values = arrayToVector(jsonObject["value"].toArray());
 
     currentData_.clear();
     currentData_.push_back(values);
 
-    model_->createCard(this, "yyyy", unit);
+    model_->createCard(this, "yyyy", unit, "CO2");
 
     return;
 }
