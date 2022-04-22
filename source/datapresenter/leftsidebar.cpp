@@ -55,8 +55,8 @@ void LeftSidebar::setSupportedOptions(supportedOptions *options)
     smearTimeRangeWidget_->setTitle("Select time range");
     smearTimeRangeWidget_->setFormat("yyyy-MM-dd");
 
-    smearTimeRangeWidget_->setMinimum(options->smearTimeRange[0]);
     smearTimeRangeWidget_->setMaximum(options->smearTimeRange[1]);
+    smearTimeRangeWidget_->setMinimum(options->smearTimeRange[0]);
 
     smearTimeRangeWidget_->setMaxTimeRangeLenght(14);
 

@@ -44,9 +44,8 @@ std::vector<std::string> TimeRangeWidget::getTimeRange()
 
     std::string fromDate = fromDateEdit_->date().toString(format_).toStdString();
     std::string toDate = toDateEdit_->date().toString(format_).toStdString();
-
-    timeRange.push_back(fromDate);
     timeRange.push_back(toDate);
+    timeRange.push_back(fromDate);
 
     return timeRange;
 }
@@ -57,6 +56,7 @@ void TimeRangeWidget::setMinimum(QString min)
 
     fromDateEdit_->setMinimumDate(date);
     toDateEdit_->setMinimumDate(fromDateEdit_->date());
+    fromDateEdit_->setDate(date);
 }
 
 void TimeRangeWidget::setMaximum(QString max)
@@ -65,6 +65,8 @@ void TimeRangeWidget::setMaximum(QString max)
 
     fromDateEdit_->setMaximumDate(toDateEdit_->date());
     toDateEdit_->setMaximumDate(date);
+
+    toDateEdit_->setDate(date);
 }
 
 void TimeRangeWidget::setMaxTimeRangeLenght(int lenght)
