@@ -29,7 +29,7 @@ This project is created by using c++ and Qt Creator.
 
 ## Future features
 
-We hope that there is more stations and gases in the future. Also more plot options could be added to the program and multiple plot options could be added to the same chart.
+We hope that there is more stations and gases in the future. New databases are also easy to add since databases have common interface. Also more plot options could be added to the program and multiple plot options could be added to the same chart.
 
 ## Authors
 
