@@ -37,6 +37,7 @@ public:
 
     virtual std::vector<std::vector<double>> getCurrentData() override;
     virtual std::vector<QDateTime> getTimeVector() override;
+    virtual QString getDatabaseName() override;
     std::vector<double> getMin();
     std::vector<double> getMax();
     std::vector<double> getAverage();

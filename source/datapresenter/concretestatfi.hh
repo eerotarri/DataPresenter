@@ -29,6 +29,7 @@ public:
     virtual std::vector<std::string> getSupportedStations();
     virtual std::vector<std::string> getSupportedGases();
     virtual std::vector<QDateTime> getTimeVector();
+    virtual QString getDatabaseName();
 
 private slots:
     void post(QByteArray data);

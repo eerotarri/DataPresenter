@@ -16,7 +16,7 @@ public:
      * @param stations vector tells selected stations
      */
 
-    virtual void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""}) = 0;
+    virtual void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<std::string> stations ={""}) = 0;
     /**
      * @brief Sets the header for the chart
      * @param header

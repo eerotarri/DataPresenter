@@ -129,20 +129,33 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
 
     qDebug() << "Data: " << data;
     qDebug() << "Time vector size: " << timeVec.size();
+    qDebug() << timeVec;
 
     // TESTI
+    qDebug() << "Test 1";
     QString date1 = "2000";
     QDateTime Date1 = QDateTime::fromString(date1,"yyyy");
     QString date2 = "2001";
     QDateTime Date2 = QDateTime::fromString(date2,"yyyy");
     std::vector<QDateTime> DATES ={Date1, Date2};
-
+    qDebug() << "Test 2";
     card->setXAxisFormat(format);
-    card->createChartCard(timeVec,data,{""});
+    qDebug() << "Test 3";
+    // tsekataan onko smear vai statfi
+    if(fetcher->getDatabaseName() == "STATFI")
+    {
+        card->createChartCard(timeVec,data,statfiSelectedOptions_->stations);
+    }
+    else if(fetcher->getDatabaseName() == "SMEAR")
+    {
+        card->createChartCard(timeVec,data,smearSelectedOptions_->stations);
+    }
+    qDebug() << "Test 4";
     qDebug() << unit;
     card->setAxesTitles("Time", unit);
-
+    qDebug() << "Test 5";
     card->setHeader("KAASU");
+    qDebug() << "Test 6";
     view_->addCardToCardArea(card);
     // TESTI
 }

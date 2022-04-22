@@ -55,6 +55,11 @@ std::vector<double> ConcreteSmear::getAverage()
     return average_;
 }
 
+QString ConcreteSmear::getDatabaseName()
+{
+    return "SMEAR";
+}
+
 void ConcreteSmear::fetchData(
         std::vector<std::string> timeRange, std::string gas,
         std::vector<std::string> location)
@@ -224,7 +229,7 @@ void ConcreteSmear::processReply()
 
     if(ready_)
     {
-        // model_->createCard(this, "MM-dd-hh:mm", units_); // kesken
+        model_->createCard(this, "MM-dd-hh:mm", units_); // kesken
     }
 
     qDebug() << "-----------" ;

@@ -51,6 +51,11 @@ std::vector<QDateTime> ConcreteStatfi::getTimeVector()
     return currentTimeRange_;
 }
 
+QString ConcreteStatfi::getDatabaseName()
+{
+    return "STATFI";
+}
+
 void ConcreteStatfi::post(QByteArray data)
 {
     QNetworkRequest request = QNetworkRequest(QUrl(url_));

@@ -6,16 +6,20 @@ BarChartCard::BarChartCard()
     this->setMinimumHeight(500);
 }
 
-void BarChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations)
+void BarChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<std::string> stations)
 {
     QStringList dateList;
 
-    for ( QDateTime date : dates ){
+    for ( QDateTime &date : dates ){
         QString dateStr = date.toString(format_);
         dateList.append(dateStr);
     }
-
-    createChart(dateList, data, stations);
+    std::vector<QString> qStations = {};
+    for(auto &station : stations)
+    {
+        qStations.push_back(QString::fromStdString(station));
+    }
+    createChart(dateList, data, qStations);
 }
 
 void BarChartCard::setHeader(QString header)
@@ -38,7 +42,7 @@ void BarChartCard::createChart(QStringList dates, std::vector<std::vector<double
 {
     QBarSeries *series = new QBarSeries();
 
-    for ( int i = 0; i < data.size(); i++ ){
+    for (unsigned int i = 0; i < data.size(); i++ ){
         QBarSet *set = new QBarSet(stations[i]);
         std::vector<double> values = data[i];
 

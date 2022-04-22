@@ -9,7 +9,7 @@ class ScatterChartCard : public ChartCard
 {
 public:
     ScatterChartCard();
-    void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<QString> stations ={""});
+    void createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<std::string> stations ={""});
     void setHeader(QString header);
     void setAxesTitles(QString xTitle, QString yTitle);
     void setXAxisFormat(QString format);

@@ -8,7 +8,7 @@ ScatterChartCard::ScatterChartCard()
     this->setMinimumHeight(500);
 }
 
-void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
+void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<std::string> stations)
 {
     QScatterSeries *series;
     int s = 0;
@@ -23,7 +23,7 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
 
     for ( std::vector<double> values : data ){
         series = new QScatterSeries();
-        series->setName(stations[s]);
+        series->setName(QString::fromStdString(stations[s]));
 
         double vectors_min = *min_element(values.begin(), values.end());
         double vectors_max = *max_element(values.begin(), values.end());

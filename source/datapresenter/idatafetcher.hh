@@ -60,6 +60,8 @@ public:
     virtual std::vector<std::string> getSupportedGases() = 0;
 
     virtual std::vector<QDateTime> getTimeVector() = 0;
+
+    virtual QString getDatabaseName() = 0;
 };
 
 #endif // IDATAFETCHER_HH
