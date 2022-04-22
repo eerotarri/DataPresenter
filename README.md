@@ -21,6 +21,8 @@ Running the code opens the empty UI window and prints data fetched from STATFI a
 SMEAR-branch:
 Running the code opens the empty UI window and prints data fetched from SMEAR as a debug message. The test parameters are defined in main.cpp.
 
+Preferences can be used after charts are diplayed. Saving a preference saves the last displayed configurations. Pressing preferences button will check the boxes used int the last save and user can show them again.
+
 ## Technologies
 
 This project is created by using c++ and Qt Creator.
