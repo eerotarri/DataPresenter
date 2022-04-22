@@ -59,8 +59,16 @@ public:
      */
     virtual std::vector<std::string> getSupportedGases() = 0;
 
+    /**
+     * @brief Get function for the time range when there is data available from the database
+     * @return time range when it is possible to fetch data
+     */
     virtual std::vector<QDateTime> getTimeVector() = 0;
 
+    /**
+     * @brief Get function for the database name
+     * @return the name of the database
+     */
     virtual QString getDatabaseName() = 0;
 };
 

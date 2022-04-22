@@ -38,8 +38,23 @@ public:
     virtual std::vector<std::vector<double>> getCurrentData() override;
     virtual std::vector<QDateTime> getTimeVector() override;
     virtual QString getDatabaseName() override;
+
+    /**
+     * @brief Get minimum values from stations and gases given when fetched data
+     * @return vector of minimum values for one gas and one or more stations
+     */
     std::vector<double> getMin();
+
+    /**
+     * @brief Get maximum values from stations and gases given when fetched data
+     * @return vector of maximum values for one gas and one or more stations
+     */
     std::vector<double> getMax();
+
+    /**
+     * @brief Get average values from stations and gases given when fetched data
+     * @return vector of average values for one gas and one or more stations
+     */
     std::vector<double> getAverage();
 
 private slots:
