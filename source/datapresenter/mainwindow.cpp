@@ -18,13 +18,7 @@ MainWindow::MainWindow(Controller *controller, QWidget *parent)
 {
     ui->setupUi(this);
 
-    // taustaväri
-    /*
-    this->setStyleSheet("background-color: #FFFFFF");
-    this->setStyleSheet("background-color: #4C0390");
-    */
     this->setWindowTitle("Datapresenter");
-
 
     setup();
 

@@ -19,14 +19,19 @@ private:
 
     /**
      * @brief Sets tick count to x- and y-axis
-     * @param Gets dates, because whit it add extra ticks
+     * @param Gets dates, because it demands number of ticks
      */
     void setTickCount(std::vector<QDateTime> dates);
 
     /**
-     * @brief Sets x-axis range using the format. Format tells, how much we wnat extra space to the right and left.
+     * @brief Sets x- and y-axis range. If there is only one plot, makes free spaces around
+     * @param firstDate
+     * @param lastDate
+     * @param minValue
+     * @param maxValue
      */
-    void setAxisXRange();
+    void setAxisRange(QDateTime firstDate, QDateTime lastDate, double minValue, double maxValue);
+
     QChart *chart_ = new QChart();
     QDateTimeAxis *axisX_ = new QDateTimeAxis;
     QValueAxis *axisY_ = new QValueAxis;

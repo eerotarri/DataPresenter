@@ -14,15 +14,6 @@ RightSidebar::RightSidebar(QWidget *parent)
 
     this->setLayout(baseLayout_);
 
-    //Värit
-    /*
-    preferencesButton_->setStyleSheet("background-color: #4C0390");
-    saveButton_->setStyleSheet("background-color: #4C0390");
-    statisticsButton_->setStyleSheet("background-color: #4C0390");
-    quitButton_->setStyleSheet("background-color: #4C0390");
-    plotOptionGroupBox_->setStyleSheet("background-color: #b0c4de");
-*/
-
     lineRadioButton_->setChecked(true);
     currentPlotOption_ = lineRadioButton_;
 
@@ -99,7 +90,3 @@ void RightSidebar::createPlotOptionGroupBox()
     plotOptionGroupBox_->setLayout(layout);
 }
 
-void RightSidebar::setStatisticsButtonVisible(bool state)
-{
-    statisticsButton_->setVisible(state);
-}

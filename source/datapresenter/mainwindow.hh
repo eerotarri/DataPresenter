@@ -21,23 +21,6 @@ QT_END_NAMESPACE
     using QChartView = QtCharts::QChartView;
 #endif
 
-/*
-// databases
-const QString SMEAR = "SMEAR";
-const QString STATFI = "STATFI";
-
-private:
-    QWidget *statfiTimeRangeWidget_;
-    QSpinBox *toYearSpinBox_;
-    QSpinBox *fromYearSpinBox_;
-
-    TimeRangeDialog* time_range_dialog_;
-    ValueTableDialog* value_table_dialog_;
-
-    QGraphicsBlurEffect *blurEffect_;
-
-};
-*/
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

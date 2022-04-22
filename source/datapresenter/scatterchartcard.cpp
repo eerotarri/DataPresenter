@@ -10,26 +10,20 @@ ScatterChartCard::ScatterChartCard()
 
 void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<QString> stations)
 {
-    setTickCount(dates);
-
     QScatterSeries *series;
     int s = 0;
 
-    //axisX_->setFormat("yyyy");
     chart_->addAxis(axisX_, Qt::AlignBottom);
 
-    //axisY_->setLabelFormat("%d");
+    axisY_->setLabelFormat("%.2f");
     chart_->addAxis(axisY_, Qt::AlignLeft);
 
-    double max;
-    double min;
+    double max = data[0][0];
+    double min = data[0][0];
 
     for ( std::vector<double> values : data ){
         series = new QScatterSeries();
         series->setName(stations[s]);
-
-        max = values[0];
-        min = values[0];
 
         double vectors_min = *min_element(values.begin(), values.end());
         double vectors_max = *max_element(values.begin(), values.end());
@@ -43,6 +37,17 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
 
         for ( unsigned i = 0; i < values.size(); i++ ){
             QDateTime date = dates[i];
+
+
+            qDebug() << date.date();
+
+            // YRITYS korjata aika
+            //auto temp_time = QDateTime::fromSecsSinceEpoch( timestamp );
+            /*auto local_offset = date.offsetFromUtc();
+            auto fixed_timestamp = date.toMSecsSinceEpoch() - local_offset;*/
+
+            // to.MSecsSinceEpoch ei huomioi karkaussekuntteja?
+
             double value = values[i];
             series->append(date.toMSecsSinceEpoch(), value);
         }
@@ -57,16 +62,9 @@ void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector
         chart_->legend()->setVisible(false);
     }
 
-    // vasemman ja oikeel tilaa STATFI
-    QDateTime start = dates.front().addYears(-1);
-    QDateTime end = dates.back().addYears(1);
+    setAxisRange(dates.front(), dates.back(), min, max);
 
-    // mikkä tähä
-    min = min - 0.1;
-    max = max + 0.1;
-
-    axisX_->setRange(start, end);
-    axisY_->setRange(min, max);
+    setTickCount(dates);
 
     chart_->legend()->setAlignment(Qt::AlignBottom);
 }
@@ -90,19 +88,47 @@ void ScatterChartCard::setXAxisFormat(QString format)
 
 void ScatterChartCard::setTickCount(std::vector<QDateTime> dates)
 {
-    axisY_->setTickCount(dates.size()+2);
-    axisX_->setTickCount(dates.size()+2);
-}
 
-void ScatterChartCard::setAxisXRange()
-{
-    if ( format_ == "yyyy" ) {
-
+    if ( dates.size() == 1 ) {
+        axisY_->setTickCount(3);
+        axisX_->setTickCount(3);
     }
-    else if ( format_ == "yyyy-MM-dd" ){
-
+    else if ( dates.size() < 15 ) {
+        axisY_->setTickCount(dates.size());
+        axisX_->setTickCount(dates.size());
     }
     else {
-
+        axisY_->setTickCount(7);
+        axisX_->setTickCount(7);
     }
+}
+
+void ScatterChartCard::setAxisRange(QDateTime firstDate, QDateTime lastDate, double minValue, double maxValue)
+{
+    QDateTime firstTickX = firstDate;
+    QDateTime lastTickX = lastDate;
+
+    double firstTickY = minValue;
+    double lastTickY = maxValue;
+
+    if ( minValue == maxValue ) {
+        firstTickY -= 1;
+        lastTickY += 1;
+
+        if ( format_ == "yyyy" ) {
+            firstTickX = firstTickX.addYears(-1);
+            lastTickX = lastTickX.addYears(1);
+        }
+        else if ( format_ == "yyyy-MM-dd" ){
+            firstTickX = firstTickX.addDays(-1);
+            lastTickX = lastTickX.addDays(1);
+        }
+        else {
+            firstTickX = firstTickX.addSecs(-180);
+            lastTickX = lastTickX.addDays(180);
+        }
+    }
+
+    axisY_->setRange(firstTickY, lastTickY);
+    axisX_->setRange(firstTickX, lastTickX);
 }

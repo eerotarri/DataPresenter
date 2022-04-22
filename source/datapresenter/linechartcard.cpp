@@ -15,20 +15,13 @@ void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<st
     QLineSeries *series;
     int s = 0;
 
-    //axisX_->setTickCount(10);
-    axisX_->setFormat("dd MM yyyy");
     chart_->addAxis(axisX_, Qt::AlignBottom);
 
-    axisY_->setLabelFormat("%i");
+    axisY_->setLabelFormat("%.2f");
     chart_->addAxis(axisY_, Qt::AlignLeft);
 
-    // NÄIN SAA MUOKATTUA Y-AKSELIA SOPIVAKSI
-    // katsotaan yksikön mukaan? -> oma funktio
-    //axisY_->setRange(0,10);
-    //axisY_->setTickCount(10);
-
-    double max;
-    double min;
+    double max = data[0][0];
+    double min = data[0][0];
 
     for ( std::vector<double> values : data ){
         series = new QLineSeries();
@@ -49,6 +42,9 @@ void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<st
 
         for ( int i = 0; i < values.size(); i++ ){
             QDateTime date = dates[i];
+
+            qDebug() << date.date();
+
             double value = values[i];
             series->append(date.toMSecsSinceEpoch(), value);
         }
@@ -62,12 +58,9 @@ void LineChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<st
         chart_->legend()->setVisible(false);
     }
 
-    // vasemman ja oikeel tilaa STATFI
-    QDateTime start = dates.front().addYears(-1);
-    QDateTime end = dates.back().addYears(1);
+    setAxisRange(dates.front(), dates.back(), min, max);
 
-    axisX_->setRange(start, end);
-    axisY_->setRange(floor(min), ceil(max));
+    setTickCount(dates);
 
     chart_->legend()->setAlignment(Qt::AlignBottom);
 }
@@ -91,19 +84,47 @@ void LineChartCard::setXAxisFormat(QString format)
 
 void LineChartCard::setTickCount(std::vector<QDateTime> dates)
 {
-    axisY_->setTickCount(dates.size()+2);
-    axisX_->setTickCount(dates.size()+2);
-}
 
-void LineChartCard::setAxisXRange()
-{
-    if ( format_ == "yyyy" ) {
-
+    if ( dates.size() == 1 ) {
+        axisY_->setTickCount(3);
+        axisX_->setTickCount(3);
     }
-    else if ( format_ == "yyyy-MM-dd" ){
-
+    else if ( dates.size() < 15 ) {
+        axisY_->setTickCount(dates.size());
+        axisX_->setTickCount(dates.size());
     }
     else {
-
+        axisY_->setTickCount(7);
+        axisX_->setTickCount(7);
     }
+}
+
+void LineChartCard::setAxisRange(QDateTime firstDate, QDateTime lastDate, double minValue, double maxValue)
+{
+    QDateTime firstTickX = firstDate;
+    QDateTime lastTickX = lastDate;
+
+    double firstTickY = minValue;
+    double lastTickY = maxValue;
+
+    if ( minValue == maxValue ) {
+        firstTickY -= 1;
+        lastTickY += 1;
+
+        if ( format_ == "yyyy" ) {
+            firstTickX = firstTickX.addYears(-1);
+            lastTickX = lastTickX.addYears(1);
+        }
+        else if ( format_ == "yyyy-MM-dd" ){
+            firstTickX = firstTickX.addDays(-1);
+            lastTickX = lastTickX.addDays(1);
+        }
+        else {
+            firstTickX = firstTickX.addSecs(-180);
+            lastTickX = lastTickX.addDays(180);
+        }
+    }
+
+    axisY_->setRange(firstTickY, lastTickY);
+    axisX_->setRange(firstTickX, lastTickX);
 }

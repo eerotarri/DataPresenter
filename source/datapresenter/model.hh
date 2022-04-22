@@ -73,7 +73,7 @@ public:
     /**
      * @brief Gets min, max and average values for valueTableDialog from Smear.
      */
-    void getStatistics();
+    void getStatistics(QString gas);
 
 private:
     /**
