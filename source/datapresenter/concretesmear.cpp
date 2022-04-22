@@ -28,7 +28,7 @@ std::vector<std::string> ConcreteSmear::getSupportedStations()
     return stations;
 }
 
-std::vector<double> ConcreteSmear::getSupportedTimeFrame()
+std::vector<QString> ConcreteSmear::getSupportedTimeFrame()
 {
     return timeframe;
 }

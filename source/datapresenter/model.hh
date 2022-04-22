@@ -16,8 +16,8 @@ struct supportedOptions {
     std::vector<std::string> smearGases;
     std::vector<std::string> statfiGases;
     std::vector<std::string> smearStations;
-    std::vector<std::string> smearTimeRange;
-    std::vector<std::string> statfiTimeRange;
+    std::vector<QString> smearTimeRange;
+    std::vector<QString> statfiTimeRange;
 };
 
 struct Preferences{

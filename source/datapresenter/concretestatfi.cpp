@@ -29,7 +29,7 @@ std::vector<std::vector<double>> ConcreteStatfi::getCurrentData()
     return currentData_;
 }
 
-std::vector<double> ConcreteStatfi::getSupportedTimeFrame()
+std::vector<QString> ConcreteStatfi::getSupportedTimeFrame()
 {
     return supportedTimeFrame_;
 }

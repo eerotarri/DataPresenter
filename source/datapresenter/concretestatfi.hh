@@ -26,7 +26,7 @@ public:
     // Virtual functions explained in IDataFetcher.hh
     virtual void fetchData(std::vector<std::string> timeRange, std::string gas, std::vector<std::string> location = {});
     virtual std::vector<std::vector<double>> getCurrentData();
-    virtual std::vector<double> getSupportedTimeFrame();
+    virtual std::vector<QString> getSupportedTimeFrame();
     virtual std::vector<std::string> getSupportedStations();
     virtual std::vector<std::string> getSupportedGases();
     virtual std::vector<QDateTime> getTimeVector();
@@ -38,7 +38,7 @@ private slots:
 
 private:
     const QUrl url_ = QUrl("https://pxnet2.stat.fi/PXWeb/api/v1/en/ymp/taulukot/Kokodata.px");
-    const std::vector<double> supportedTimeFrame_ = {1975, 2017};
+    const std::vector<QString> supportedTimeFrame_ = {"1975", "2017"};
     const std::vector<std::string> supportedGases_ = {"CO2 in tonnes", "CO2 intensity", "CO2 indexed", "CO2 indensity indexed"};
 
     QNetworkAccessManager* manager_;

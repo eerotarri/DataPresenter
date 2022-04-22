@@ -43,7 +43,7 @@ public:
      * @brief Get function for the range of time that is possible for certain website queries
      * @return range in the form of std::vector<double>
      */
-    virtual std::vector<double> getSupportedTimeFrame() = 0;
+    virtual std::vector<QString> getSupportedTimeFrame() = 0;
 
     /**
      * @brief Get function for the stations that are possible for certain website queries

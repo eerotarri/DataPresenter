@@ -142,9 +142,8 @@ void Model::getSupportedOptions()
     options->statfiGases = statfi_->getSupportedGases();
     options->smearStations = smear_->getSupportedStations();
 
-    // Missä muodossa aika?
-    //options->smearTimeRange = smear_->getSupportedTimeFrame();
-    //options->statfiTimeRange = statfi_->getSupportedTimeFrame();
+    options->smearTimeRange = smear_->getSupportedTimeFrame();
+    options->statfiTimeRange = statfi_->getSupportedTimeFrame();
 
     supportedOptions_ = options;
 }

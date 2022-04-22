@@ -17,7 +17,7 @@
 
 const std::vector<std::string> gases = {"NOx", "SO2", "CO2"};
 const std::vector<std::string> stations = {"Varrio", "Hyytiala", "Kumpula"};
-const std::vector<double> timeframe = {0, 0};
+const std::vector<QString> timeframe = {"2018-04-01", "2022-04-22"};
 const QString baseUrl = "https://smear-backend.rahtiapp.fi";
 
 class Model;
@@ -29,7 +29,7 @@ public:
 
     virtual std::vector<std::string> getSupportedGases() override;
     virtual std::vector<std::string> getSupportedStations() override;
-    virtual std::vector<double> getSupportedTimeFrame() override;
+    virtual std::vector<QString> getSupportedTimeFrame() override;
 
     virtual void fetchData(
             std::vector<std::string> timeRange, std::string gas,

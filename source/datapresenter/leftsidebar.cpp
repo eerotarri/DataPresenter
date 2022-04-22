@@ -30,19 +30,6 @@ LeftSidebar::LeftSidebar(QWidget *parent)
     baseLayout_->addWidget(scrollArea_);
     baseLayout_->addWidget(showButton_,1,0,Qt::AlignBottom);
 
-    smearTimeRangeWidget_->setTitle("Select time range");
-    smearTimeRangeWidget_->setFormat("yyyy-MM-dd");
-    /*
-    smearTimeRangeWidget_->setMinimum("---");
-    smearTimeRangeWidget_->setMaximum("---");
-    */
-    smearTimeRangeWidget_->setMaxTimeRangeLenght(14);
-
-    statfiTimeRangeWidget_->setTitle("Select time range");
-    statfiTimeRangeWidget_->setFormat("yyyy");
-    statfiTimeRangeWidget_->setMaximum("2017");
-    statfiTimeRangeWidget_->setMinimum("1975");
-
     this->setLayout(baseLayout_);
 
     createGroupBoxes();
@@ -64,6 +51,19 @@ void LeftSidebar::setSupportedOptions(supportedOptions *options)
     smearStationGroupBox_->setItems(options->smearStations);
     smearGasGroupBox_->setItems(options->smearGases);
     statfiGasGroupBox_->setItems(options->statfiGases);
+
+    smearTimeRangeWidget_->setTitle("Select time range");
+    smearTimeRangeWidget_->setFormat("yyyy-MM-dd");
+
+    smearTimeRangeWidget_->setMinimum(options->smearTimeRange[0]);
+    smearTimeRangeWidget_->setMaximum(options->smearTimeRange[1]);
+
+    smearTimeRangeWidget_->setMaxTimeRangeLenght(14);
+
+    statfiTimeRangeWidget_->setTitle("Select time range");
+    statfiTimeRangeWidget_->setFormat("yyyy");
+    statfiTimeRangeWidget_->setMinimum(options->statfiTimeRange[0]);
+    statfiTimeRangeWidget_->setMaximum(options->statfiTimeRange[1]);
 }
 
 std::vector<std::string> LeftSidebar::getSelectedDatabase()
