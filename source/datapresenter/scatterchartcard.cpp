@@ -10,6 +10,11 @@ ScatterChartCard::ScatterChartCard()
 
 void ScatterChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double> > data, std::vector<std::string> stations)
 {
+    if(stations.empty())
+    {
+        stations.push_back("");
+    }
+
     QScatterSeries *series;
     int s = 0;
 

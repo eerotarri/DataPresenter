@@ -8,6 +8,11 @@ BarChartCard::BarChartCard()
 
 void BarChartCard::createChartCard(std::vector<QDateTime> dates, std::vector<std::vector<double>> data, std::vector<std::string> stations)
 {
+    if(stations.empty())
+    {
+        stations.push_back("");
+    }
+
     QStringList dateList;
 
     for ( QDateTime &date : dates ){

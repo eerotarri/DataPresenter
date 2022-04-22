@@ -62,15 +62,15 @@ void Model::updateCardArea()
     updateSelectedOptions();
     view_->clearCardArea();
 
-    for ( std::string base : databases ){
+    for ( std::string &base : databases ){
         if ( base == "smear" ){
-            for ( std::string gas : smearSelectedOptions_->gases ){
+            for ( std::string &gas : smearSelectedOptions_->gases ){
                 qDebug() << "SMEAR -> fetch data";
                 smear_->fetchData(smearSelectedOptions_->timeRange, gas, smearSelectedOptions_->stations);
             }
         }
         if ( base == "statfi" ){
-            for ( std::string gas : statfiSelectedOptions_->gases ){
+            for ( std::string &gas : statfiSelectedOptions_->gases ){
                 qDebug() << "STATFI";
                 statfi_->fetchData(statfiSelectedOptions_->timeRange, gas, statfiSelectedOptions_->stations);
             }
@@ -86,7 +86,7 @@ void Model::updateSelectedOptions()
 {
     std::vector<std::string> databases = view_->getSelectedDatabases();
 
-    for( std::string database : databases ){
+    for( std::string &database : databases ){
         selectedOptions *selected = view_->getSelectedOptions(database);
 
         if ( database == "smear" ){
@@ -124,6 +124,7 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     }
     else {
         card = nullptr;
+        return;
         qDebug() << "Model: None graph.";
     }
 
@@ -141,7 +142,6 @@ void Model::createCard(IDataFetcher* fetcher, QString format, QString unit)
     qDebug() << "Test 2";
     card->setXAxisFormat(format);
     qDebug() << "Test 3";
-    // tsekataan onko smear vai statfi
     if(fetcher->getDatabaseName() == "STATFI")
     {
         card->createChartCard(timeVec,data,statfiSelectedOptions_->stations);

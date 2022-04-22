@@ -49,20 +49,31 @@ private:
     void generateUrl(std::string start, std::string end,
                              std::string gas, std::string station);
 
-    std::vector<double> arrayToVector(QJsonArray jsonArray);
+    std::string arrayToVector(QJsonArray jsonArray);
 
     QNetworkAccessManager *manager_;
     Model* model_;
     QString url_;
-    std::vector<QString> valueName_;
-    std::vector<std::vector<double>> currentData_;
+    std::vector<QString> co2ValueName_;
+    std::vector<QString> noxValueName_;
+    std::vector<QString> so2ValueName_;
+    std::vector<std::vector<double>> co2Data_;
+    std::vector<std::vector<double>> noxData_;
+    std::vector<std::vector<double>> so2Data_;
     std::vector<QDateTime> timeVec_;
-    QString units_;
-    std::vector<double> min_;
-    std::vector<double> max_;
-    std::vector<double> average_;
-    bool ready_;
     QString currentGas_;
+    QString units_;
+    bool ready_;
+    std::vector<double> co2Min_;
+    std::vector<double> co2Max_;
+    std::vector<double> co2Average_;
+    std::vector<double> noxMin_;
+    std::vector<double> noxMax_;
+    std::vector<double> noxAverage_;
+    std::vector<double> so2Min_;
+    std::vector<double> so2Max_;
+    std::vector<double> so2Average_;
+
 
 };
 
