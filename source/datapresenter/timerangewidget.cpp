@@ -57,6 +57,7 @@ void TimeRangeWidget::setMinimum(QString min)
 
     fromDateEdit_->setMinimumDate(date);
     toDateEdit_->setMinimumDate(fromDateEdit_->date());
+    fromDateEdit_->setDate(date);
 }
 
 void TimeRangeWidget::setMaximum(QString max)
@@ -65,6 +66,7 @@ void TimeRangeWidget::setMaximum(QString max)
 
     fromDateEdit_->setMaximumDate(toDateEdit_->date());
     toDateEdit_->setMaximumDate(date);
+    toDateEdit_->setDate(date);
 }
 
 void TimeRangeWidget::setMaxTimeRangeLenght(int lenght)
