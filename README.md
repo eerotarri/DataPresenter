@@ -18,6 +18,8 @@ When using SMEAR data there must be at least one day difference between start an
 SMEAR data has limit of seven (7) days for accessing data to make charts more readable for user.
 Preferences can be used after charts are diplayed. Saving a preference saves the last displayed configurations. Pressing preferences button will check the boxes used int the last save and user can show them again.
 
+![Alt text](https://github.com/eerotarri/DataPresenter/blob/main/demo.jpg?raw=true)
+
 Interface:
 IMPORTANT for developers:
 To synchronize model with an interface model needs to call it twice. Once with fetchData() to setup the data in an interface and second time with getData() to actually return the data. This will fill the gap in time between asking for the data and receiving it from a website. The implemented interface should notify model when data can be pulled from the interface.
